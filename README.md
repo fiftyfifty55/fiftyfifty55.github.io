@@ -11,4 +11,4 @@
 - [ ] 聯絡我們
 - [ ] 收藏清單
 ## 留言板
-...
+json格式請看[ex.json](https://github.com/fiftyfifty55/fiftyfifty55.github.io/blob/main/ex.json)
