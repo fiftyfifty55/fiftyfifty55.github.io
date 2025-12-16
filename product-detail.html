@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>商品詳情</title>
+  <style>
+    :root{
+      --bg: #f6f1ee;
+      --panel: #efe4e0;
+      --ink: #151515;
+      --muted: #6e6e6e;
+      --line: rgba(0,0,0,.12);
+      --chip: #e6d7d1;
+      --btn: #d7bfb7;
+      --btnText: #1a1a1a;
+      --star: #f3c44b;
+    }
+    *{ box-sizing: border-box; }
+    body{
+      margin:0;
+      font-family: system-ui,"Noto Sans TC";
+      background: var(--bg);
+      color: var(--ink);
+    }
+    .wrap{ max-width:1080px; margin:0 auto; padding:28px 18px 60px; }
+
+    .top{ display:grid; grid-template-columns: 1.05fr 1fr; gap:40px; align-items:start; }
+
+    /* gallery */
+    .gallery{ position: relative; }
+    .imgBox{
+      width:100%; aspect-ratio:1/1;
+      background: var(--panel);
+      border-radius:10px;
+      display:flex; align-items:center; justify-content:center;
+      font-weight:700; letter-spacing:2px; color:rgba(0,0,0,.35);
+    }
+    .dots{ display:flex; gap:10px; justify-content:center; padding:14px 0 0; }
+    .dot{
+      width:8px; height:8px; border-radius:50%; background: rgba(0,0,0,.18); cursor:pointer;
+    }
+    .dot.active{ background: rgba(0,0,0,.55); }
+
+    /* info */
+    .info h1{ margin:0; font-size:36px; font-weight:900; letter-spacing:1px; }
+    .price{ margin-top:6px; font-size:28px; font-weight:800; }
+
+    .meta{
+      margin-top:10px;
+      display:flex; align-items:center; gap:12px;
+      color: var(--muted); font-size:13px; flex-wrap:wrap;
+    }
+    .rating{ display:flex; align-items:center; gap:6px; }
+    .stars{ display:inline-flex; gap:2px; transform: translateY(1px); }
+    .star{ width:16px; height:16px; display:inline-block; fill:currentColor; color:var(--star); }
+    .meta .divider{ width:1px; height:14px; background: var(--line); }
+
+    .rule{ margin:16px 0; height:1px; background:var(--line); }
+
+    /* tabs + options */
+    .specHead{ display:flex; align-items:center; gap:10px; margin-top:10px; }
+    .specHead .label{ font-size:14px; font-weight:800; }
+    .tabs{ display:flex; gap:8px; }
+    .tab{
+      border:1px solid var(--line); background:transparent;
+      padding:6px 10px; border-radius:999px; font-size:12px; cursor:pointer; color:#333;
+    }
+    .tab.active{ background:var(--chip); border-color:transparent; font-weight:700; }
+
+    .options{ margin-top:12px; min-height:58px; position:relative; }
+    .optRow{ display:flex; gap:10px; align-items:center; flex-wrap:wrap; }
+    .sizeBtn{
+      width:34px; height:34px; border-radius:50%; border:1px solid rgba(0,0,0,.25);
+      background:transparent; cursor:pointer; font-weight:700;
+    }
+    .sizeBtn.active{
+      background:#fff; border-color:rgba(0,0,0,.55); box-shadow:0 1px 0 rgba(0,0,0,.05);
+    }
+    .colorDot{
+      width:28px; height:28px; border-radius:50%; border:1px solid rgba(0,0,0,.12);
+      cursor:pointer; position:relative;
+    }
+    .colorDot.active{
+      outline:2px solid rgba(0,0,0,.55); outline-offset:2px;
+    }
+
+    .bubbleRight{
+      margin-top:8px; display:inline-block;
+      background:#cdb4aa; padding:8px 10px; border-radius:6px; font-size:12px;
+      position:relative; color:#1a1a1a;
+    }
+    .bubbleRight::after{
+      content:""; position:absolute; left:14px; top:-8px;
+      border-width:8px; border-style:solid;
+      border-color: transparent transparent #cdb4aa transparent;
+    }
+
+    /* CTA row */
+    .ctaRow{ margin-top:16px; display:flex; gap:10px; align-items:center; }
+    .addBtn{
+      flex:1; height:38px; border:none; border-radius:6px;
+      background:var(--btn); color:var(--btnText); font-weight:800; cursor:pointer;
+    }
+    .pawBtn{
+      width:38px; height:38px; border:none; border-radius:6px;
+      background:var(--btn); cursor:pointer; font-size:18px;
+      display:flex; align-items:center; justify-content:center;
+    }
+
+    /* sections below */
+    .section{ margin-top:28px; }
+    .section h2{ margin:0 0 10px; font-size:14px; letter-spacing:1px; font-weight:900; }
+    .block{
+      background:var(--panel); border-radius:10px; padding:26px;
+      min-height:120px; display:flex; align-items:center; justify-content:center;
+      color:rgba(0,0,0,.55); text-align:center; line-height:1.6;
+    }
+
+    /* reviews */
+    .reviewHead{ display:flex; align-items:center; gap:10px; margin-bottom:10px; }
+    .reviewScore{ display:flex; align-items:center; gap:8px; color:var(--muted); font-size:12px; }
+    .reviewCards{ display:grid; gap:12px; }
+    .reviewCard{ background:rgba(0,0,0,.06); border-radius:999px; height:52px; }
+
+    /* also bought */
+    .alsoTitle{ margin-top:36px; display:flex; align-items:center; gap:14px; justify-content:center; color:#111; font-weight:900; letter-spacing:2px; }
+    .line{ flex:1; height:2px; background:rgba(0,0,0,.35); max-width:220px; }
+    .cards{ margin-top:18px; display:grid; grid-template-columns: repeat(4,1fr); gap:16px; }
+    .card{ background:var(--panel); border-radius:12px; aspect-ratio:4/5;
+           display:flex; align-items:center; justify-content:center; color:rgba(0,0,0,.55); font-weight:700; }
+
+    footer{ margin-top:26px; background:#d8c0b7; height:56px; display:flex; align-items:center; justify-content:center; color:rgba(0,0,0,.65); letter-spacing:1px; }
+
+    @media (max-width:860px){
+      .top{ grid-template-columns: 1fr; }
+      .cards{ grid-template-columns: repeat(2,1fr); }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <section class="top">
+
+      <!-- left: gallery -->
+      <div class="gallery">
+        <div class="imgBox" id="mainImage">商品照片</div>
+        <div class="dots" id="dotsArea"></div>
+      </div>
+
+      <!-- right: info -->
+      <div class="info">
+        <h1 id="prodName">商品名</h1>
+        <div class="price" id="prodPrice">$XXX</div>
+
+        <div class="meta" id="metaArea">
+          <!-- 會由 JS 塞入 已購買 & 星等 & 評論數 -->
+        </div>
+
+        <div class="rule"></div>
+
+        <div class="specHead">
+          <div class="label" id="specLabel">規格</div>
+          <div class="tabs" id="tabsArea"></div>
+        </div>
+
+        <div class="options" id="optionsArea">
+          <!-- 由 JS 依 variantType 生成尺寸或顏色 -->
+        </div>
+
+        <div class="ctaRow">
+          <button class="addBtn" id="addToCartBtn">加入購物車</button>
+          <button class="pawBtn" id="pawBtn" aria-label="收藏或加入最愛">🐾</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 下方區塊 -->
+    <section class="section">
+      <h2>商品介紹</h2>
+      <div class="block" id="descBlock">文字介紹（示意）</div>
+    </section>
+
+    <section class="section">
+      <h2>詳細規格</h2>
+      <div class="block" id="specBlock">尺寸&材質說明</div>
+    </section>
+
+    <section class="section">
+      <h2>玩法/用法</h2>
+      <div class="block" id="howBlock">圖或文字說明</div>
+    </section>
+
+    <section class="section" id="reviewSection">
+      <div class="reviewHead">
+        <h2 style="margin:0;">評論</h2>
+        <div class="reviewScore" id="reviewScoreArea">
+          <!-- 由 JS 塞星等與平均分 -->
+        </div>
+      </div>
+      <div class="reviewCards" id="reviewCardsArea">
+        <!-- 可放真實評論；暫用示意 -->
+      </div>
+    </section>
+
+    <div class="alsoTitle">
+      <div class="line"></div>
+      <div>其他人也買了</div>
+      <div class="line"></div>
+    </div>
+
+    <section class="cards" id="alsoArea">
+      <div class="card">商品</div>
+      <div class="card">商品</div>
+      <div class="card">商品</div>
+      <div class="card">商品</div>
+    </section>
+
+    <footer>footer</footer>
+  </div>
+
+  <script src="./products-data.js"></script>
+  <script>
+    // 取 URL 參數 ?id=...
+    const params = new URLSearchParams(location.search);
+    const id = params.get("id"); // MDN: URLSearchParams 方便操作 query string :contentReference[oaicite:0]{index=0}
+    const product = PRODUCTS.find(p => p.id === id);
+
+    if(!product){
+      // 找不到商品：可導回商品頁或顯示錯誤
+      alert("找不到此商品");
+      location.href = "products.html";
+    } else {
+      // 1) 塞商品基本資訊
+      document.getElementById("prodName").textContent = product.name;
+      document.getElementById("prodPrice").textContent = "$" + product.price;
+
+      // meta：已購買、星等、評論數
+      const metaArea = document.getElementById("metaArea");
+      metaArea.innerHTML = `
+        <span>${product.boughtCount} 人已購買此產品</span>
+        <span class="divider"></span>
+        <span class="rating">
+          <span class="stars" aria-label="星等">${generateStarsHTML(product.rating)}</span>
+          <span>（${product.reviewCount}）</span>
+        </span>
+      `;
+
+      // description sections
+      document.getElementById("descBlock").textContent = product.description || "暫無介紹";
+      document.getElementById("specBlock").textContent = product.specs || "暫無規格";
+      document.getElementById("howBlock").textContent = product.howToUse || "暫無說明";
+
+      // 2) gallery dots + main image
+      const imgBox = document.getElementById("mainImage");
+      const dotsArea = document.getElementById("dotsArea");
+
+      // 初始顯示第一張
+      let currentIndex = 0;
+      function showImage(idx){
+        const imgName = product.images[idx];
+        // 目前先示意文字，之後可換 <img src="">
+        imgBox.textContent = imgName ?? "商品照片";
+        // 更新 dot active
+        dotsArea.querySelectorAll(".dot").forEach((d,i) => {
+          d.classList.toggle("active", i === idx);
+        });
+      }
+
+      // 產生點點
+      dotsArea.innerHTML = "";
+      product.images.forEach((img, i) => {
+        const d = document.createElement("div");
+        d.className = "dot" + (i===0?" active":"");
+        d.dataset.idx = i;
+        d.addEventListener("click", () => {
+          currentIndex = i;
+          showImage(i);
+        });
+        dotsArea.appendChild(d);
+      });
+      showImage(0);
+
+      // 3) variantType 決定顯示尺寸或顏色
+      const tabsArea = document.getElementById("tabsArea");
+      const optionsArea = document.getElementById("optionsArea");
+      const specLabel = document.getElementById("specLabel");
+
+      function clearChildren(ele){
+        while(ele.firstChild) ele.removeChild(ele.firstChild);
+      }
+
+      if(product.variantType === "size"){
+        specLabel.textContent = "尺寸";
+        // 只有尺寸一個 tab
+        tabsArea.innerHTML = `<button class="tab active" data-tab="size">尺寸</button>`;
+
+        // options: 尺寸按鈕
+        const row = document.createElement("div");
+        row.className = "optRow";
+        product.sizes.forEach((sz, idx) => {
+          const btn = document.createElement("button");
+          btn.className = "sizeBtn" + (idx===0?" active":"");
+          btn.textContent = sz;
+          btn.dataset.size = sz;
+          btn.addEventListener("click", () => {
+            // 取消其他 active
+            row.querySelectorAll(".sizeBtn").forEach(x=>x.classList.remove("active"));
+            btn.classList.add("active");
+          });
+          row.appendChild(btn);
+        });
+        // 可加提示泡泡
+        const bubble = document.createElement("span");
+        bubble.className = "bubbleRight";
+        bubble.textContent = "點選尺寸上方可看到詳細內容及數量";
+        row.appendChild(bubble);
+
+        clearChildren(optionsArea);
+        optionsArea.appendChild(row);
+      }
+      else if(product.variantType === "color"){
+        specLabel.textContent = "顏色";
+        tabsArea.innerHTML = `<button class="tab active" data-tab="color">顏色</button>`;
+
+        const row = document.createElement("div");
+        row.className = "optRow";
+        product.colors.forEach((c, idx) => {
+          const dot = document.createElement("div");
+          dot.className = "colorDot" + (idx===0?" active":"");
+          dot.style.background = c.hex;
+          dot.title = c.label;
+          dot.dataset.color = c.code;
+          dot.addEventListener("click", () => {
+            row.querySelectorAll(".colorDot").forEach(x=>x.classList.remove("active"));
+            dot.classList.add("active");
+          });
+          row.appendChild(dot);
+        });
+        const bubble = document.createElement("span");
+        bubble.className = "bubbleRight";
+        bubble.textContent = "點選顏色上方可看到詳細內容及數量";
+        row.appendChild(bubble);
+
+        clearChildren(optionsArea);
+        optionsArea.appendChild(row);
+      }
+      else {
+        // 其他 variantType: 先不顯示
+        tabsArea.innerHTML = "";
+        optionsArea.innerHTML = "";
+      }
+
+      // 4) CTA 按鈕
+      document.getElementById("addToCartBtn").addEventListener("click", () => {
+        let chosen = "";
+        if(product.variantType === "size"){
+          const sz = optionsArea.querySelector(".sizeBtn.active")?.dataset.size;
+          chosen = "尺寸：" + (sz || "未選");
+        } else if(product.variantType === "color"){
+          const cl = optionsArea.querySelector(".colorDot.active")?.dataset.color;
+          chosen = "顏色：" + (cl || "未選");
+        }
+        alert("已加入購物車！\n" + chosen);
+      });
+      document.getElementById("pawBtn").addEventListener("click", () => {
+        alert("已加入最愛（示意）🐾");
+      });
+
+      // 5) reviews 和 also-bought 暫用示意，可再依資料補上
+      // 顯示平均星等在 reviewScoreArea
+      const reviewScoreArea = document.getElementById("reviewScoreArea");
+      reviewScoreArea.innerHTML = `
+        ${generateStarsHTML(product.rating)}
+        <span>${product.rating.toFixed(1)}</span>
+      `;
+      // reviewCards 可插入真實卡片，暫留示意
+    }
+
+    // helper: 生成星等 HTML（整數 0–5）
+    function generateStarsHTML(rating){
+      const full = Math.round(rating); // 簡單取整
+      let html = "";
+      for(let i=0;i<5;i++){
+        if(i < full){
+          html += `<span class="star" aria-hidden="true">
+                    <svg viewBox="0 0 24 24">
+                      <path d="M12 17.27 18.18 21 16.54 13.97 22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                    </svg>
+                  </span>`;
+        } else {
+          html += `<span class="star" aria-hidden="true" style="color:rgba(0,0,0,.12);">
+                    <svg viewBox="0 0 24 24">
+                      <path d="M12 17.27 18.18 21 16.54 13.97 22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                    </svg>
+                  </span>`;
+        }
+      }
+      return html;
+    }
+  </script>
+</body>
+</html>
