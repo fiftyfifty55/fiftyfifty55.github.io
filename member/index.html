@@ -1,13 +1,67 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="./style.css">
-    <script src="./script.js"></script>
-    <title>Document</title>
+    <title>會員中心</title>
 </head>
 <body>
-    
+
+    <header>會員中心</header>
+
+    <div class="container">
+        <aside>
+            <div class="profile-card"></div>
+        </aside>
+
+        <main>
+            <section>
+                <div style="display: flex; align-items: center; gap: 15px;">
+                    <div style="width: 55px; height: 55px; background: #fff; border-radius: 50%; overflow: hidden;">
+                        <img src="https://via.placeholder.com/55" alt="Avatar">
+                    </div>
+                    <div>
+                        <strong style="font-size: 1.1rem;">帳號名稱 (User_Name)</strong><br>
+                        <span>example@email.com</span>
+                    </div>
+                </div>
+            </section>
+
+            <section class="grid-layout">
+                <a href="shipping1.html" class="grid-item"><span>3</span>待出貨</a>
+                <a href="shipping2.html" class="grid-item"><span>1</span>已出貨</a>
+                <a href="shipping3.html" class="grid-item"><span>0</span>待取件</a>
+                <a href="shipping4.html" class="grid-item"><span>12</span>待評價</a>
+            </section>
+
+            <section class="grid-layout">
+                <a href="coupons.html" class="grid-item">優惠券</a>
+                <a href="history.html" class="grid-item">瀏覽紀錄</a>
+                <a href="notifications.html" class="grid-item">通知</a>
+                <a href="favorites.html" class="grid-item">收藏</a>
+            </section>
+
+            <div class="section-title">設定</div>
+
+            <section>
+                <a href="profile.html" class="list-item">基本資料</a>
+                <a href="membership.html" class="list-item">會員制度</a>
+                <a href="address.html" class="list-item">收件地址</a>
+                <a href="password.html" class="list-item">修改密碼</a>
+                <a href="privacy.html" class="list-item">隱私權說明</a>
+            </section>
+
+            <div class="section-title">服務</div>
+            <section>
+                <a href="support.html" class="list-item">客服</a>
+                <a href="feedback.html" class="list-item">意見回覆</a>
+            </section>
+
+            <a href="logout.php">
+                <button type="button" class="logout-btn">登出</button>
+            </a>
+        </main>
+    </div>
+
 </body>
 </html>
