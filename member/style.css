@@ -1,0 +1,127 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: "Microsoft JhengHei", sans-serif;
+    background-color: #edede9;
+    color: #4a4a4a;
+}
+
+header {
+    background-color: #d6ccc2;
+    text-align: center;
+    padding: 20px 0;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.container {
+    display: flex;
+    max-width: 1000px;
+    margin: 30px auto;
+    gap: 30px;
+    padding: 0 20px;
+    flex-direction: row; 
+}
+
+aside {
+    flex: 1;
+    min-width: 300px;
+}
+
+.profile-card {
+    width: 100%;
+    aspect-ratio: 1.6 / 1;
+    background-image: url('https://picsum.photos/400/250');
+    background-size: cover;
+    background-position: center;
+    border-radius: 20px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+main {
+    flex: 2;
+}
+
+.section-title {
+    font-size: 1.4rem;
+    font-weight: bold;
+    margin: 25px 0 10px 0;
+    text-align: left;
+}
+
+section {
+    background-color: #d6ccc2;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+    transition: 0.2s;
+}
+a:hover { opacity: 0.7; }
+
+.grid-layout {
+    display: flex;
+    justify-content: space-between;
+}
+.grid-item {
+    flex: 1;
+    text-align: center;
+}
+.grid-item span {
+    display: block;
+    font-weight: bold;
+    font-size: 1.2rem;
+    margin-bottom: 5px;
+}
+
+.list-item {
+    display: block;
+    padding: 12px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.4);
+    text-align: left;
+}
+.list-item:last-child { border-bottom: none; }
+
+/* 登出按鈕 */
+.logout-btn {
+    display: block;
+    width: 100%;
+    padding: 12px;
+    margin-top: 10px;
+    background-color: #edede9;
+    color: #d6ccc2;
+    border: 2px solid #d6ccc2;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+}
+.logout-btn:hover {
+    background-color: #d6ccc2;
+    color: #edede9;
+}
+
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column; 
+        margin-top: 15px;
+    }
+
+    aside {
+        width: 100%; 
+        min-width: unset;
+    }
+
+    .profile-card {
+        max-width: 400px; 
+        margin: 0 auto;  
+    }
+
+    .grid-layout {
+        flex-wrap: wrap; 
+    }
+}
