@@ -1,0 +1,20 @@
+[
+    {
+        "id": 1,
+        "name": "咖啡豆",
+        "price": 320,
+        "img": "./images/1.jpg"
+    },
+    {
+        "id": 2,
+        "name": "馬克杯",
+        "price": 180,
+        "img": "./images/2.jpg"
+    },
+    {
+        "id": 3,
+        "name": "濾掛咖啡",
+        "price": 250,
+        "img": "./images/3.jpg"
+    }
+]
