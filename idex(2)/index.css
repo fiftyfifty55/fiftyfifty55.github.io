@@ -1,4 +1,4 @@
-/* --- 12/29佳新增59~116，覺得要改再跟我說 --- */
+/* --- 12/29佳新增58~118，覺得要改再跟我說 --- */
 :root{
   --bg:#efeee9;
   --bar:#d9cec3;
@@ -55,7 +55,9 @@ body{
 }
 .logo-badge img{ width:78%; height:78%; object-fit:contain; }
 
-
+#menuBtn[aria-expanded="true"] {
+  color: #666;
+}
 .nav-item.nav-accordion {
   display: flex;
   justify-content: space-between;
@@ -457,3 +459,4 @@ body{
   display:none;
 }
 .top-btn.show{ display:block; }
+
