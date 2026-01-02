@@ -1,0 +1,10 @@
+.container {
+    display: flex;
+    align-items: center;
+}
+img {
+    max-width: 500px;
+}
+.prod_description {
+    margin-left: 10px;
+}

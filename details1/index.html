@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./style.css">
+
+    <title>Document</title>
+</head>
+
+<body onload="renderComments()">
+    <div class="container">
+        <div class="prod_img">
+            <img id="pic" alt="商品圖片" src="../placeholder.png">
+        </div>
+        <div class="prod_description">
+            <h1 id="prodName">頁面載入中...</h1>
+            <p id="prodPrice" class="price"></p>
+            <p id="prodStock" class="stock"></p>
+            <select id="prodSpec"></select>
+        </div>
+    </div>
+    <div id="commentArea"></div>
+    <textarea id="commentInput" placeholder="留個言吧..."></textarea>
+    <button id="submitBtn">送出</button>
+    <script src="./detailjs.js" defer></script>
+</body>
+
+</html>
