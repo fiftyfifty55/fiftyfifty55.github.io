@@ -138,7 +138,7 @@
     }
   </style>
 </head>
-<body>
+<body onload="renderComments()">
   <div class="wrap">
     <section class="top">
 
@@ -198,9 +198,12 @@
           <!-- 由 JS 塞星等與平均分 -->
         </div>
       </div>
-      <div class="reviewCards" id="reviewCardsArea">
+      <!-- <div class="reviewCards" id="reviewCardsArea"> -->
         <!-- 可放真實評論；暫用示意 -->
-      </div>
+        <div id="commentArea"></div>
+    <textarea id="commentInput" placeholder="留個言吧..."></textarea>
+    <button id="submitBtn">送出</button>
+      <!-- </div> -->
     </section>
 
     <div class="alsoTitle">
@@ -220,6 +223,57 @@
   </div>
 
   <script src="./products-data.js"></script>
+  <script>
+    const pa = new URLSearchParams(window.location.search);
+    const ids = pa.get("id");
+    function renderComments() {
+    const comments = JSON.parse(localStorage.getItem("comments")) || [];
+    const commentArea = document.getElementById("commentArea");
+    commentArea.innerHTML = "";
+    comments.forEach(c => {
+        if (c.id === ids) {
+            commentArea.innerHTML += `
+      <div class="comment">
+        <p class="user">${c.user}</p>
+        <p class="comment">${c.content}</p>
+      </div>
+    `;
+        }
+    });
+}
+const textarea = document.getElementById("commentInput");
+const button = document.getElementById("submitBtn");
+const commentArea = document.getElementById("commentArea");
+const oldComments = JSON.parse(localStorage.getItem("comments")) || [];
+if (oldComments.length === 0) {
+    oldComments.push(
+        { user: "小明", content: "好讚", id: "123456", time: Date.now() },
+        { user: "小王", content: "已回購，小孩愛用", id: "456789", time: Date.now() },
+        { user: "小吳", content: "已小孩，回購愛用", id: "456789", time: Date.now() },
+        { user: "小鄭", content: "cooool", id: "123456", time: Date.now() },
+        { user: "小胡", content: "建議單賣紙箱，貓咪喜歡", id: "123456", time: Date.now() },
+        { user: "小李", content: "我來教大家怎麼做咖哩飯", id: "456789", time: Date.now() }
+    );
+    localStorage.setItem("comments", JSON.stringify(oldComments));
+}
+button.addEventListener("click", () => {
+    const newComment = textarea.value.trim();
+    if (newComment === "") {
+        alert("評論不得為空！");
+        return;
+    }
+    oldComments.push({
+        user: "您",
+        content: newComment,
+        id: ids,
+        time: Date.now()
+    });
+    localStorage.setItem("comments", JSON.stringify(oldComments));
+    commentArea.innerHTML += `<p>您</p><p>${newComment}</p>`;
+    textarea.value = "";
+});
+
+  </script>
   <script>
     // 取 URL 參數 ?id=...
     const params = new URLSearchParams(location.search);
@@ -310,6 +364,11 @@
           });
           row.appendChild(btn);
         });
+        // 可加提示泡泡
+        const bubble = document.createElement("span");
+        bubble.className = "bubbleRight";
+        bubble.textContent = "點選尺寸上方可看到詳細內容及數量";
+        row.appendChild(bubble);
 
         clearChildren(optionsArea);
         optionsArea.appendChild(row);
@@ -332,7 +391,10 @@
           });
           row.appendChild(dot);
         });
-
+        const bubble = document.createElement("span");
+        bubble.className = "bubbleRight";
+        bubble.textContent = "點選顏色上方可看到詳細內容及數量";
+        row.appendChild(bubble);
 
         clearChildren(optionsArea);
         optionsArea.appendChild(row);
@@ -356,7 +418,7 @@
         alert("已加入購物車！\n" + chosen);
       });
       document.getElementById("pawBtn").addEventListener("click", () => {
-        alert("已經加入到收藏清單裡面嘍！");
+        alert("已加入最愛（示意）🐾");
       });
 
       // 5) reviews 和 also-bought 暫用示意，可再依資料補上

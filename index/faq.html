@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>質感貓物 FAQ</title>
+    <style>
+      :root {
+        --c-parchment: #edede9;
+        --c-bone: #d5bda5;
+        --c-linen: #f5ebe0;
+        --c-almond-cream: #e3d5ca;
+        --c-almond-silk: #b0714d;
+        --text-dark: #3d3d3d;
+      }
+
+      body {
+        font-family: "PingFang TC", "Noto Sans TC", sans-serif;
+        background: linear-gradient(135deg, var(--c-parchment) 0%, var(--c-linen) 100%);
+        color: var(--text-dark);
+        margin: 0;
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 40px 20px;
+      }
+
+      /* 增加裝飾性背景元素 */
+      body::before {
+        content: "🐾";
+        position: fixed;
+        font-size: 15rem;
+        opacity: 0.03;
+        bottom: -50px;
+        right: -50px;
+        transform: rotate(-20deg);
+      }
+
+      .faq-card {
+        width: 100%;
+        max-width: 700px;
+        background: rgba(255, 255, 255, 0.4);
+        backdrop-filter: blur(10px);
+        border-radius: 30px;
+        padding: 40px;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.6);
+      }
+
+      .header {
+        margin-bottom: 40px;
+        border-left: 8px solid var(--c-almond-silk);
+        padding-left: 20px;
+      }
+
+      .header h2 {
+        font-size: 2.2rem;
+        margin: 0;
+        color: var(--c-almond-silk);
+        letter-spacing: 1px;
+      }
+
+      .header p {
+        margin: 5px 0 0;
+        color: var(--c-bone);
+        font-weight: 500;
+      }
+
+      .faq-item {
+        margin-bottom: 15px;
+        border-radius: 20px;
+        overflow: hidden;
+        background: #fff;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+        transition: all 0.3s ease;
+      }
+
+      .faq-item:hover {
+        transform: scale(1.02);
+        box-shadow: 0 8px 20px rgba(213, 189, 175, 0.2);
+      }
+
+      .faq-question {
+        padding: 25px;
+        cursor: pointer;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-weight: 600;
+        font-size: 1.1rem;
+        /* 使用 Almond Cream 增加對比度 */
+        background-color: var(--c-linen);
+        color: var(--text-dark);
+      }
+
+      /* 展開狀態的問題顏色 */
+      .faq-item.active .faq-question {
+        background-color: var(--c-almond-silk);
+        color: white;
+      }
+
+      .faq-answer {
+        max-height: 0;
+        overflow: hidden;
+        transition: all 0.5s ease;
+        padding: 0 25px;
+        line-height: 1.8;
+        color: #555;
+        background: #fff;
+      }
+
+      .faq-item.active .faq-answer {
+        max-height: 300px;
+        padding: 25px;
+      }
+
+      /* 裝飾性數字標籤 */
+      .faq-question::before {
+        content: "Q.";
+        margin-right: 10px;
+        font-style: italic;
+        opacity: 0.5;
+      }
+
+      .icon-circle {
+        width: 30px;
+        height: 30px;
+        background: rgba(255, 255, 255, 0.5);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: transform 0.3s;
+      }
+
+      .faq-item.active .icon-circle {
+        transform: rotate(180deg);
+        background: rgba(0, 0, 0, 0.1);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="faq-card">
+      <div class="header">
+        <h2>貓奴問問</h2>
+        <p>為您與小可愛解答生活中的大小事</p>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question">
+          這些用品的材質對貓咪安全嗎？
+          <div class="icon-circle">▼</div>
+        </div>
+        <div class="faq-answer">
+          我們深知貓咪喜歡啃咬的習性，因此全系列產品皆通過
+          <b>SGS 無毒認證</b>。從食品級矽膠到天然麻繩，確保在玩耍時不會攝入有害物質。
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question">
+          如果我的貓不賞臉怎麼辦？
+          <div class="icon-circle">▼</div>
+        </div>
+        <div class="faq-answer">
+          貓咪是非常謹慎的動物！我們建議將商品放置在牠最喜歡的地方，並撒上隨貨附贈的<b>特選貓薄荷</b>。若兩週後仍未改善，我們提供專業的引導教學或退換諮詢（其實牠們好像就是喜歡紙箱而已www）。
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question">
+          清潔保養會很麻煩嗎？
+          <div class="icon-circle">▼</div>
+        </div>
+        <div class="faq-answer">
+          針對髒污與細菌問題，我們採用了<b>易去汙技術</b>。睡墊類可直接機洗（建議套洗衣袋），硬體裝備則使用濕布擦拭即可，省下您寶貴的清潔時間。
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question">
+          下單後多久能收到驚喜？
+          <div class="icon-circle">▼</div>
+        </div>
+        <div class="faq-answer">
+          為了不讓寶寶久等，現貨商品下單後 <b>24 小時內快速出貨</b>。全台超商取貨約 2 天抵達，宅配最快隔日送達。
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question">
+          關於退換貨的保障？
+          <div class="icon-circle">▼</div>
+        </div>
+        <div class="faq-answer">
+          我們提供<b> 7 天鑑賞期服務</b>。若收到商品發現瑕疵或內容物不符，請立即拍攝包裹照片並聯繫客服，我們將盡快協助處理。
+        </div>
+      </div>
+    </div>
+
+    <script>
+      document.querySelectorAll(".faq-question").forEach((item) => {
+        item.addEventListener("click", () => {
+          const parent = item.parentElement;
+          // 點擊時關閉其他已開啟的項目
+          document.querySelectorAll(".faq-item").forEach((i) => {
+            if (i !== parent) i.classList.remove("active");
+          });
+          parent.classList.toggle("active");
+        });
+      });
+    </script>
+  </body>
+</html>
