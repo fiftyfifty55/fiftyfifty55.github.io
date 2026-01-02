@@ -224,6 +224,8 @@
 
   <script src="./products-data.js"></script>
   <script>
+    const pa = new URLSearchParams(window.location.search);
+    const ids = pa.get("id");
     function renderComments() {
     const comments = JSON.parse(localStorage.getItem("comments")) || [];
     const commentArea = document.getElementById("commentArea");
@@ -453,6 +455,7 @@ button.addEventListener("click", () => {
   </script>
 </body>
 </html>
+
 
 
 
