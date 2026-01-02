@@ -162,8 +162,22 @@ body{
 
 /* 讓「商品」這個按鈕（button）看起來跟 a.nav-item 一樣 */
 button.nav-item{
-  appearance:none;
-  border:1px solid rgba(0,0,0,.06);
+  -webkit-appearance: none;
+  appearance: none;
+  font: inherit;              /* ✅ 字型/大小跟父層一致 */
+  color: inherit;
+
+  background: rgba(255,255,255,.35);
+  border: 1px solid rgba(0,0,0,.06);
+  border-radius: 10px;
+  padding: 12px;
+  width: 100%;
+  text-align: left;
+
+  font-weight: 800;
+  letter-spacing: 1px;
+
+  cursor: pointer;
 }
 
 /* 商品那列：文字＋箭頭在同一排 */
