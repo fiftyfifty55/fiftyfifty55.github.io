@@ -138,7 +138,7 @@
     }
   </style>
 </head>
-<body>
+<body onload="renderComments()">
   <div class="wrap">
     <section class="top">
 
@@ -220,6 +220,7 @@
   </div>
 
   <script src="./products-data.js"></script>
+  <script src="details1/detailjs.js></script>
   <script>
     // 取 URL 參數 ?id=...
     const params = new URLSearchParams(location.search);
@@ -401,3 +402,4 @@
   </script>
 </body>
 </html>
+
