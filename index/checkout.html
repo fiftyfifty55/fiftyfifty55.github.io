@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>結帳｜Meow5</title>
+  <link rel="stylesheet" href="./checkout.css" />
+</head>
+<body>
+  <main class="wrap">
+    <section class="block">
+      <h2 class="block-title">購物車商品</h2>
+
+      <!-- 這裡會用 JS 產生「一條一條」的商品列 -->
+      <div class="cart-lines" id="cartLines">
+        <!-- fallback -->
+        <div class="empty">尚未載入購物車商品</div>
+      </div>
+    </section>
+
+    <section class="block">
+      <h2 class="block-title">取貨方式</h2>
+
+      <div class="choice-row" role="radiogroup" aria-label="取貨方式">
+        <label class="choice">
+          <input type="radio" name="ship" value="home" checked />
+          <span>宅配到府</span>
+        </label>
+
+        <label class="choice">
+          <input type="radio" name="ship" value="711" />
+          <span>7-11取貨</span>
+        </label>
+
+        <label class="choice">
+          <input type="radio" name="ship" value="family" />
+          <span>全家取貨</span>
+        </label>
+      </div>
+
+      <p class="hint" id="shipHint" aria-live="polite"></p>
+    </section>
+
+    <section class="block">
+      <h2 class="block-title">付款方式</h2>
+
+      <div class="choice-row" role="radiogroup" aria-label="付款方式">
+        <label class="choice">
+          <input type="radio" name="pay" value="cod" checked />
+          <span>貨到付款</span>
+        </label>
+
+        <label class="choice">
+          <input type="radio" name="pay" value="card" />
+          <span>信用卡</span>
+        </label>
+
+        <label class="choice">
+          <input type="radio" name="pay" value="atm" />
+          <span>簽帳卡</span>
+        </label>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <section class="block">
+      <div class="price-box">
+        <div class="price-row">
+          <div class="label">商品金額</div>
+          <div class="value" id="subtotalText">$ 0</div>
+        </div>
+
+        <div class="price-row">
+          <div class="label">運費</div>
+          <div class="value" id="shippingText">$ 0</div>
+        </div>
+
+        <div class="thin-line"></div>
+
+        <div class="price-row total">
+          <div class="label">總付款金額</div>
+          <div class="value" id="grandText">$ 0</div>
+        </div>
+      </div>
+
+      <div class="buy-row">
+        <button class="buy-btn" id="buyBtn" type="button">購買</button>
+      </div>
+    </section>
+  </main>
+
+  <!-- 商品資料（為了之後推薦商品/檢查商品大小規則也可用） -->
+  <script src="./products-data.js"></script>
+  <script src="./checkout.js"></script>
+</body>
+</html>
