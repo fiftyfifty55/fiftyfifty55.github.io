@@ -1,61 +1,202 @@
 <!DOCTYPE html>
-<html lang="zh-TW">
+<html lang="zh-Hant">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>我的購物車</title>
-    <link rel="stylesheet" href="cart.css" />
+    <title>確認結帳 - Meow5</title>
+    <link rel="stylesheet" href="./index.css" />
+    <style>
+      :root {
+        --accent: #b0714d;
+      }
+      body {
+        background-color: #f6f1ee; /* 延續首頁米色調 */
+        padding-top: 80px;
+      }
+      .checkout-container {
+        max-width: 700px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+      .checkout-card {
+        background: white;
+        border-radius: 20px;
+        padding: 40px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+      }
+      h2 {
+        text-align: center;
+        margin-bottom: 30px;
+        font-weight: 800;
+        color: var(--ink);
+      }
+      .item-row {
+        display: flex;
+        align-items: center;
+        padding: 15px 0;
+        border-bottom: 1px solid #eee;
+      }
+      .item-img {
+        width: 60px;
+        height: 60px;
+        border-radius: 8px;
+        background-size: cover;
+        background-position: center;
+        margin-right: 15px;
+        background-color: #f0f0f0;
+      }
+      .item-detail {
+        flex-grow: 1;
+      }
+      .item-name {
+        font-weight: bold;
+        display: block;
+      }
+      .item-qty {
+        font-size: 0.9rem;
+        color: #888;
+      }
+      .price-info {
+        text-align: right;
+      }
+      .summary-section {
+        margin-top: 30px;
+        padding-top: 20px;
+        border-top: 2px solid #f6f1ee;
+      }
+      .summary-line {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 10px;
+        color: #666;
+      }
+      .total-line {
+        font-size: 1.5rem;
+        font-weight: 900;
+        color: var(--accent);
+        margin-top: 15px;
+      }
+      .pay-btn {
+        width: 100%;
+        background: var(--accent);
+        color: white;
+        border: none;
+        padding: 18px;
+        border-radius: 50px;
+        font-size: 1.1rem;
+        font-weight: bold;
+        cursor: pointer;
+        margin-top: 30px;
+        transition: transform 0.2s, background 0.2s;
+      }
+      .pay-btn:hover {
+        background: #8e5a3d;
+        transform: translateY(-2px);
+      }
+      .back-link {
+        display: block;
+        text-align: center;
+        margin-top: 20px;
+        color: #999;
+        text-decoration: none;
+        font-size: 0.9rem;
+      }
+    </style>
   </head>
   <body>
-    <div class="cart-container">
-      <header class="cart-header">
-        <h1>Meow5</h1>
-        <nav></nav>
-      </header>
-
-      <div class="cart-steps">
-        <span class="active">購物清單</span>
-        <span>></span>
-        <span>訂購</span>
-        <span>></span>
-        <span>結帳</span>
+    <header class="topbar">
+      <div class="topbar-left">
+        <a class="logo" href="./index.html">
+          <img src="image/logo.png" alt="Meow5 Logo" style="height: 40px" />
+        </a>
       </div>
+      <div class="brand">結帳付款</div>
+      <div class="topbar-right"></div>
+    </header>
 
-      <main class="cart-main">
-        <table>
-          <thead>
-            <tr>
-              <th>商品</th>
-              <th>單價</th>
-              <th>數量</th>
-              <th>合計</th>
-              <th>結帳</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr class="cart-item">
-              <td>
-                <div class="item-details">
-                  <img src="item-image.png" alt="商品圖片" class="item-image" />
-                  <p></p>
-                </div>
-              </td>
-              <td>NT$1,290</td>
-              <td>
-                <input type="number" value="1" min="1" class="item-quantity" />
-              </td>
-              <td class="item-total">NT$1,290</td>
-              <td><button class="remove-btn">刪除</button></td>
-            </tr>
-          </tbody>
-        </table>
+    <div class="checkout-container">
+      <div class="checkout-card">
+        <h2>確認您的訂單 🐾</h2>
 
-        <div class="cart-summary">
-          <p>商品總金額：**NT$1,290**</p>
+        <div id="orderList"></div>
+
+        <div class="summary-section">
+          <div class="summary-line">
+            <span>小計 Subtotal</span>
+            <span id="subtotal">$0</span>
+          </div>
+          <div class="summary-line">
+            <span>運費 Shipping</span>
+            <span id="shippingFee">$0</span>
+          </div>
+          <div class="summary-line total-line">
+            <span>總計 Total</span>
+            <span id="finalTotal">$0</span>
+          </div>
         </div>
-      </main>
+
+        <button class="pay-btn" onclick="sendOrder()">完成付款，送出訂單</button>
+        <a href="./index.html" class="back-link">← 回到店鋪繼續逛逛</a>
+      </div>
     </div>
 
-    <script src="cart.js"></script>
+    <script>
+      const cart = JSON.parse(localStorage.getItem("meow5_cart")) || [];
+      const listDiv = document.getElementById("orderList");
+      const subtotalEl = document.getElementById("subtotal");
+      const shippingEl = document.getElementById("shippingFee");
+      const finalTotalEl = document.getElementById("finalTotal");
+
+      function renderOrder() {
+        if (cart.length === 0) {
+          listDiv.innerHTML = "<div style='text-align:center; padding: 40px; color:#999;'>您的購物車是空的喵...</div>";
+          document.querySelector(".pay-btn").disabled = true;
+          document.querySelector(".pay-btn").style.opacity = "0.5";
+          return;
+        }
+
+        let subtotal = 0;
+        listDiv.innerHTML = "";
+
+        cart.forEach((item) => {
+          subtotal += item.price * item.qty;
+          // 判斷圖片路徑
+          const imgSrc = item.image && item.image.startsWith("http") ? item.image : `images/${item.image}`;
+
+          listDiv.innerHTML += `
+            <div class="item-row">
+              <div class="item-img" style="background-image: url('${imgSrc}')"></div>
+              <div class="item-detail">
+                <span class="item-name">${item.name}</span>
+                <span class="item-qty">數量：${item.qty}</span>
+              </div>
+              <div class="price-info">
+                <span>$${(item.price * item.qty).toLocaleString()}</span>
+              </div>
+            </div>
+          `;
+        });
+
+        // 運費邏輯：滿 1500 免運，否則運費 60
+        const shippingFee = subtotal >= 1500 ? 0 : 60;
+        const finalTotal = subtotal + shippingFee;
+
+        subtotalEl.innerText = `$${subtotal.toLocaleString()}`;
+        shippingEl.innerText = shippingFee === 0 ? "免運✨" : `$${shippingFee}`;
+        finalTotalEl.innerText = `$${finalTotal.toLocaleString()}`;
+      }
+
+      function sendOrder() {
+        // 簡單的確認畫面
+        if (confirm("確定要送出訂單嗎？")) {
+          alert("🎉 訂單已送出！\n我們將盡快為您的主子出貨 🐈");
+          localStorage.removeItem("meow5_cart");
+          window.location.href = "index.html";
+        }
+      }
+
+      // 執行渲染
+      renderOrder();
+    </script>
   </body>
 </html>
