@@ -1,0 +1,12 @@
+{
+    "user": {
+        "name": "王小明",
+        "email": "ming@example.com",
+        "orders": {
+            "toShip": 2,
+            "shipped": 5,
+            "toPick": 1,
+            "toReview": 3
+        }
+    }
+}
