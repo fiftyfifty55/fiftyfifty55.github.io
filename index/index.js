@@ -118,6 +118,16 @@ searchInput.addEventListener("input", () => {
   renderSearchResults(filtered);
 });
 
+//會員
+function handleMemberClick() {
+  const isLoggedIn = localStorage.getItem('isLoggedIn');
+
+  if (isLoggedIn === 'true') {
+      window.location.href = "member/index.html";
+  } else {
+      window.location.href = "member/sign_in/index.html";
+  }
+}
 
 // ===== Hero Slider + Hotspots =====
 // 先用 placeholder 圖片路徑，之後換成你們做好的 hero 圖
