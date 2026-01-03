@@ -456,55 +456,7 @@ button.addEventListener("click", () => {
     }
   </script>
   <script>
-    const pa = new URLSearchParams(window.location.search);
-    const ids = pa.get("id");
-    function renderComments() {
-    const comments = JSON.parse(localStorage.getItem("comments")) || [];
-    const commentArea = document.getElementById("commentArea");
-    commentArea.innerHTML = "";
-    comments.forEach(c => {
-        if (c.id === ids) {
-            commentArea.innerHTML += `
-      <div class="comment">
-        <p class="user">${c.user}</p>
-        <p class="comment">${c.content}</p>
-      </div>
-    `;
-        }
-    });
-}
-const textarea = document.getElementById("commentInput");
-const button = document.getElementById("submitBtn");
-const commentArea = document.getElementById("commentArea");
-const oldComments = JSON.parse(localStorage.getItem("comments")) || [];
 const pawBtn = document.getElementById("pawBtn");
-if (oldComments.length === 0) {
-    oldComments.push(
-        { user: "小明", content: "好讚", id: "123456", time: Date.now() },
-        { user: "小王", content: "已回購，小孩愛用", id: "456789", time: Date.now() },
-        { user: "小吳", content: "已小孩，回購愛用", id: "456789", time: Date.now() },
-        { user: "小鄭", content: "cooool", id: "123456", time: Date.now() },
-        { user: "小胡", content: "建議單賣紙箱，貓咪喜歡", id: "123456", time: Date.now() },
-        { user: "小李", content: "我來教大家怎麼做咖哩飯", id: "456789", time: Date.now() }
-    );
-    localStorage.setItem("comments", JSON.stringify(oldComments));
-}
-button.addEventListener("click", () => {
-    const newComment = textarea.value.trim();
-    if (newComment === "") {
-        alert("評論不得為空！");
-        return;
-    }
-    oldComments.push({
-        user: "您",
-        content: newComment,
-        id: ids,
-        time: Date.now()
-    });
-    localStorage.setItem("comments", JSON.stringify(oldComments));
-    commentArea.innerHTML += `<p>您</p><p>${newComment}</p>`;
-    textarea.value = "";
-});
 let pro = PRODUCTS.find(p => p.id == ids);
 pawBtn.addEventListener("click", () => {
   let fav = JSON.parse(localStorage.getItem("fav_mock")) || [];
@@ -526,4 +478,5 @@ pawBtn.addEventListener("click", () => {
 </body>
 
 </html>
+
 
