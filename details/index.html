@@ -273,7 +273,7 @@ button.addEventListener("click", () => {
     commentArea.innerHTML += `<p>您</p><p>${newComment}</p>`;
     textarea.value = "";
 });
-let pro = PRODUCTS.find(p => p.id == id);
+let pro = PRODUCTS.find(p => p.id == ids);
 pawBtn.addEventListener("click", () => {
   let fav = JSON.parse(localStorage.getItem("fav_mock")) || [];
   const isExist = fav.some(item => item.id === pro.id);
@@ -472,6 +472,7 @@ pawBtn.addEventListener("click", () => {
   </script>
 </body>
 </html>
+
 
 
 
