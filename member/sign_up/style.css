@@ -1,0 +1,66 @@
+/* sign_up/style.css */
+body {
+    background-color: #edede9;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    font-family: "Microsoft JhengHei", sans-serif;
+}
+
+.auth-card {
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+    padding: 20px;
+}
+
+h2 {
+    font-size: 24px;
+    margin-bottom: 40px;
+    font-weight: bold;
+}
+
+.input-group {
+    text-align: left;
+    margin-bottom: 20px;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 14px;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 15px;
+    border: 2px solid #000;
+    border-radius: 20px; /* 圓角樣式 */
+    background: transparent;
+    box-sizing: border-box;
+    font-size: 16px;
+}
+
+.submit-btn {
+    width: 100%;
+    padding: 15px;
+    background-color: #d6ccc2; /* 淺褐色按鈕 */
+    border: none;
+    border-radius: 25px;
+    font-size: 18px;
+    cursor: pointer;
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+
+.switch-link {
+    font-size: 14px;
+}
+
+.switch-link a {
+    color: #a67c52; /* 棕金色字體 */
+    text-decoration: none;
+    font-weight: bold;
+}
