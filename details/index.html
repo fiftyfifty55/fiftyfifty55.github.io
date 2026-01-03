@@ -245,6 +245,7 @@ const textarea = document.getElementById("commentInput");
 const button = document.getElementById("submitBtn");
 const commentArea = document.getElementById("commentArea");
 const oldComments = JSON.parse(localStorage.getItem("comments")) || [];
+const pawBtn = document.getElementById("pawBtn");
 if (oldComments.length === 0) {
     oldComments.push(
         { user: "小明", content: "好讚", id: "123456", time: Date.now() },
@@ -272,7 +273,22 @@ button.addEventListener("click", () => {
     commentArea.innerHTML += `<p>您</p><p>${newComment}</p>`;
     textarea.value = "";
 });
-
+pawBtn.addEventListener("click", () => {
+  let fav = JSON.parse(localStorage.getItem("fav_mock")) || [];
+  const isExist = fav.some(item => item.id === pro.id);
+  if (isExist) {
+    alert("這個商品已經在我的最愛了 🐾");
+    return;
+  }
+  fav.push({
+    id: pro.id,
+    name: pro.name,
+    price: pro.price,
+    img: pro.img
+  });
+  localStorage.setItem("fav_mock", JSON.stringify(fav));
+  alert("已加入我的最愛 ❤️");
+});
   </script>
   <script>
     // 取 URL 參數 ?id=...
@@ -455,6 +471,7 @@ button.addEventListener("click", () => {
   </script>
 </body>
 </html>
+
 
 
 
