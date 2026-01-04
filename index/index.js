@@ -153,16 +153,16 @@ const HERO_SLIDES = [
       { productId: "C001", x: 20, y: 56 },
 
       // ✅ 碗
-      { productId: "C002", x: 18, y: 82 },
+      { productId: "L007", x: 18, y: 82 },
 
       // ✅ 貓爬架
-      { productId: "C003", x: 60, y: 58 },
+      { productId: "T004", x: 60, y: 58 },
 
       // ✅ 貓砂盆
-      { productId: "C004", x: 83, y: 44 },
+      { productId: "L004", x: 83, y: 44 },
 
       // ✅ 藍色外出包
-      { productId: "C005", x: 90, y: 74 }
+      { productId: "L010", x: 90, y: 74 }
     ]
   },
   { image: "image/hero2.jpg", hotspots: [] },
@@ -274,9 +274,9 @@ initHero();
 
 // ===== Category Frames: 每60秒換圖 =====
 const CATEGORY_IMAGES = {
-  "生活用品": ["1-010.png","1-011.png","cat3.jpg"].map(resolveImg),
-  "玩具": ["2-010.jpg","toy2.jpg","toy3.jpg"].map(resolveImg),
-  "服飾": ["3-011.png","clo2.jpg","clo3.jpg"].map(resolveImg)
+  "生活用品": ["1-011.png","1-021.png","1-031.png","1-041.png","1-051.png","1-061.png","1-071.png","1-081.png","1-091.png","1-101.png","1-111.png","1-121.png"].map(resolveImg),
+  "玩具": ["2-011.jpg","2-021.jpg","2-031.jpg","2-041.png","2-051.png","2-061.png"].map(resolveImg),
+  "服飾": ["3-011.png","3-021.png","3-031.png","3-041.png","3-051.png","3-061.png"].map(resolveImg)
 };
 
 function initCategoryRotator(){

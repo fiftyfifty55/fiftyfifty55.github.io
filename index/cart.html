@@ -168,11 +168,6 @@
       overflow: hidden;
       text-overflow: ellipsis;
     }
-    .item-variant{
-      font-size: 0.82rem;
-      color: #777;
-      margin-bottom: 4px;
-    }
     .item-price {
       color: var(--accent);
       font-weight: 900;
@@ -314,14 +309,15 @@
     </div>
   </div>
 
-  <!-- ✅ 只需要 products-data.js（不要再用 script src 指到 .html） -->
   <script src="./products-data.js"></script>
 
   <script>
-    // ======= 設定：一定要跟商品詳情頁一致 =======
-    const CART_KEY = "meow5_cart";              // ✅ 你們全站統一用這個
-    const FREE_SHIPPING_THRESHOLD = 2000;       // ✅ 滿 2000 免運（你說的規則）
-    const DEFAULT_SHIPPING_FEE = 150;           // 這裡先用宅配預估；真正運費可在 checkout 再選 60/150
+    // ======= 設定（跟商品詳情頁一致） =======
+    const CART_KEY = "meow5_cart";
+    const CHECKOUT_KEY = "MEOW5_CHECKOUT_ITEMS";
+
+    const FREE_SHIPPING_THRESHOLD = 2000; // 滿 2000 免運
+    const DEFAULT_SHIPPING_FEE = 150;
 
     // ======= DOM =======
     const cartOverlay = document.getElementById("cart");
@@ -353,6 +349,14 @@
       if (e.key === "Escape") toggleCart(false);
     });
 
+    // ======= 圖片路徑統一（支援 image/ / http / 檔名） =======
+    function resolveImg(src){
+      if(!src) return "image/no-image.png";
+      if(String(src).startsWith("http")) return src;
+      if(String(src).startsWith("image/")) return src;
+      return "image/" + src;
+    }
+
     // ======= Storage helpers =======
     function loadCart() {
       try {
@@ -362,37 +366,23 @@
         return [];
       }
     }
-
     function saveCart(items) {
       localStorage.setItem(CART_KEY, JSON.stringify(items));
     }
 
-    // 把不同格式統一成 {id, qty, variantType, variantValue}
-    function normalizeItem(it) {
-      const qty = Math.max(1, parseInt(it.qty ?? 1, 10));
-
-      // 支援幾種常見寫法
-      // 1) it.variantType / it.variantValue
-      // 2) it.variant = { type:'size', value:'M' } 或 {type:'color', value:'beige'}
-      let variantType = it.variantType || "";
-      let variantValue = it.variantValue || "";
-
-      if (!variantType && it.variant && typeof it.variant === "object") {
-        variantType = it.variant.type || "";
-        variantValue = it.variant.value || "";
-      }
-
-      // 3) it.size 或 it.color
-      if (!variantType) {
-        if (it.size) { variantType = "size"; variantValue = it.size; }
-        else if (it.color) { variantType = "color"; variantValue = it.color; }
-      }
-
-      return { id: it.id, qty, variantType, variantValue };
+    // ✅ 兼容舊資料：自動轉成 {id, qty}
+    function normalizeCart(items){
+      const arr = [];
+      (items || []).forEach(it => {
+        if(!it || !it.id) return;
+        const qty = Math.max(1, parseInt(it.qty ?? 1, 10));
+        arr.push({ id: it.id, qty });
+      });
+      return arr;
     }
 
     function money(n) {
-      return "$" + Number(n).toLocaleString();
+      return "$" + Number(n).toLocaleString("zh-Hant");
     }
 
     function getProductById(pid) {
@@ -400,34 +390,21 @@
     }
 
     function getProductImage(p) {
-      // 你資料是 images: ["l001-1.jpg"...]
       const first = p?.images?.[0];
       if (!first) return "https://placehold.co/100x100?text=Meow5";
-      // 你們實際放圖的資料夾：images/
-      return first.startsWith("http") ? first : `images/${first}`;
-    }
-
-    function variantText(p, it) {
-      if (!it.variantType || !it.variantValue) return "";
-
-      if (it.variantType === "size") {
-        return `尺寸：${it.variantValue}`;
-      }
-      if (it.variantType === "color") {
-        // 把 code 轉 label（如果 products-data 內有 colors）
-        const label = p?.colors?.find(c => c.code === it.variantValue)?.label;
-        return `顏色：${label ? label : it.variantValue}`;
-      }
-      return "";
+      return resolveImg(first);
     }
 
     // ======= Render =======
     function render() {
-      const rawItems = loadCart().map(normalizeItem);
+      const raw = normalizeCart(loadCart());
+
+      // ✅ 如果有舊格式，順手覆蓋一次（清掉 variant 欄位）
+      saveCart(raw);
+
       listContainer.innerHTML = "";
 
-      // 空購物車
-      if (rawItems.length === 0) {
+      if (raw.length === 0) {
         listContainer.innerHTML = `<div class="empty-msg">購物車空空如也喵... 🐾<br>快去挑選喜歡的商品吧！</div>`;
         checkoutBtn.disabled = true;
         updateAccounting(0);
@@ -438,14 +415,13 @@
 
       let subtotal = 0;
 
-      rawItems.forEach((it, index) => {
+      raw.forEach((it, index) => {
         const p = getProductById(it.id);
         const price = Number(p?.price ?? 0);
         const lineTotal = price * it.qty;
         subtotal += lineTotal;
 
         const imgSrc = p ? getProductImage(p) : "https://placehold.co/100x100?text=Meow5";
-        const vText = variantText(p, it);
 
         const div = document.createElement("div");
         div.className = "item";
@@ -454,7 +430,6 @@
 
           <div class="item-info">
             <div class="item-name">${p ? p.name : it.id}</div>
-            ${vText ? `<div class="item-variant">${vText}</div>` : ``}
             <div class="item-price">${money(price)}</div>
 
             <div class="item-qty-control">
@@ -511,8 +486,7 @@
       const act = btn.dataset.act;
       const i = parseInt(btn.dataset.i, 10);
 
-      const items = loadCart().map(normalizeItem);
-
+      const items = normalizeCart(loadCart());
       if (!items[i]) return;
 
       if (act === "inc") {
@@ -539,23 +513,17 @@
     });
 
     // ======= 結帳跳轉 =======
- checkoutBtn.addEventListener("click", () => {
-  const CART_KEY = "meow5_cart";
-  const CHECKOUT_KEY = "MEOW5_CHECKOUT_ITEMS";
+    checkoutBtn.addEventListener("click", () => {
+      const items = normalizeCart(loadCart());
 
-  const items = JSON.parse(localStorage.getItem(CART_KEY)) || [];
+      if (!items.length) {
+        alert("購物車沒有商品喵～");
+        return;
+      }
 
-  if (!items.length) {
-    alert("購物車沒有商品喵～");
-    return;
-  }
-
-  // ✅ 正式交接給結帳頁
-  localStorage.setItem(CHECKOUT_KEY, JSON.stringify(items));
-
-  location.href = "./checkout.html";
-});
-
+      localStorage.setItem(CHECKOUT_KEY, JSON.stringify(items));
+      location.href = "./checkout.html";
+    });
 
     // 第一次載入先算一次
     render();

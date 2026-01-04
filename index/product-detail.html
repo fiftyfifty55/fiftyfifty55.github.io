@@ -71,61 +71,49 @@
 
     .rule{ margin:16px 0; height:1px; background:var(--line); }
 
-    /* tabs + options */
-    .specHead{ display:flex; align-items:center; gap:10px; margin-top:10px; }
-    .specHead .label{ font-size:14px; font-weight:900; }
-    .tabs{ display:flex; gap:8px; }
-    .tab{
-      border:1px solid var(--line);
-      background:transparent;
-      padding:6px 10px;
-      border-radius:999px;
-      font-size:12px;
-      cursor:pointer;
-      color:#333;
+    /* ✅ 單一規格：數量 */
+    .qtyRow{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      margin-top:10px;
     }
-    .tab.active{ background:var(--chip); border-color:transparent; font-weight:800; }
-
-    .options{ margin-top:12px; min-height:58px; position:relative; }
-    .optRow{ display:flex; gap:10px; align-items:center; flex-wrap:wrap; }
-    .sizeBtn{
-      width:34px; height:34px; border-radius:50%;
-      border:1px solid rgba(0,0,0,.25);
-      background:transparent;
-      cursor:pointer;
+    .qtyLabel{
+      font-size:14px;
       font-weight:900;
+      letter-spacing:1px;
     }
-    .sizeBtn.active{
-      background:#fff;
-      border-color:rgba(0,0,0,.55);
-      box-shadow:0 1px 0 rgba(0,0,0,.05);
+    .qtyCtrl{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      background: rgba(255,255,255,.65);
+      border:1px solid rgba(0,0,0,.10);
+      border-radius: 12px;
+      padding: 8px 10px;
     }
-    .colorDot{
-      width:28px; height:28px; border-radius:50%;
-      border:1px solid rgba(0,0,0,.12);
+    .qtyBtn{
+      width:32px;
+      height:32px;
+      border:none;
+      border-radius:10px;
+      background: var(--btn);
+      font-weight:900;
       cursor:pointer;
-      position:relative;
     }
-    .colorDot.active{ outline:2px solid rgba(0,0,0,.55); outline-offset:2px; }
-
-    .bubbleRight{
-      margin-top:8px;
-      display:inline-block;
-      background:#cdb4aa;
-      padding:8px 10px;
-      border-radius:6px;
+    .qtyInput{
+      width:56px;
+      height:32px;
+      border-radius:10px;
+      border:1px solid rgba(0,0,0,.12);
+      text-align:center;
+      font-weight:900;
+      outline:none;
+      background:white;
+    }
+    .stockHint{
+      color:#777;
       font-size:12px;
-      position:relative;
-      color:#1a1a1a;
-    }
-    .bubbleRight::after{
-      content:"";
-      position:absolute;
-      left:14px;
-      top:-8px;
-      border-width:8px;
-      border-style:solid;
-      border-color:transparent transparent #cdb4aa transparent;
     }
 
     /* CTA row */
@@ -202,16 +190,6 @@
       gap:10px;
       align-items:center;
     }
-    .btn{
-      border:none;
-      border-radius:10px;
-      background:var(--accent);
-      color:white;
-      padding:10px 14px;
-      font-weight:900;
-      cursor:pointer;
-    }
-    .btn:hover{ filter:brightness(.97); }
 
     .hintText{
       color:#777;
@@ -296,51 +274,149 @@
       .cards{ grid-template-columns:repeat(2,1fr); }
     }
 
-    /* =========================
-   評論送出按鈕（Meow5 風格）
-========================= */
-#submitReviewBtn{
-  appearance: none;
-  border: none;
-  border-radius: 999px;
-  padding: 10px 22px;
-  background: linear-gradient(135deg, #d7bfb7, #cdb4aa);
-  color: #1a1a1a;
-  font-weight: 900;
+    /* 評論送出按鈕（Meow5 風格） */
+    #submitReviewBtn{
+      appearance: none;
+      border: none;
+      border-radius: 999px;
+      padding: 10px 22px;
+      background: linear-gradient(135deg, #d7bfb7, #cdb4aa);
+      color: #1a1a1a;
+      font-weight: 900;
+      letter-spacing: 1px;
+      cursor: pointer;
+      transition: transform .15s ease, box-shadow .15s ease, filter .15s ease;
+      box-shadow: 0 6px 14px rgba(0,0,0,.12);
+    }
+    #submitReviewBtn:hover{
+      transform: translateY(-2px);
+      box-shadow: 0 10px 20px rgba(0,0,0,.16);
+      filter: brightness(1.02);
+    }
+    #submitReviewBtn:active{
+      transform: translateY(0);
+      box-shadow: 0 4px 10px rgba(0,0,0,.14);
+    }
+    #submitReviewBtn:disabled{
+      opacity: .5;
+      cursor: not-allowed;
+      box-shadow: none;
+      transform: none;
+    }
+
+
+    /* ===== Meow5 導引欄（可直接套用） ===== */
+.site-header{
+  position: sticky;
+  top: 0;
+  z-index: 999;
+  background: rgba(246,241,238,.85);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(0,0,0,.08);
+}
+
+.nav{
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 14px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.brand{
+  text-decoration: none;
+  color: var(--ink);
+  display:flex;
+  align-items:center;
+}
+.brand-logo{
+  font-weight: 1000;
   letter-spacing: 1px;
-  cursor: pointer;
-  transition: 
-    transform .15s ease,
-    box-shadow .15s ease,
-    filter .15s ease;
-  box-shadow: 0 6px 14px rgba(0,0,0,.12);
+  font-size: 18px;
 }
 
-/* hover：微微浮起 */
-#submitReviewBtn:hover{
-  transform: translateY(-2px);
-  box-shadow: 0 10px 20px rgba(0,0,0,.16);
-  filter: brightness(1.02);
+.nav-links{
+  display:flex;
+  align-items:center;
+  gap: 14px;
 }
 
-/* 點擊回饋 */
-#submitReviewBtn:active{
-  transform: translateY(0);
-  box-shadow: 0 4px 10px rgba(0,0,0,.14);
+.nav-links a{
+  text-decoration:none;
+  color: rgba(0,0,0,.72);
+  font-weight: 800;
+  padding: 8px 10px;
+  border-radius: 999px;
+  transition: background .15s ease, color .15s ease;
+}
+.nav-links a:hover{
+  background: rgba(0,0,0,.06);
+  color: rgba(0,0,0,.9);
 }
 
-/* 被 disabled 時（如果你之後要用） */
-#submitReviewBtn:disabled{
-  opacity: .5;
-  cursor: not-allowed;
-  box-shadow: none;
-  transform: none;
+.nav-toggle{
+  display:none;
+  border:none;
+  background: var(--btn);
+  color: var(--btnText);
+  font-weight: 900;
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  cursor:pointer;
+}
+
+/* 讓原本內容不要貼到導引欄下面 */
+.wrap{
+  padding-top: 18px; /* 你原本 wrap padding 有 28px 也OK；這行只是更穩 */
+}
+
+@media (max-width: 860px){
+  .nav-toggle{ display:flex; align-items:center; justify-content:center; }
+  .nav-links{
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 62px;
+    margin: 0 12px;
+    background: rgba(255,255,255,.92);
+    border: 1px solid rgba(0,0,0,.10);
+    border-radius: 16px;
+    padding: 12px;
+    display: none;
+    flex-direction: column;
+    gap: 8px;
+    box-shadow: 0 18px 40px rgba(0,0,0,.10);
+  }
+  .nav-links.open{ display:flex; }
+  .nav-links a{ width:100%; text-align:center; }
 }
 
   </style>
 </head>
 
 <body>
+
+  <header class="site-header">
+  <nav class="nav">
+    <a class="brand" href="index.html" aria-label="回到首頁">
+      <span class="brand-logo">Meow5</span>
+    </a>
+
+    <button class="nav-toggle" id="navToggle" aria-label="開啟選單">☰</button>
+
+    <div class="nav-links" id="navLinks">
+      <a href="index.html">首頁</a>
+      <a href="products.html">商品</a>
+      <a href="cart.html">購物車</a>
+      <a href="member.html">會員</a>
+    </div>
+  </nav>
+</header>
+
+
   <div class="wrap">
     <section class="top">
 
@@ -361,12 +437,16 @@
 
         <div class="rule"></div>
 
-        <div class="specHead">
-          <div class="label" id="specLabel">規格</div>
-          <div class="tabs" id="tabsArea"></div>
+        <!-- ✅ 單一規格：只保留數量（可選） -->
+        <div class="qtyRow">
+          <div class="qtyLabel">數量</div>
+          <div class="qtyCtrl">
+            <button class="qtyBtn" id="qtyMinus" type="button">−</button>
+            <input class="qtyInput" id="qtyInput" type="number" min="1" value="1" />
+            <button class="qtyBtn" id="qtyPlus" type="button">＋</button>
+          </div>
+          <div class="stockHint" id="stockHint"></div>
         </div>
-
-        <div class="options" id="optionsArea"></div>
 
         <div class="ctaRow">
           <button class="addBtn" id="addToCartBtn">加入購物車</button>
@@ -393,32 +473,29 @@
 
     <!-- 評論 -->
     <section class="section" id="reviewSection">
-  <div class="reviewHead">
-    <h2 style="margin:0;">評論</h2>
-    <div class="reviewScore" id="reviewScoreArea"></div>
-  </div>
+      <div class="reviewHead">
+        <h2 style="margin:0;">評論</h2>
+        <div class="reviewScore" id="reviewScoreArea"></div>
+      </div>
 
-  <!-- 評論表單 -->
-  <div class="reviewForm" id="reviewForm">
-    <div class="starsPick" id="starsPick"></div>
+      <div class="reviewForm" id="reviewForm">
+        <div class="starsPick" id="starsPick"></div>
 
-    <textarea
-      id="reviewText"
-      placeholder="寫下你的使用心得（需完成購買）..."
-    ></textarea>
+        <textarea
+          id="reviewText"
+          placeholder="寫下你的使用心得..."
+        ></textarea>
 
-    <div class="submitRow">
-      <span id="reviewHint" style="font-size:12px;color:#777;">
-        需完成購買後才能評論
-      </span>
-      <button id="submitReviewBtn">送出評論</button>
-    </div>
-  </div>
+        <div class="submitRow">
+          <span id="reviewHint" style="font-size:12px;color:#777;">
+            快來留下你的想法!!
+          </span>
+          <button id="submitReviewBtn">送出評論</button>
+        </div>
+      </div>
 
-  <!-- 評論列表 -->
-  <div class="reviewsList" id="reviewsList"></div>
-</section>
-
+      <div class="reviewsList" id="reviewsList"></div>
+    </section>
 
     <!-- 其他人也買了 -->
     <div class="alsoTitle">
@@ -433,12 +510,15 @@
   <script src="./products-data.js"></script>
   <script>
     // =========================
-    // 設定：全站統一的 key
+    // 全站統一 key
     // =========================
     const CART_KEY = "meow5_cart";
-    const REVIEWS_KEY = "MEOW5_REVIEWS";              // 評論資料
+    const REVIEWS_KEY = "MEOW5_REVIEWS";
+    const FAV_KEY = "MEOW5_FAVORITES";
 
+    // =========================
     // 取 URL 參數 ?id=...
+    // =========================
     const params = new URLSearchParams(location.search);
     const id = params.get("id");
     const product = (window.PRODUCTS || []).find(p => p.id === id);
@@ -453,13 +533,12 @@
     // =========================
     function money(n){ return "$" + Number(n || 0).toLocaleString("zh-Hant"); }
 
-    function getImgSrc(fileName){
-      if(!fileName) return "https://placehold.co/800x800?text=Meow5";
-      if(String(fileName).startsWith("http")) return fileName;
-
-      // 你目前圖片放在 image/
-      // 同時相容：如果你之後真的有 images/ 也 OK
-      return `image/${fileName}`;
+    // ✅ 不要再硬加 image/，避免你資料已經是 image/xxx.png 時變成 image/image/xxx.png
+    function resolveImg(src){
+      if(!src) return "image/no-image.png";
+      if(String(src).startsWith("http")) return src;
+      if(String(src).startsWith("image/")) return src;
+      return "image/" + src;
     }
 
     function generateStarsHTML(rating){
@@ -493,9 +572,8 @@
       localStorage.setItem(key, JSON.stringify(data));
     }
 
-
     // =========================
-    // 1) 塞商品基本資訊
+    // 1) 商品基本資訊
     // =========================
     document.getElementById("prodName").textContent = product.name;
     document.getElementById("prodPrice").textContent = money(product.price);
@@ -514,16 +592,23 @@
     document.getElementById("specBlock").textContent = product.specs || "暫無規格";
     document.getElementById("howBlock").textContent = product.howToUse || "暫無說明";
 
+    // ✅ 庫存提示（可有可無；products-data.js 若沒給 stock 會顯示「庫存充足」）
+    const stockHint = document.getElementById("stockHint");
+    const stock = (typeof product.stock === "number") ? product.stock : null;
+    stockHint.textContent = (stock === null) ? "庫存充足" : `庫存：${stock}`;
+
     // =========================
-    // 2) 圖片輪播（從 image/ 讀）
+    // 2) 圖片輪播
     // =========================
     const mainImg = document.getElementById("mainImg");
     const dotsArea = document.getElementById("dotsArea");
 
     let currentIndex = 0;
+
     function showImage(idx){
       const imgName = (product.images || [])[idx];
-      mainImg.src = getImgSrc(imgName);
+      const src = imgName ? resolveImg(imgName) : "https://placehold.co/800x800?text=Meow5";
+      mainImg.src = src;
       mainImg.alt = product.name + " 圖片 " + (idx+1);
 
       dotsArea.querySelectorAll(".dot").forEach((d,i) => {
@@ -532,174 +617,121 @@
     }
 
     dotsArea.innerHTML = "";
-    (product.images || []).forEach((img, i) => {
-      const d = document.createElement("div");
-      d.className = "dot" + (i===0 ? " active" : "");
-      d.addEventListener("click", () => {
-        currentIndex = i;
-        showImage(i);
-      });
-      dotsArea.appendChild(d);
-    });
-
-    if((product.images || []).length === 0){
-      // 無圖時也要顯示一張 placeholder
+    const imgs = Array.isArray(product.images) ? product.images : [];
+    if(imgs.length === 0){
       mainImg.src = "https://placehold.co/800x800?text=Meow5";
       dotsArea.innerHTML = "";
     }else{
+      imgs.forEach((_, i) => {
+        const d = document.createElement("div");
+        d.className = "dot" + (i===0 ? " active" : "");
+        d.addEventListener("click", () => {
+          currentIndex = i;
+          showImage(i);
+        });
+        dotsArea.appendChild(d);
+      });
       showImage(0);
     }
 
     // =========================
-    // 3) 規格（尺寸/顏色）
+    // 3) 數量控制（單一規格）
     // =========================
-    const tabsArea = document.getElementById("tabsArea");
-    const optionsArea = document.getElementById("optionsArea");
-    const specLabel = document.getElementById("specLabel");
+    const qtyInput = document.getElementById("qtyInput");
+    const qtyMinus = document.getElementById("qtyMinus");
+    const qtyPlus = document.getElementById("qtyPlus");
 
-    function clearChildren(ele){ while(ele.firstChild) ele.removeChild(ele.firstChild); }
-
-    if(product.variantType === "size"){
-      specLabel.textContent = "尺寸";
-      tabsArea.innerHTML = `<button class="tab active" type="button">尺寸</button>`;
-
-      const row = document.createElement("div");
-      row.className = "optRow";
-      (product.sizes || []).forEach((sz, idx) => {
-        const btn = document.createElement("button");
-        btn.type = "button";
-        btn.className = "sizeBtn" + (idx===0 ? " active" : "");
-        btn.textContent = sz;
-        btn.dataset.size = sz;
-        btn.addEventListener("click", () => {
-          row.querySelectorAll(".sizeBtn").forEach(x=>x.classList.remove("active"));
-          btn.classList.add("active");
-        });
-        row.appendChild(btn);
-      });
-
-      const bubble = document.createElement("span");
-      bubble.className = "bubbleRight";
-      bubble.textContent = "請先選擇尺寸再加入購物車";
-      row.appendChild(bubble);
-
-      clearChildren(optionsArea);
-      optionsArea.appendChild(row);
+    function clampQty(v){
+      let n = parseInt(v, 10);
+      if(isNaN(n) || n < 1) n = 1;
+      if(typeof product.stock === "number" && product.stock >= 0){
+        n = Math.min(n, Math.max(0, product.stock));
+        if(n < 1) n = 1; // 若你允許缺貨不能買，可在此改成 0 並禁用按鈕
+      }
+      return n;
     }
-    else if(product.variantType === "color"){
-      specLabel.textContent = "顏色";
-      tabsArea.innerHTML = `<button class="tab active" type="button">顏色</button>`;
 
-      const row = document.createElement("div");
-      row.className = "optRow";
-      (product.colors || []).forEach((c, idx) => {
-        const dot = document.createElement("div");
-        dot.className = "colorDot" + (idx===0 ? " active" : "");
-        dot.style.background = c.hex;
-        dot.title = c.label;
-        dot.dataset.color = c.code;
-        dot.addEventListener("click", () => {
-          row.querySelectorAll(".colorDot").forEach(x=>x.classList.remove("active"));
-          dot.classList.add("active");
-        });
-        row.appendChild(dot);
-      });
+    qtyMinus.addEventListener("click", () => {
+      qtyInput.value = clampQty((parseInt(qtyInput.value,10)||1) - 1);
+    });
 
-      const bubble = document.createElement("span");
-      bubble.className = "bubbleRight";
-      bubble.textContent = "請先選擇顏色再加入購物車";
-      row.appendChild(bubble);
+    qtyPlus.addEventListener("click", () => {
+      qtyInput.value = clampQty((parseInt(qtyInput.value,10)||1) + 1);
+    });
 
-      clearChildren(optionsArea);
-      optionsArea.appendChild(row);
-    }
-    else{
-      tabsArea.innerHTML = "";
-      optionsArea.innerHTML = "";
-    }
+    qtyInput.addEventListener("input", () => {
+      qtyInput.value = clampQty(qtyInput.value);
+    });
 
     // =========================
-    // 4) 加入購物車（與 cart.html 同步）
-    //   購物車 item 格式：{ id, qty, variantType, variant }
+    // 4) 加入購物車（單一規格：只存 {id, qty}）
     // =========================
     document.getElementById("addToCartBtn").addEventListener("click", () => {
+      const qty = clampQty(qtyInput.value);
+
+      // 若你要限制缺貨不能加，可啟用這段：
+      // if(typeof product.stock === "number" && product.stock <= 0){
+      //   alert("此商品目前缺貨");
+      //   return;
+      // }
+
       const cart = readJSON(CART_KEY, []);
-      let variantType = product.variantType || "";
-      let variant = "";
+      const exist = cart.find(i => i.id === product.id);
 
-      if(variantType === "size"){
-        const btn = optionsArea.querySelector(".sizeBtn.active");
-        if(!btn){ alert("請先選擇尺寸"); return; }
-        variant = btn.dataset.size || "";
-      }
-
-      if(variantType === "color"){
-        const dot = optionsArea.querySelector(".colorDot.active");
-        if(!dot){ alert("請先選擇顏色"); return; }
-        variant = dot.dataset.color || "";
-      }
-
-      const exist = cart.find(i => i.id === product.id && (i.variantType || "") === variantType && (i.variant || "") === variant);
       if(exist){
-        exist.qty = Math.max(1, parseInt(exist.qty || 1, 10)) + 1;
+        exist.qty = clampQty((parseInt(exist.qty,10)||1) + qty);
       }else{
-        cart.push({
-          id: product.id,
-          qty: 1,
-          variantType,
-          variant
-        });
+        cart.push({ id: product.id, qty });
       }
 
       writeJSON(CART_KEY, cart);
       alert("已加入購物車 🛒");
     });
 
-    const FAV_KEY = "MEOW5_FAVORITES";
+    // =========================
+    // 5) 收藏（維持你原本功能）
+    // =========================
+    function readFavIds(){
+      try{
+        const v = JSON.parse(localStorage.getItem(FAV_KEY));
+        return Array.isArray(v) ? v : [];
+      }catch{
+        return [];
+      }
+    }
+    function writeFavIds(ids){
+      localStorage.setItem(FAV_KEY, JSON.stringify(ids));
+    }
+    function isFav(pid){
+      return readFavIds().includes(pid);
+    }
+    function updateFavBtn(){
+      const pawBtn = document.getElementById("pawBtn");
+      if(!pawBtn) return;
+      pawBtn.textContent = isFav(product.id) ? "❤︎" : "🐾";
+      pawBtn.title = isFav(product.id) ? "已收藏" : "加入收藏";
+    }
 
-function readFavIds(){
-  try{
-    const v = JSON.parse(localStorage.getItem(FAV_KEY));
-    return Array.isArray(v) ? v : [];
-  }catch{
-    return [];
-  }
-}
-function writeFavIds(ids){
-  localStorage.setItem(FAV_KEY, JSON.stringify(ids));
-}
-function isFav(pid){
-  return readFavIds().includes(pid);
-}
-function updateFavBtn(){
-  const pawBtn = document.getElementById("pawBtn");
-  if(!pawBtn) return;
-  pawBtn.textContent = isFav(product.id) ? "❤︎" : "🐾"; 
-  pawBtn.title = isFav(product.id) ? "已收藏" : "加入收藏";
-}
+    document.getElementById("pawBtn").addEventListener("click", () => {
+      const ids = readFavIds();
+      const idx = ids.indexOf(product.id);
 
-document.getElementById("pawBtn").addEventListener("click", () => {
-  const ids = readFavIds();
-  const idx = ids.indexOf(product.id);
+      if(idx >= 0){
+        ids.splice(idx, 1);
+        writeFavIds(ids);
+        alert("已從收藏移除");
+      }else{
+        ids.push(product.id);
+        writeFavIds(ids);
+        alert("已加入收藏清單❤️");
+      }
+      updateFavBtn();
+    });
 
-  if(idx >= 0){
-    ids.splice(idx, 1);
-    writeFavIds(ids);
-    alert("已從收藏移除");
-  }else{
-    ids.push(product.id);
-    writeFavIds(ids);
-    alert("已加入收藏清單❤️");
-  }
-  updateFavBtn();
-});
-
-// 商品頁載入完就先更新一次按鈕狀態
-updateFavBtn();
-
+    updateFavBtn();
 
     // =========================
-    // 5) 評論：買過才可評論 + 星等 + 文字
+    // 6) 評論
     // =========================
     const reviewScoreArea = document.getElementById("reviewScoreArea");
     const reviewForm = document.getElementById("reviewForm");
@@ -709,13 +741,11 @@ updateFavBtn();
     const reviewText = document.getElementById("reviewText");
     const submitReviewBtn = document.getElementById("submitReviewBtn");
 
-    // 顯示商品原本平均星等（資料表）
     reviewScoreArea.innerHTML = `
       <span class="stars">${generateStarsHTML(product.rating)}</span>
       <span>${Number(product.rating || 0).toFixed(1)}</span>
     `;
 
-    // 星等選擇器
     let picked = 5;
     function renderStarPicker(){
       starsPick.innerHTML = "";
@@ -767,12 +797,10 @@ updateFavBtn();
     }
 
     function updateReviewPermission(){
-  // ✅ 改成：任何人都可以評論
-  reviewForm.classList.remove("disabled");
-  reviewHint.textContent = "快來留下你的想法!!";
-  reviewText.placeholder = "這裡還是光禿禿的草地";
-}
-
+      reviewForm.classList.remove("disabled");
+      reviewHint.textContent = "快來留下你的想法!!";
+      reviewText.placeholder = "這裡還是光禿禿的草地";
+    }
 
     submitReviewBtn.addEventListener("click", () => {
       const text = (reviewText.value || "").trim();
@@ -802,18 +830,15 @@ updateFavBtn();
     renderReviews();
 
     // =========================
-    // 6) 其他人也買了：可點商品卡
+    // 7) 其他人也買了
     // =========================
     const alsoArea = document.getElementById("alsoArea");
 
     function pickAlsoProducts(){
       const all = (window.PRODUCTS || []).filter(p => p.id !== product.id);
-
-      // 優先同類別 theme
       const sameTheme = all.filter(p => p.theme === product.theme);
       const pool = (sameTheme.length >= 4) ? sameTheme : all;
 
-      // 簡單洗牌取 4
       const arr = pool.slice();
       for(let i=arr.length-1;i>0;i--){
         const j = Math.floor(Math.random()*(i+1));
@@ -832,7 +857,7 @@ updateFavBtn();
         a.href = `product-detail.html?id=${encodeURIComponent(p.id)}`;
 
         const imgName = (p.images || [])[0];
-        const imgSrc = getImgSrc(imgName);
+        const imgSrc = imgName ? resolveImg(imgName) : "https://placehold.co/900x700?text=Meow5";
 
         a.innerHTML = `
           <div class="p-img" style="background-image:url('${imgSrc}')"></div>
@@ -847,7 +872,29 @@ updateFavBtn();
 
     renderAlso();
 
-    
+
+    // ===== 導引欄：手機漢堡選單 =====
+const navToggle = document.getElementById("navToggle");
+const navLinks = document.getElementById("navLinks");
+
+if(navToggle && navLinks){
+  navToggle.addEventListener("click", () => {
+    navLinks.classList.toggle("open");
+  });
+
+  // 點連結後自動收起
+  navLinks.addEventListener("click", (e) => {
+    if(e.target.tagName === "A") navLinks.classList.remove("open");
+  });
+
+  // 點空白處收起
+  document.addEventListener("click", (e) => {
+    if(!navLinks.contains(e.target) && !navToggle.contains(e.target)){
+      navLinks.classList.remove("open");
+    }
+  });
+}
+
   </script>
 </body>
 </html>

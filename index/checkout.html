@@ -12,7 +12,6 @@
     <section class="block">
       <h2 class="block-title">購物車商品</h2>
 
-      <!-- 這裡會用 JS 產生「一條一條」的商品列 -->
       <div class="cart-lines" id="cartLines">
         <div class="empty">尚未載入購物車商品</div>
       </div>
@@ -21,7 +20,6 @@
     <section class="block">
       <h2 class="block-title">取貨方式</h2>
 
-      <!-- 只留宅配 -->
       <div class="choice-row" role="radiogroup" aria-label="取貨方式">
         <label class="choice">
           <input type="radio" name="ship" value="home" checked />
@@ -29,7 +27,6 @@
         </label>
       </div>
 
-      <!-- 地址欄位：你要點宅配時出現（目前只有宅配，所以直接顯示） -->
       <div class="address-box" id="addressBox" style="margin-top:14px;">
         <label style="display:block; font-weight:800; margin-bottom:8px;">收件地址</label>
         <input
@@ -99,15 +96,16 @@
     </section>
   </main>
 
-  <!-- 商品資料 -->
   <script src="./products-data.js"></script>
 
   <script>
-    // ====== 全站統一的 Key ======
+    // ====== Keys（全站統一）======
     const CART_KEY = "meow5_cart";
     const CHECKOUT_KEY = "MEOW5_CHECKOUT_ITEMS";
+    const ORDERS_KEY = "MEOW5_ORDERS";     // ✅ 存所有訂單
+    const LAST_ORDER_KEY = "MEOW5_LAST_ORDER_ID";
 
-    // ====== 運費規則（跟 cart.html 同步：滿 2000 免運；宅配未滿 2000 → 150）======
+    // ====== 運費規則 ======
     const FREE_SHIPPING_THRESHOLD = 2000;
     const HOME_SHIPPING_FEE = 150;
 
@@ -118,36 +116,41 @@
     const buyBtn = document.getElementById("buyBtn");
     const addressInput = document.getElementById("addressInput");
 
+    function resolveImg(src){
+      if(!src) return "image/no-image.png";
+      if(String(src).startsWith("http")) return src;
+      if(String(src).startsWith("image/")) return src;
+      return "image/" + src;
+    }
+
     function money(n) {
-      return "$ " + Number(n).toLocaleString();
+      return "$ " + Number(n).toLocaleString("zh-Hant");
     }
 
-    function safeJSON(key) {
-      try {
-        const v = JSON.parse(localStorage.getItem(key));
-        return Array.isArray(v) ? v : [];
-      } catch {
-        return [];
+    function readJSON(key, fallback){
+      try{
+        const raw = localStorage.getItem(key);
+        if(!raw) return fallback;
+        const v = JSON.parse(raw);
+        return (v ?? fallback);
+      }catch{
+        return fallback;
       }
     }
 
-    // 支援你 cart.html 的 item 格式：{id, qty, variantType, variantValue}
-    function normalizeItem(it) {
-      const qty = Math.max(1, parseInt(it.qty ?? 1, 10));
+    function writeJSON(key, data){
+      localStorage.setItem(key, JSON.stringify(data));
+    }
 
-      let variantType = it.variantType || "";
-      let variantValue = it.variantValue || "";
-
-      if (!variantType && it.variant && typeof it.variant === "object") {
-        variantType = it.variant.type || "";
-        variantValue = it.variant.value || "";
-      }
-      if (!variantType) {
-        if (it.size) { variantType = "size"; variantValue = it.size; }
-        else if (it.color) { variantType = "color"; variantValue = it.color; }
-      }
-
-      return { id: it.id, qty, variantType, variantValue };
+    // ✅ 統一成 {id, qty}
+    function normalizeCart(items){
+      const arr = [];
+      (items || []).forEach(it => {
+        if(!it || !it.id) return;
+        const qty = Math.max(1, parseInt(it.qty ?? 1, 10));
+        arr.push({ id: it.id, qty });
+      });
+      return arr;
     }
 
     function getProductById(id) {
@@ -157,26 +160,16 @@
     function getProductImage(p) {
       const first = p?.images?.[0];
       if (!first) return "https://placehold.co/100x100?text=Meow5";
-      return first.startsWith("http") ? first : `images/${first}`;
-    }
-
-    function variantText(p, it) {
-      if (!it.variantType || !it.variantValue) return "";
-      if (it.variantType === "size") return `尺寸：${it.variantValue}`;
-      if (it.variantType === "color") {
-        const label = p?.colors?.find(c => c.code === it.variantValue)?.label;
-        return `顏色：${label ? label : it.variantValue}`;
-      }
-      return "";
+      return resolveImg(first);
     }
 
     function loadCheckoutItems() {
-      // 先讀 checkout key；若沒有就 fallback 讀 cart key（避免你忘了同步也能看到）
-      const a = safeJSON(CHECKOUT_KEY);
-      if (a.length) return a.map(normalizeItem);
+      // 先讀 checkout key；沒有就 fallback cart（避免忘了同步也能用）
+      const a = normalizeCart(readJSON(CHECKOUT_KEY, []));
+      if (a.length) return a;
 
-      const b = safeJSON(CART_KEY);
-      return b.map(normalizeItem);
+      const b = normalizeCart(readJSON(CART_KEY, []));
+      return b;
     }
 
     function calcTotals(items) {
@@ -208,7 +201,6 @@
 
       buyBtn.disabled = false;
       buyBtn.style.opacity = "1";
-
       cartLinesEl.innerHTML = "";
 
       items.forEach((it) => {
@@ -216,10 +208,8 @@
         const name = p ? p.name : it.id;
         const price = Number(p?.price ?? 0);
         const img = p ? getProductImage(p) : "https://placehold.co/100x100?text=Meow5";
-        const vText = variantText(p, it);
         const lineTotal = price * it.qty;
 
-        // 這裡用比較「不依賴 checkout.css 的 class」寫法：就算你 css 不全也會正常
         const row = document.createElement("div");
         row.className = "cart-line";
         row.style.cssText = `
@@ -238,7 +228,6 @@
             <div style="font-weight:900; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">
               ${name}
             </div>
-            ${vText ? `<div style="font-size:.85rem; color:#777; margin-top:4px;">${vText}</div>` : ""}
             <div style="font-size:.9rem; color:#b0714d; font-weight:900; margin-top:6px;">
               ${money(price)} × ${it.qty}
             </div>
@@ -263,11 +252,25 @@
 
     function renderAll() {
       const items = loadCheckoutItems();
+
+      // ✅ 順手把舊格式洗乾淨（避免下次又跑出 variant 欄位）
+      writeJSON(CHECKOUT_KEY, items);
+
       renderLines(items);
       renderTotals(items);
     }
 
-    // 購買：簡單檢查地址 + 跳成功頁
+    function makeOrderId(){
+      // EX: MEO20260104-123456
+      const d = new Date();
+      const y = d.getFullYear();
+      const m = String(d.getMonth()+1).padStart(2,"0");
+      const day = String(d.getDate()).padStart(2,"0");
+      const rnd = String(Math.floor(Math.random()*900000)+100000);
+      return `MEO${y}${m}${day}-${rnd}`;
+    }
+
+    // ===== 購買：檢查地址 → 建立訂單 → 清空購物車 → 進 order.html =====
     buyBtn.addEventListener("click", () => {
       const items = loadCheckoutItems();
       if (!items.length) return;
@@ -279,13 +282,46 @@
         return;
       }
 
-      // 你若想把地址也帶到成功頁，可以存到 localStorage
-      localStorage.setItem("MEOW5_LAST_ADDRESS", addr);
+      const shipMethod = "宅配到府";
+      const payMethod = document.querySelector('input[name="pay"]:checked')?.value || "cod";
 
-      // 可選：結帳成功後清空購物車
-      // localStorage.removeItem(CART_KEY);
-      // localStorage.removeItem(CHECKOUT_KEY);
+      const { subtotal, shipping, grand } = calcTotals(items);
 
+      // 把商品行整理成訂單明細
+      const lines = items.map(it => {
+        const p = getProductById(it.id);
+        return {
+          id: it.id,
+          name: p?.name || it.id,
+          price: Number(p?.price ?? 0),
+          qty: it.qty,
+          image: p?.images?.[0] || "",
+          lineTotal: Number(p?.price ?? 0) * it.qty
+        };
+      });
+
+      const order = {
+        orderId: makeOrderId(),
+        createdAt: Date.now(),
+        address: addr,
+        shippingMethod: shipMethod,
+        paymentMethod: payMethod,  // cod/card/atm
+        subtotal,
+        shippingFee: shipping,
+        grandTotal: grand,
+        items: lines
+      };
+
+      const allOrders = readJSON(ORDERS_KEY, []);
+      allOrders.unshift(order);
+      writeJSON(ORDERS_KEY, allOrders);
+      localStorage.setItem(LAST_ORDER_KEY, order.orderId);
+
+      // ✅ 清空購物車與結帳暫存
+      localStorage.removeItem(CART_KEY);
+      localStorage.removeItem(CHECKOUT_KEY);
+
+      
       location.href = "./checkout-success.html";
     });
 

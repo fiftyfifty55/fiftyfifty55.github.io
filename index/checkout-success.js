@@ -56,7 +56,7 @@
   if (!recGrid) return;
 
   const shuffled = [...(window.PRODUCTS || [])].sort(() => 0.5 - Math.random());
-  const picks = shuffled.slice(0, 4);
+  const picks = shuffled.slice(0, 3);
 
   recGrid.innerHTML = "";
 
