@@ -317,6 +317,14 @@ button.nav-item{
   font-weight: 900;
   color: rgba(0,0,0,.65);
 }
+
+.p-img img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+}
+
 .remove-btn{
   border:none;
   border-radius: 999px;

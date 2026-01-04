@@ -26,10 +26,21 @@
   }
 
   function imgSrc(p) {
-    const first = p?.images?.[0];
-    if (!first) return "https://placehold.co/300x300?text=Meow5";
-    return first.startsWith("http") ? first : `image/${first}`;
-  }
+  const first = p?.images?.[0];
+  if (!first) return "https://placehold.co/300x300?text=Meow5";
+
+  const s = String(first);
+
+  // 1) 外部連結
+  if (s.startsWith("http")) return s;
+
+  // 2) 已經帶資料夾就原樣回傳（避免 image/image）
+  if (s.startsWith("image/") || s.startsWith("images/")) return s;
+
+  // 3) 否則預設放在 image/
+  return `image/${s}`;
+}
+
 
   // ===== 1. 取得本次結帳商品 =====
   const checkoutItems = safeJSON(CHECKOUT_KEY);

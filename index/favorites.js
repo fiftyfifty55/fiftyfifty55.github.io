@@ -113,16 +113,38 @@
     localStorage.setItem(FAV_KEY, JSON.stringify(ids));
   }
 
-  function getImgSrc(fileName){
-    if(!fileName) return "https://placehold.co/600x450?text=Meow5";
-    if(String(fileName).startsWith("http")) return fileName;
-    // 你們目前是 image/ 資料夾（不是 images/）
-    return `${fileName}`;
-  }
+ function getImgSrc(fileName){
+  if(!fileName) return "https://placehold.co/600x450?text=Meow5";
+  const s = String(fileName);
+
+  if(s.startsWith("http")) return s;
+
+  // ✅ 已經有資料夾就不要再加一次
+  if(s.startsWith("image/") || s.startsWith("images/")) return s;
+
+  // ✅ 預設用 image/（跟你 icon/logo 一致）
+  return `image/${s}`;
+}
+
 
   function render(){
-    const ids = readFavIds();
-    favCount.textContent = `共 ${ids.length} 件收藏`;
+  // ✅ 1) 讀收藏 + 清掉空值/奇怪值
+  let ids = readFavIds()
+    .filter(x => typeof x === "string" && x.trim() && x !== "undefined" && x !== "null");
+
+  // ✅ 2) 去重
+  ids = [...new Set(ids)];
+
+  // ✅ 3) 只保留 products-data.js 真的存在的商品 id（避免舊資料殘留）
+  const validSet = new Set((window.PRODUCTS || []).map(p => p.id));
+  ids = ids.filter(id => validSet.has(id));
+
+  // ✅ 4) 回寫乾淨版本，之後就不會一直顯示錯
+  writeFavIds(ids);
+
+  // ✅ 5) 顯示正確數量
+  favCount.textContent = `共 ${ids.length} 件收藏`;
+
 
     if(ids.length === 0){
       favGrid.innerHTML = "";
@@ -175,7 +197,3 @@
 
   render();
 })();
-
-
-
-
