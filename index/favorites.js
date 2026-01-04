@@ -269,7 +269,7 @@ const PRODUCTS = [
     if(!fileName) return "https://placehold.co/600x450?text=Meow5";
     if(String(fileName).startsWith("http")) return fileName;
     // 你們目前是 image/ 資料夾（不是 images/）
-    return `image/${fileName}`;
+    return `${fileName}`;
   }
 
   function render(){
@@ -297,7 +297,7 @@ const PRODUCTS = [
       const img = getImgSrc(imgName);
 
       card.innerHTML = `
-        <div class="p-img"><img src="${product.images[0]}" alt="${p.name}"></div>
+        <div class="p-img"><img src="${img}" alt="${p.name}"></div>
         <div class="p-name">${p.name}</div>
         <div class="p-meta">
           <div class="p-price">$${Number(p.price || 0).toLocaleString()}</div>
@@ -327,5 +327,6 @@ const PRODUCTS = [
 
   render();
 })();
+
 
 
