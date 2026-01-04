@@ -29,6 +29,10 @@
       --btn:#d7bfb7;
       --accent:#b08968;
       --cardLine:rgba(0,0,0,.10);
+
+      /* team */
+      --chip:#eadfd8;
+      --chipText:rgba(0,0,0,.75);
     }
 
     *{ box-sizing:border-box; }
@@ -286,7 +290,7 @@
     }
     .card{
       background: var(--card);
-      border:none;  
+      border:none;
       border-radius: 18px;
       padding: 18px 18px 16px;
     }
@@ -347,8 +351,115 @@
       font-weight: 700;
     }
 
+    /* ===== Team ===== */
+    .section-title{
+      margin: 24px 0 10px;
+      font-size: 14px;
+      letter-spacing: 2px;
+      font-weight: 1000;
+      color:#111;
+      display:flex;
+      align-items:center;
+      gap:10px;
+    }
+    .section-title::before{
+      content:"";
+      width:10px; height:10px;
+      border-radius: 4px;
+      background: #cb997e;
+      display:inline-block;
+    }
+    .team-wrap{
+      margin-top: 10px;
+      background: var(--panel);
+      border-radius: 18px;
+      padding: 18px;
+    }
+    .team-sub{
+      margin: 0 0 12px;
+      color: var(--mutedText);
+      font-size: 14px;
+      font-weight: 700;
+      max-width: 80ch;
+    }
+    .team-grid{
+      display:grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+    }
+    .member-card{
+      background: var(--card);
+      border-radius: 18px;
+      padding: 16px;
+      border: 1px solid rgba(0,0,0,.06);
+      display:flex;
+      gap: 12px;
+      align-items:flex-start;
+    }
+    .avatar{
+      width: 54px;
+      height: 54px;
+      border-radius: 16px;
+      background: linear-gradient(135deg, rgba(203,153,126,.35), rgba(176,137,104,.25));
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-weight: 1000;
+      letter-spacing: 1px;
+      color: rgba(0,0,0,.75);
+      flex: 0 0 auto;
+      user-select:none;
+    }
+    .member-body{ flex: 1; min-width: 0; }
+    .member-top{
+      display:flex;
+      align-items:baseline;
+      justify-content:space-between;
+      gap:10px;
+      margin-bottom: 8px;
+    }
+    .member-name{
+      font-weight: 1000;
+      letter-spacing: .6px;
+      font-size: 16px;
+      white-space: nowrap;
+      overflow:hidden;
+      text-overflow: ellipsis;
+    }
+    .member-role{
+      font-size: 12px;
+      font-weight: 900;
+      color: rgba(0,0,0,.65);
+      background: var(--chip);
+      padding: 6px 10px;
+      border-radius: 999px;
+      white-space: nowrap;
+    }
+    .member-block{
+      background: rgba(0,0,0,.03);
+      border-radius: 14px;
+      padding: 10px 12px;
+      margin-top: 8px;
+    }
+    .member-label{
+      display:block;
+      font-size: 12px;
+      font-weight: 1000;
+      letter-spacing: 1px;
+      color: rgba(0,0,0,.65);
+      margin-bottom: 4px;
+    }
+    .member-text{
+      margin: 0;
+      font-weight: 700;
+      color: rgba(0,0,0,.78);
+      white-space: pre-wrap;
+      line-height: 1.8;
+    }
+
     @media (max-width: 860px){
       .grid{ grid-template-columns: 1fr; }
+      .team-grid{ grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -477,14 +588,91 @@
       </ul>
     </section>
 
-    <section class="vision">
-      <h2>我們的願景</h2>
-      <p>
-        我們想做的，不只是一個購物網站。我們希望能透過這些兼具美感與功能的物件，簡化您的照顧日常，
-        把更多的時間，留給那些閃閃發光的陪伴時光。
+    <!-- ===== NEW: 成員介紹 ===== -->
+    <h2 class="section-title">成員介紹</h2>
+    <section class="team-wrap" aria-label="團隊成員介紹">
+      <p class="team-sub">
+        我們是四人小組完成 Meow5 網站專題。以下可填入每位成員的名字、負責項目與心得（你直接改文字即可）。
       </p>
+
+      <div class="team-grid" id="teamGrid">
+        <!-- Member 1 -->
+        <article class="member-card" data-name="成員A" data-role="組長 / 整合" data-work="負責整體頁面整合、排版一致性、導覽列與共用元件統整。" data-reflection="這次我學到如何把不同頁面的風格統一，也更能掌握專案進度與協作方式。">
+          <div class="member-body">
+            <div class="member-top">
+              <div class="member-name">11344250鄭國鑫</div>
+            </div>
+
+            <div class="member-block">
+              <span class="member-label">負責項目</span>
+              <p class="member-text">負責整體頁面整合、排版一致性、導覽列與共用元件統整。</p>
+            </div>
+
+            <div class="member-block">
+              <span class="member-label">心得</span>
+              <p class="member-text">這次期末專案從規劃到實作都很有挑戰，從0到設計想法結合非常不簡單，因為隨便一個調整都有可能讓網頁執行出現問題，我們也一直努力調整到最後才終於完成。</p>
+            </div>
+          </div>
+        </article>
+
+        <!-- Member 2 -->
+        <article class="member-card" data-name="成員B" data-role="前端 / 商品" data-work="負責商品列表、商品詳情頁互動（加購物車、收藏、輪播等）。" data-reflection="把資料渲染到畫面上真的很有成就感，也讓我更熟悉 JS 與 localStorage。">
+          <div class="member-body">
+            <div class="member-top">
+              <div class="member-name">11344251莊佳穎</div>
+            </div>
+
+            <div class="member-block">
+              <span class="member-label">負責項目</span>
+              <p class="member-text">首頁＆商品頁架構、會員中心架構、收藏清單架構</p>
+            </div>
+
+            <div class="member-block">
+              <span class="member-label">心得</span>
+              <p class="member-text">在這次前端製作中，我體會到設計圖與程式碼之間的距離，往往藏在無數次的微調中。起初我利用 Canva 規劃草圖，但實際進入實作階段時，挑戰才真正開始。最令我挫折的是，每當我試圖修正一個細節，但跑出來還是錯，有時甚至導致原本正常的區塊發生跑版，讓畫面變得更糟。這些過程讓我明白，網頁開發是充滿變數的邏輯挑戰。</p>
+            </div>
+          </div>
+        </article>
+
+        <!-- Member 3 -->
+        <article class="member-card" data-name="成員C" data-role="UI/UX / 視覺" data-work="負責配色、字體、icon 與頁面視覺一致性（包含 About / FAQ 等版面）。" data-reflection="做視覺時要兼顧美感與可讀性，這次也更懂得用卡片與留白讓畫面更舒服。">
+          <div class="member-body">
+            <div class="member-top">
+              <div class="member-name">11344252賴威鳴</div>
+            </div>
+            <div class="member-block">
+              <span class="member-label">負責項目</span>
+              <p class="member-text">商品詳情架構、購物車架構、收藏清單架構</p>
+            </div>
+
+            <div class="member-block">
+              <span class="member-label">心得</span>
+              <p class="member-text">本次專案實作是我第一次參加團隊協作專案，也是第一次運用JS來實作一個專案。我在本課程之前，看到他人的網站有各種酷炫功能，覺得非常敬佩，這次實作也切身體會到能夠完成這些看起來很厲害的、甚至是日常使用的網站的基礎功能，都可能是作者跟著IDE奮鬥好幾週才有的成果。當然過程中並非一帆風順，但我覺得能夠跟組員們一起溝通交流、集思廣益，是非常有趣的、難忘的經驗。</p>
+            </div>
+          </div>
+        </article>
+
+        <!-- Member 4 -->
+        <article class="member-card" data-name="成員D" data-role="會員 / 資料" data-work="負責會員頁（登入/註冊/顯示資訊）、評論同步、資料結構規劃。" data-reflection="我學到要先把資料格式定好，後面功能整合才會順，debug 也更有效率。">
+         
+          <div class="member-body">
+            <div class="member-top">
+              <div class="member-name">11344254李育婕</div>
+            </div>
+            <div class="member-block">
+              <span class="member-label">負責項目</span>
+              <p class="member-text">首頁＆商品頁架構、商品詳情架構、結帳頁架構、關於我們、聯絡我們、會員架構</p>
+            </div>
+
+            <div class="member-block">
+              <span class="member-label">心得</span>
+              <p class="member-text">製作這個網站花費了很多時間和心力，體會到了前端設計的不容易，但看到完成後的網站很有成就感，我們從0開始做排版草稿，試驗程式，瘋狂debug和更新內容，很常某一個小地方改錯就讓整個網站都怪怪的了，或是某個檔案有改到東西，但它會連動其他程式，而另外一個檔案的程式碼沒改到，在找錯誤的過程真的很困難，這次我每個頁面內容都有負責debug或是新增功能，學到了很多功能的用法，另外我們這次用的所有圖都來自於生成式AI，在生成圖片的過程中發現給指令這件事其實也不是很容易，很多時候沒講清楚圖片就會很奇怪，總之我覺得這次真的是很難忘、很有成就感、很累的經驗。</p>
+            </div>
+          </div>
+        </article>
+      </div>
     </section>
-  </main>
+
 
   <script src="./products-data.js"></script>
   <script>
@@ -589,6 +777,20 @@
       const filtered = (window.PRODUCTS || []).filter(p => (p.name || "").toLowerCase().includes(q));
       renderSearchResults(filtered);
     });
+
+    // ===== Team：自動把頭像字母改成名字首字（可不改也沒差）
+    (function initTeamAvatars(){
+      const cards = document.querySelectorAll(".member-card");
+      cards.forEach(card => {
+        const name = card.getAttribute("data-name") || card.querySelector(".member-name")?.textContent || "";
+        const avatar = card.querySelector(".avatar");
+        if(avatar){
+          const ch = (name.trim()[0] || "•").toUpperCase();
+          avatar.textContent = ch;
+        }
+      });
+    })();
   </script>
 </body>
 </html>
+
