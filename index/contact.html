@@ -3,46 +3,40 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>FAQ｜Meow5</title>
+  <title>聯絡我們｜Meow5</title>
 
+  <!-- 字體（跟首頁一致） -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Luckiest+Guy&display=swap" rel="stylesheet">
 
   <style>
     :root{
-      /* ===== 導引欄同配色 ===== */
       --bg:#efeee9;
       --bar:#d9cec3;
       --drawer:#e7ded5;
-
       --ink:#111;
       --muted:rgba(0,0,0,.7);
+      --line:rgba(0,0,0,.14);
       --shadow:0 12px 40px rgba(0,0,0,.18);
       --headerH:64px;
 
-      /* ===== 品牌輔色 ===== */
+      --panel:#efe4e0;
+      --card:rgba(255,255,255,.65);
+      --cardLine:rgba(0,0,0,.10);
       --accent:#b0714d;
-      --btn:#d7bfb7;
-
-      /* ===== 卡片純白 ===== */
-      --card:#ffffff;
-      --mutedText:#6e6e6e;
     }
-
     *{ box-sizing:border-box; }
     body{
       margin:0;
       font-family: system-ui, "Noto Sans TC";
       background: var(--bg);
       color: var(--ink);
-      padding-top: var(--headerH);
       line-height: 1.9;
+      padding-top: var(--headerH);
     }
 
-    /* =========================
-       Fixed Header（同首頁）
-    ========================= */
+    /* ===== Fixed Header（同首頁） ===== */
     .topbar{
       position:fixed; top:0; left:0; right:0;
       height: var(--headerH);
@@ -100,7 +94,7 @@
     }
     .icon-btn.icon-btn-img{ padding:0; }
 
-    /* ===== Overlay ===== */
+    /* ===== Overlay（drawer/search 共用） ===== */
     .overlay{
       position:fixed; inset:0;
       background: rgba(0,0,0,.35);
@@ -124,7 +118,7 @@
       height: var(--headerH);
       display:flex; align-items:center; justify-content:space-between;
       padding:0 14px;
-      border-bottom:1px solid rgba(0,0,0,.12);
+      border-bottom:1px solid var(--line);
     }
     .drawer-title{ font-weight:900; letter-spacing:2px; }
 
@@ -134,25 +128,23 @@
       flex-direction:column;
       gap:6px;
     }
-
     .nav-item{
       width:100%;
       text-decoration:none;
       color: var(--ink);
       background: rgba(255,255,255,.35);
-      border:none;               /* ✅ 無框線 */
+      border:1px solid rgba(0,0,0,.06);
       border-radius:10px;
       padding:12px;
       font-weight:800;
       letter-spacing:1px;
     }
-
     button.nav-item{
       appearance:none;
       font: inherit;
       color: inherit;
       background: rgba(255,255,255,.35);
-      border:none;               /* ✅ 無框線 */
+      border: 1px solid rgba(0,0,0,.06);
       border-radius: 10px;
       padding: 12px;
       width: 100%;
@@ -161,14 +153,12 @@
       letter-spacing: 1px;
       cursor: pointer;
     }
-
     .nav-accordion{
       display:flex;
       align-items:center;
       justify-content:space-between;
       cursor:pointer;
     }
-
     .chev{
       display:inline-block;
       font-size:14px;
@@ -179,7 +169,6 @@
     #productToggle[aria-expanded="true"] .chev{
       transform: rotate(0deg);
     }
-
     .submenu{
       padding-left:8px;
       display:flex;
@@ -188,12 +177,11 @@
       margin:2px 0 6px;
     }
     .submenu[hidden]{ display:none; }
-
     .nav-subitem{
       text-decoration:none;
       color: var(--muted);
       background: rgba(255,255,255,.28);
-      border:none;               /* ✅ 無框線 */
+      border:1px solid rgba(0,0,0,.06);
       border-radius:10px;
       padding:10px 12px;
       font-weight:700;
@@ -210,7 +198,7 @@
     .search-box{
       width: min(720px, calc(100% - 28px));
       background:#f5f1ee;
-      border:none;               /* ✅ 無框線 */
+      border:1px solid rgba(0,0,0,.10);
       border-radius:14px;
       box-shadow: var(--shadow);
       padding:14px;
@@ -220,11 +208,10 @@
     .search-input{
       width:100%; height:44px;
       border-radius:10px;
-      border:none;               /* ✅ 無框線 */
+      border:1px solid rgba(0,0,0,.18);
       padding: 0 12px;
       font-size:16px;
       outline:none;
-      background:#fff;
     }
     .search-results{ margin-top:12px; display:flex; flex-direction:column; gap:8px; max-height:320px; overflow:auto; }
     .search-item{
@@ -239,109 +226,87 @@
     .search-item .name{ font-weight:900; }
     .search-item .meta{ color: rgba(0,0,0,.6); font-weight:700; }
 
-    /* =========================
-       FAQ Content（你的新規格）
-       - 沒有後方大底卡
-       - 卡片無框線
-       - 非白色區域統一用導引欄色系
-    ========================= */
+    /* ===== Page ===== */
     .wrap{
-      width: min(900px, calc(100% - 36px));
+      max-width: 820px;
       margin: 0 auto;
-      padding: 22px 0 80px;
+      padding: 28px 18px 70px;
     }
 
-    /* ✅ header 不要框線、底色用導引欄色系 */
-    .header{
-      margin-bottom: 14px;
-      padding: 16px 16px;
-      background: var(--drawer);  /* ✅ 非白色 → 用導引欄色 */
-      border:none;                /* ✅ 無框線 */
-      border-radius: 18px;
+    .hero{
+      background: var(--panel);
+      border-radius:18px;
+      padding:26px 22px;
+      margin-bottom:18px;
+      border: none;
     }
-    .header h2{
+    .hero h1{
       margin:0;
-      font-size: 26px;
-      font-weight: 900;
-      letter-spacing: 1px;
-      color: var(--accent);
+      font-size:32px;
+      font-weight:900;
+      letter-spacing:1px;
     }
-    .header p{
-      margin: 6px 0 0;
-      color: rgba(0,0,0,.65);
-      font-weight: 700;
-      font-size: 13px;
+    .hero p{
+      margin-top:10px;
+      color: rgba(0,0,0,.6);
+      max-width:60ch;
+      font-size:14px;
+      font-weight:700;
     }
 
-    /* ✅ 每一題就是一張白卡：無框線 */
-    .faq-item{
-      margin-top: 12px;
-      border-radius: 18px;
-      overflow: hidden;
+    .cards{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:16px;
+    }
+    .card{
       background: var(--card);
-      border:none;                /* ✅ 無框線 */
+      border: none;
+      border-radius:18px;
+      padding:20px 18px;
     }
-
-    .faq-question{
-      padding: 16px 14px;
-      cursor: pointer;
+    .card h2{
+      margin:0 0 8px;
+      font-size:15px;
+      font-weight:900;
+      letter-spacing:1px;
       display:flex;
-      justify-content:space-between;
       align-items:center;
-      gap: 12px;
-      font-weight: 900;
-      letter-spacing: .4px;
-      background: var(--card);
-      color: var(--ink);
+      gap:8px;
     }
-
-    /* ✅ 展開狀態：背景用導引欄色系（bar/btn 擇一） */
-    .faq-item.active .faq-question{
-      background: var(--bar);
-      color: #1a1a1a;
-    }
-
-    .faq-question .qprefix{
-      font-weight: 900;
-      color: rgba(0,0,0,.45);
-      margin-right: 8px;
-      flex: 0 0 auto;
-    }
-
-    .faq-answer{
-      max-height: 0;
-      overflow: hidden;
-      transition: max-height .35s ease, padding .35s ease;
-      padding: 0 14px;
-      color: #444;
-      background: #fff;
-      font-weight: 700;
-      line-height: 1.8;
-    }
-    .faq-item.active .faq-answer{
-      max-height: 320px;
-      padding: 14px 14px 16px;
-    }
-
-    .icon-circle{
-      width: 30px;
-      height: 30px;
-      border-radius: 999px;
-      background: rgba(0,0,0,.06);
+    .icon{
+      width:28px;
+      height:28px;
+      border-radius:10px;
+      background: var(--btn);
       display:flex;
       align-items:center;
       justify-content:center;
-      transition: transform .2s ease;
-      font-weight: 900;
+      font-weight:900;
+      color:#1a1a1a;
       flex: 0 0 auto;
     }
-    .faq-item.active .icon-circle{
-      transform: rotate(180deg);
+    .card p{
+      margin:0 0 10px;
+      color:#333;
+      font-size:14px;
+      font-weight:700;
+    }
+    .contact-link{
+      display:inline-block;
+      margin-top:6px;
+      color: var(--accent);
+      font-weight:900;
+      text-decoration:none;
+      padding-bottom:2px;
+    }
+    .contact-link:hover{
+      text-decoration: underline;
+      text-underline-offset: 3px;
     }
 
     @media (max-width:720px){
-      .wrap{ padding: 18px 0 70px; }
-      .header h2{ font-size: 22px; }
+      .cards{ grid-template-columns:1fr; }
     }
   </style>
 </head>
@@ -364,7 +329,7 @@
         <img class="icon-img" src="image/search.png" alt="">
       </button>
 
-      <a class="icon-link" href="./member.html" aria-label="會員中心">
+      <a class="icon-link" href="./member/index.html" aria-label="會員中心">
         <img class="icon-img" src="image/member.png" alt="">
       </a>
 
@@ -417,82 +382,31 @@
     </div>
   </section>
 
-  <!-- ===== FAQ Content ===== -->
+  <!-- ===== Main ===== -->
   <main class="wrap">
-    <div class="header">
-      <h2>貓奴問問</h2>
-      <p>為您與小可愛解答生活中的大小事</p>
-    </div>
+    <section class="hero">
+      <h1>聯絡我們</h1>
+      <p>
+        無論是商品問題、合作邀請，或只是想和我們聊聊毛孩的日常，
+        都歡迎透過以下方式與 Meow5 聯繫。
+      </p>
+    </section>
 
-    <div class="faq-item">
-      <div class="faq-question">
-        <div style="display:flex; align-items:flex-start; gap:6px;">
-          <span class="qprefix">Q.</span>
-          <span>這些用品的材質對貓咪安全嗎？</span>
-        </div>
-        <div class="icon-circle">▼</div>
+    <section class="cards">
+      <div class="card">
+        <h2><span class="icon">IG</span>Instagram</h2>
+        <p>追蹤我們，看看更多毛孩日常與新品分享。</p>
+        <a class="contact-link" href="https://www.instagram.com/meow5" target="_blank" rel="noopener">
+          @meow5
+        </a>
       </div>
-      <div class="faq-answer">
-        我們深知貓咪喜歡啃咬的習性，因此全系列產品皆通過
-        <b>SGS 無毒認證</b>。從食品級矽膠到天然麻繩，確保在玩耍時不會攝入有害物質。
-      </div>
-    </div>
 
-    <div class="faq-item">
-      <div class="faq-question">
-        <div style="display:flex; align-items:flex-start; gap:6px;">
-          <span class="qprefix">Q.</span>
-          <span>如果我的貓不賞臉怎麼辦？</span>
-        </div>
-        <div class="icon-circle">▼</div>
+      <div class="card">
+        <h2><span class="icon">✉</span>電子信箱</h2>
+        <p>有任何問題或合作需求，歡迎來信。</p>
+        <a class="contact-link" href="mailto:service@meow5.tw">service@meow5.tw</a>
       </div>
-      <div class="faq-answer">
-        貓咪是非常謹慎的動物！我們建議將商品放置在牠最喜歡的地方，並撒上隨貨附贈的<b>特選貓薄荷</b>。
-        若兩週後仍未改善，我們提供專業的引導教學或退換諮詢（其實牠們好像就是喜歡紙箱而已www）。
-      </div>
-    </div>
-
-    <div class="faq-item">
-      <div class="faq-question">
-        <div style="display:flex; align-items:flex-start; gap:6px;">
-          <span class="qprefix">Q.</span>
-          <span>清潔保養會很麻煩嗎？</span>
-        </div>
-        <div class="icon-circle">▼</div>
-      </div>
-      <div class="faq-answer">
-        針對髒污與細菌問題，我們採用了<b>易去汙技術</b>。睡墊類可直接機洗（建議套洗衣袋），
-        硬體裝備則使用濕布擦拭即可，省下您寶貴的清潔時間。
-      </div>
-    </div>
-
-    <div class="faq-item">
-      <div class="faq-question">
-        <div style="display:flex; align-items:flex-start; gap:6px;">
-          <span class="qprefix">Q.</span>
-          <span>下單後多久能收到驚喜？</span>
-        </div>
-        <div class="icon-circle">▼</div>
-      </div>
-      <div class="faq-answer">
-        為了不讓寶寶久等，現貨商品下單後 <b>24 小時內快速出貨</b>。
-        全台超商取貨約 2 天抵達，宅配最快隔日送達。
-      </div>
-    </div>
-
-    <div class="faq-item">
-      <div class="faq-question">
-        <div style="display:flex; align-items:flex-start; gap:6px;">
-          <span class="qprefix">Q.</span>
-          <span>關於退換貨的保障？</span>
-        </div>
-        <div class="icon-circle">▼</div>
-      </div>
-      <div class="faq-answer">
-        我們提供<b> 7 天鑑賞期服務</b>。若收到商品發現瑕疵或內容物不符，
-        請立即拍攝包裹照片並聯繫客服，我們將盡快協助處理。
-      </div>
-    </div>
+    </section>
   </main>
 
   <script src="./products-data.js"></script>
@@ -503,6 +417,7 @@
     const drawer = document.getElementById("drawer");
     const overlay = document.getElementById("overlay");
 
+    // 商品子選單
     const productToggle = document.getElementById("productToggle");
     const productSubmenu = document.getElementById("productSubmenu");
 
@@ -524,6 +439,7 @@
     menuBtn.addEventListener("click", openDrawer);
     closeBtn.addEventListener("click", closeDrawer);
 
+    // 商品子選單：預設收起 + 展開/收起
     (function initProductSubmenu() {
       productToggle.setAttribute("aria-expanded", "false");
       productSubmenu.hidden = true;
@@ -577,6 +493,7 @@
       }
     });
 
+    // 即時搜尋 → 點結果跳詳情
     function renderSearchResults(list){
       searchResults.innerHTML = "";
       if(list.length === 0){
@@ -598,17 +515,7 @@
       const filtered = (window.PRODUCTS || []).filter(p => (p.name || "").toLowerCase().includes(q));
       renderSearchResults(filtered);
     });
-
-    // ===== FAQ accordion =====
-    document.querySelectorAll(".faq-question").forEach((item) => {
-      item.addEventListener("click", () => {
-        const parent = item.parentElement;
-        document.querySelectorAll(".faq-item").forEach((i) => {
-          if (i !== parent) i.classList.remove("active");
-        });
-        parent.classList.toggle("active");
-      });
-    });
   </script>
 </body>
 </html>
+

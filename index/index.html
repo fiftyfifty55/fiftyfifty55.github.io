@@ -6,8 +6,8 @@
   <title>Meow5</title>
   <link rel="stylesheet" href="./index.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
- <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
- <link href="https://fonts.googleapis.com/css2?family=Luckiest+Guy&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Luckiest+Guy&display=swap" rel="stylesheet">
 </head>
 <body>
 
@@ -26,27 +26,24 @@
     <div class="brand">Meow5</div>
 
     <div class="topbar-right">
- <!-- 搜尋：保持 button 才能觸發 openSearch -->
       <button class="icon-btn icon-btn-img" id="searchBtn" aria-label="搜尋">
         <img class="icon-img" src="image/search.png" alt="">
       </button>
 
-      <a class="icon-link" href="javascript:void(0)" onclick="handleMemberClick()" aria-label="會員中心">
+      <a class="icon-link" href="./member/index.html" aria-label="會員中心">
         <img class="icon-img" src="image/member.png" alt="">
-    </a>
-    
+      </a>
+
       <a class="icon-link" href="./cart.html" aria-label="購物車">
         <img class="icon-img" src="image/cart.png" alt="">
       </a>
-
-
     </div>
   </header>
 
-  <!-- ===== Fixed Footer (先占位) ===== -->
+  <!-- ===== Fixed Footer ===== -->
   <footer class="footer-fixed">
     <div>© 2025 Meow5</div>
-    <div>聯絡方式｜版權資訊</div>
+    <div>service@meow5.tw｜版權資訊</div>
   </footer>
 
   <!-- ===== Overlay（drawer/search 共用） ===== -->
@@ -98,12 +95,8 @@
     <!-- ===== Hero Slider (3張大圖 + hotspots) ===== -->
     <section class="hero">
       <div class="hero-stage" id="heroStage">
-        <!-- JS 塞入：背景圖 + 熱點 -->
         <div class="hero-placeholder">Hero Banner（之後換成圖片）</div>
       </div>
-
-
-      <!-- hero dots -->
       <div class="hero-dots" id="heroDots"></div>
     </section>
 
@@ -142,7 +135,7 @@
       </div>
     </section>
 
-    <!-- ===== Recommended Title (左右長線) ===== -->
+    <!-- ===== Recommended Title ===== -->
     <section class="rec">
       <div class="section-title">
         <div class="line"></div>
@@ -157,8 +150,9 @@
     <!-- ===== Latest Mosaic ===== -->
     <section class="latest">
       <div class="latest-grid">
+
         <div class="latest-left">
-          <div class="latest-photo">照片</div>
+          <img class="latest-img" id="latestHeroImg" alt="最新商品照片">
           <div class="latest-label">
             <div>最新</div>
             <div>商品</div>
@@ -167,10 +161,12 @@
 
         <div class="latest-card-slot" id="latestCard1"></div>
 
-        <div class="latest-wide-photo">照片</div>
+        <div class="latest-wide-photo">
+          <img class="latest-img" id="latestWideImg" alt="最新商品照片">
+        </div>
+
         <div class="latest-card-slot" id="latestCard2"></div>
 
-        <div class="latest-small-photo">照片</div>
       </div>
     </section>
 
@@ -179,8 +175,8 @@
   <!-- ===== Top Button ===== -->
   <button class="top-btn" id="topBtn" aria-label="回到最上方">top</button>
 
-  <!-- Data + JS -->
   <script src="./products-data.js"></script>
   <script src="./index.js"></script>
 </body>
 </html>
+

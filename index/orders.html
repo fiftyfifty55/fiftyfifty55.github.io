@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>FAQ｜Meow5</title>
+  <title>我的訂單｜Meow5</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -11,38 +11,33 @@
 
   <style>
     :root{
-      /* ===== 導引欄同配色 ===== */
       --bg:#efeee9;
       --bar:#d9cec3;
       --drawer:#e7ded5;
-
       --ink:#111;
       --muted:rgba(0,0,0,.7);
+      --line:rgba(0,0,0,.14);
       --shadow:0 12px 40px rgba(0,0,0,.18);
       --headerH:64px;
+      --footerH:64px;
 
-      /* ===== 品牌輔色 ===== */
+      --r:18px;
       --accent:#b0714d;
-      --btn:#d7bfb7;
-
-      /* ===== 卡片純白 ===== */
-      --card:#ffffff;
-      --mutedText:#6e6e6e;
+      --btn:#cb997e;
+      --panel:#eee6df;
     }
 
-    *{ box-sizing:border-box; }
+    *{box-sizing:border-box;}
     body{
       margin:0;
       font-family: system-ui, "Noto Sans TC";
       background: var(--bg);
       color: var(--ink);
       padding-top: var(--headerH);
-      line-height: 1.9;
+      padding-bottom: var(--footerH);
     }
 
-    /* =========================
-       Fixed Header（同首頁）
-    ========================= */
+    /* ===== Header / Footer / Drawer / Search（同 member.html，略同樣式） ===== */
     .topbar{
       position:fixed; top:0; left:0; right:0;
       height: var(--headerH);
@@ -55,7 +50,13 @@
     }
     .topbar-left,.topbar-right{display:flex; align-items:center; gap:10px;}
     .topbar-right{justify-content:flex-end;}
-
+    .brand{
+      font-family: "Luckiest Guy", cursive;
+      font-weight: 400;
+      color: var(--btn);
+      font-size: 34px;
+      letter-spacing: 2px;
+    }
     .icon-btn{
       width:44px;height:44px;border:none;background:transparent;
       font-size:22px;cursor:pointer;line-height:1;
@@ -64,9 +65,8 @@
     .icon-link{
       width:44px;height:44px;
       display:flex; align-items:center; justify-content:center;
-      text-decoration:none; color:var(--ink); font-size:22px;
+      text-decoration:none;
     }
-
     .logo{
       width: 80px;
       height: 50px;
@@ -76,38 +76,21 @@
       text-decoration:none;
       margin-left: -20px;
     }
-    .logo img{
-      width:100%;
-      height:100%;
-      object-fit:contain;
-      display:block;
-    }
-
-    .brand{
-      font-family: "Luckiest Guy", cursive;
-      font-weight: 400;
-      font-style: normal;
-      color: #cb997e;
-      font-size: 34px;
-      letter-spacing: 2px;
-    }
-
-    .icon-img{
-      width: 50px;
-      height: 26px;
-      object-fit: contain;
-      display:block;
-    }
+    .logo img{ width:100%; height:100%; object-fit:contain; display:block; }
+    .icon-img{ width:50px; height:26px; object-fit:contain; display:block; }
     .icon-btn.icon-btn-img{ padding:0; }
 
-    /* ===== Overlay ===== */
-    .overlay{
-      position:fixed; inset:0;
-      background: rgba(0,0,0,.35);
-      z-index: 90;
+    .footer-fixed{
+      position:fixed; bottom:0; left:0; right:0;
+      height: var(--footerH);
+      background: var(--bar);
+      display:flex; align-items:center; justify-content:space-between;
+      padding: 0 18px;
+      z-index: 100;
+      color: rgba(0,0,0,.75);
+      font-weight: 700;
     }
-
-    /* ===== Drawer ===== */
+    .overlay{ position:fixed; inset:0; background: rgba(0,0,0,.35); z-index: 90; }
     .drawer{
       position:fixed; top:0; left:0;
       width:280px; height:100vh;
@@ -119,98 +102,63 @@
       display:flex; flex-direction:column;
     }
     .drawer.open{ transform: translateX(0); }
-
     .drawer-header{
       height: var(--headerH);
       display:flex; align-items:center; justify-content:space-between;
       padding:0 14px;
-      border-bottom:1px solid rgba(0,0,0,.12);
+      border-bottom:1px solid var(--line);
     }
     .drawer-title{ font-weight:900; letter-spacing:2px; }
-
-    .drawer-nav{
-      padding:10px;
-      display:flex;
-      flex-direction:column;
-      gap:6px;
-    }
-
+    .drawer-nav{ padding:10px; display:flex; flex-direction:column; gap:6px; }
     .nav-item{
       width:100%;
       text-decoration:none;
       color: var(--ink);
       background: rgba(255,255,255,.35);
-      border:none;               /* ✅ 無框線 */
+      border:1px solid rgba(0,0,0,.06);
       border-radius:10px;
       padding:12px;
       font-weight:800;
       letter-spacing:1px;
     }
-
     button.nav-item{
-      appearance:none;
-      font: inherit;
-      color: inherit;
+      -webkit-appearance:none; appearance:none;
+      font:inherit; color:inherit;
       background: rgba(255,255,255,.35);
-      border:none;               /* ✅ 無框線 */
-      border-radius: 10px;
-      padding: 12px;
-      width: 100%;
-      text-align: left;
-      font-weight: 800;
-      letter-spacing: 1px;
-      cursor: pointer;
-    }
-
-    .nav-accordion{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
+      border:1px solid rgba(0,0,0,.06);
+      border-radius:10px;
+      padding:12px;
+      width:100%;
+      text-align:left;
+      font-weight:800;
+      letter-spacing:1px;
       cursor:pointer;
+      display:flex; justify-content:space-between; align-items:center;
     }
-
-    .chev{
-      display:inline-block;
-      font-size:14px;
-      opacity:.8;
-      transform: rotate(-90deg);
-      transition: transform .2s ease;
-    }
-    #productToggle[aria-expanded="true"] .chev{
-      transform: rotate(0deg);
-    }
-
-    .submenu{
-      padding-left:8px;
-      display:flex;
-      flex-direction:column;
-      gap:6px;
-      margin:2px 0 6px;
-    }
+    .chev{ display:inline-block; font-size:14px; opacity:.8; transform: rotate(-90deg); transition: transform .2s ease; }
+    #productToggle[aria-expanded="true"] .chev{ transform: rotate(0deg); }
+    .submenu{ padding-left:8px; display:flex; flex-direction:column; gap:6px; margin:2px 0 6px; }
     .submenu[hidden]{ display:none; }
-
     .nav-subitem{
       text-decoration:none;
       color: var(--muted);
       background: rgba(255,255,255,.28);
-      border:none;               /* ✅ 無框線 */
+      border:1px solid rgba(0,0,0,.06);
       border-radius:10px;
       padding:10px 12px;
       font-weight:700;
     }
 
-    /* ===== Search Panel ===== */
     .search-panel{
       position:fixed; inset:0; z-index:95;
-      display:none;
-      align-items:flex-start; justify-content:center;
+      display:none; align-items:flex-start; justify-content:center;
       padding-top: calc(var(--headerH) + 14px);
     }
     .search-panel.open{ display:flex; }
     .search-box{
       width: min(720px, calc(100% - 28px));
       background:#f5f1ee;
-      border:none;               /* ✅ 無框線 */
+      border:1px solid rgba(0,0,0,.10);
       border-radius:14px;
       box-shadow: var(--shadow);
       padding:14px;
@@ -220,138 +168,81 @@
     .search-input{
       width:100%; height:44px;
       border-radius:10px;
-      border:none;               /* ✅ 無框線 */
-      padding: 0 12px;
-      font-size:16px;
-      outline:none;
-      background:#fff;
+      border:1px solid rgba(0,0,0,.18);
+      padding:0 12px; font-size:16px; outline:none;
     }
     .search-results{ margin-top:12px; display:flex; flex-direction:column; gap:8px; max-height:320px; overflow:auto; }
     .search-item{
       display:flex; align-items:center; justify-content:space-between;
-      gap:10px;
-      padding:10px 12px;
-      border-radius:12px;
-      background: rgba(0,0,0,.05);
-      cursor:pointer;
+      gap:10px; padding:10px 12px; border-radius:12px;
+      background: rgba(0,0,0,.05); cursor:pointer;
     }
-    .search-item:hover{ filter: brightness(.98); }
     .search-item .name{ font-weight:900; }
     .search-item .meta{ color: rgba(0,0,0,.6); font-weight:700; }
 
-    /* =========================
-       FAQ Content（你的新規格）
-       - 沒有後方大底卡
-       - 卡片無框線
-       - 非白色區域統一用導引欄色系
-    ========================= */
-    .wrap{
-      width: min(900px, calc(100% - 36px));
-      margin: 0 auto;
-      padding: 22px 0 80px;
+    /* ===== 訂單頁內容 ===== */
+    .page{ max-width: 980px; margin: 0 auto; padding: 18px 18px 60px; }
+
+    .title{
+      margin: 8px 0 12px;
+      font-size: 22px;
+      font-weight: 1000;
+      letter-spacing: 2px;
     }
 
-    /* ✅ header 不要框線、底色用導引欄色系 */
-    .header{
+    .tabs{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
       margin-bottom: 14px;
-      padding: 16px 16px;
-      background: var(--drawer);  /* ✅ 非白色 → 用導引欄色 */
-      border:none;                /* ✅ 無框線 */
-      border-radius: 18px;
     }
-    .header h2{
-      margin:0;
-      font-size: 26px;
-      font-weight: 900;
-      letter-spacing: 1px;
-      color: var(--accent);
-    }
-    .header p{
-      margin: 6px 0 0;
-      color: rgba(0,0,0,.65);
-      font-weight: 700;
-      font-size: 13px;
-    }
-
-    /* ✅ 每一題就是一張白卡：無框線 */
-    .faq-item{
-      margin-top: 12px;
-      border-radius: 18px;
-      overflow: hidden;
-      background: var(--card);
-      border:none;                /* ✅ 無框線 */
-    }
-
-    .faq-question{
-      padding: 16px 14px;
-      cursor: pointer;
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      gap: 12px;
-      font-weight: 900;
-      letter-spacing: .4px;
-      background: var(--card);
-      color: var(--ink);
-    }
-
-    /* ✅ 展開狀態：背景用導引欄色系（bar/btn 擇一） */
-    .faq-item.active .faq-question{
-      background: var(--bar);
-      color: #1a1a1a;
-    }
-
-    .faq-question .qprefix{
-      font-weight: 900;
-      color: rgba(0,0,0,.45);
-      margin-right: 8px;
-      flex: 0 0 auto;
-    }
-
-    .faq-answer{
-      max-height: 0;
-      overflow: hidden;
-      transition: max-height .35s ease, padding .35s ease;
-      padding: 0 14px;
-      color: #444;
-      background: #fff;
-      font-weight: 700;
-      line-height: 1.8;
-    }
-    .faq-item.active .faq-answer{
-      max-height: 320px;
-      padding: 14px 14px 16px;
-    }
-
-    .icon-circle{
-      width: 30px;
-      height: 30px;
+    .tab{
+      border:none;
       border-radius: 999px;
-      background: rgba(0,0,0,.06);
-      display:flex;
+      padding: 10px 14px;
+      background: rgba(255,255,255,.7);
+      font-weight: 1000;
+      cursor:pointer;
+    }
+    .tab.active{
+      background: var(--btn);
+      color:#fff;
+    }
+
+    .card{
+      background: var(--panel);
+      border-radius: var(--r);
+      padding: 14px;
+    }
+
+    .empty{
+      background: rgba(255,255,255,.7);
+      border-radius: var(--r);
+      padding: 18px;
+      font-weight: 900;
+      color: rgba(0,0,0,.7);
+      text-align:center;
+    }
+
+    .btnBack{
+      display:inline-flex;
       align-items:center;
       justify-content:center;
-      transition: transform .2s ease;
-      font-weight: 900;
-      flex: 0 0 auto;
-    }
-    .faq-item.active .icon-circle{
-      transform: rotate(180deg);
-    }
-
-    @media (max-width:720px){
-      .wrap{ padding: 18px 0 70px; }
-      .header h2{ font-size: 22px; }
+      text-decoration:none;
+      border-radius: 999px;
+      padding: 10px 16px;
+      background: var(--btn);
+      color:#fff;
+      font-weight: 1000;
+      margin-top: 14px;
     }
   </style>
 </head>
 
 <body>
-  <!-- ===== Fixed Header ===== -->
   <header class="topbar">
     <div class="topbar-left">
       <button class="icon-btn" id="menuBtn" aria-label="開啟導覽" aria-controls="drawer" aria-expanded="false">☰</button>
-
       <a class="logo" href="./index.html" aria-label="回到首頁">
         <img src="image/logo.png" alt="Meow5 Logo">
       </a>
@@ -374,21 +265,22 @@
     </div>
   </header>
 
-  <!-- ===== Overlay ===== -->
+  <footer class="footer-fixed">
+    <div>© 2025 Meow5</div>
+    <div>service@meow5.tw｜版權資訊</div>
+  </footer>
+
   <div class="overlay" id="overlay" hidden></div>
 
-  <!-- ===== Drawer ===== -->
   <aside class="drawer" id="drawer" aria-hidden="true">
     <div class="drawer-header">
       <div class="drawer-title">導覽</div>
       <button class="icon-btn" id="closeBtn" aria-label="關閉導覽">✕</button>
     </div>
-
     <nav class="drawer-nav">
-      <button class="nav-item nav-accordion" id="productToggle" aria-expanded="false">
+      <button class="nav-item" id="productToggle" aria-expanded="false">
         <span>商品</span><span class="chev">▾</span>
       </button>
-
       <div class="submenu" id="productSubmenu" hidden>
         <a class="nav-subitem" href="./products.html">全部商品</a>
         <a class="nav-subitem" href="./products.html?theme=生活用品">生活用品</a>
@@ -404,105 +296,47 @@
     </nav>
   </aside>
 
-  <!-- ===== Search Panel ===== -->
   <section class="search-panel" id="searchPanel" aria-hidden="true">
     <div class="search-box">
       <div class="search-head">
         <div class="search-title">搜尋商品</div>
         <button class="icon-btn" id="searchCloseBtn" aria-label="關閉搜尋">✕</button>
       </div>
-
       <input id="searchInput" class="search-input" type="text" placeholder="輸入商品名稱…">
       <div class="search-results" id="searchResults"></div>
     </div>
   </section>
 
-  <!-- ===== FAQ Content ===== -->
-  <main class="wrap">
-    <div class="header">
-      <h2>貓奴問問</h2>
-      <p>為您與小可愛解答生活中的大小事</p>
+  <main class="page">
+    <div class="title">我的訂單</div>
+
+    <div class="tabs" id="tabs">
+      <button class="tab" data-tab="pending">待出貨</button>
+      <button class="tab" data-tab="shipped">已出貨</button>
+      <button class="tab" data-tab="pickup">待取件</button>
+      <button class="tab" data-tab="review">待評價</button>
     </div>
 
-    <div class="faq-item">
-      <div class="faq-question">
-        <div style="display:flex; align-items:flex-start; gap:6px;">
-          <span class="qprefix">Q.</span>
-          <span>這些用品的材質對貓咪安全嗎？</span>
+    <section class="card">
+      <div class="empty" id="emptyBox">
+        目前此分類沒有訂單 ✨<br>
+        去逛逛商品，為貓咪挑個喜歡的吧！
+        <div>
+          <a class="btnBack" href="./products.html">回商品頁購物</a>
         </div>
-        <div class="icon-circle">▼</div>
       </div>
-      <div class="faq-answer">
-        我們深知貓咪喜歡啃咬的習性，因此全系列產品皆通過
-        <b>SGS 無毒認證</b>。從食品級矽膠到天然麻繩，確保在玩耍時不會攝入有害物質。
-      </div>
-    </div>
 
-    <div class="faq-item">
-      <div class="faq-question">
-        <div style="display:flex; align-items:flex-start; gap:6px;">
-          <span class="qprefix">Q.</span>
-          <span>如果我的貓不賞臉怎麼辦？</span>
-        </div>
-        <div class="icon-circle">▼</div>
-      </div>
-      <div class="faq-answer">
-        貓咪是非常謹慎的動物！我們建議將商品放置在牠最喜歡的地方，並撒上隨貨附贈的<b>特選貓薄荷</b>。
-        若兩週後仍未改善，我們提供專業的引導教學或退換諮詢（其實牠們好像就是喜歡紙箱而已www）。
-      </div>
-    </div>
-
-    <div class="faq-item">
-      <div class="faq-question">
-        <div style="display:flex; align-items:flex-start; gap:6px;">
-          <span class="qprefix">Q.</span>
-          <span>清潔保養會很麻煩嗎？</span>
-        </div>
-        <div class="icon-circle">▼</div>
-      </div>
-      <div class="faq-answer">
-        針對髒污與細菌問題，我們採用了<b>易去汙技術</b>。睡墊類可直接機洗（建議套洗衣袋），
-        硬體裝備則使用濕布擦拭即可，省下您寶貴的清潔時間。
-      </div>
-    </div>
-
-    <div class="faq-item">
-      <div class="faq-question">
-        <div style="display:flex; align-items:flex-start; gap:6px;">
-          <span class="qprefix">Q.</span>
-          <span>下單後多久能收到驚喜？</span>
-        </div>
-        <div class="icon-circle">▼</div>
-      </div>
-      <div class="faq-answer">
-        為了不讓寶寶久等，現貨商品下單後 <b>24 小時內快速出貨</b>。
-        全台超商取貨約 2 天抵達，宅配最快隔日送達。
-      </div>
-    </div>
-
-    <div class="faq-item">
-      <div class="faq-question">
-        <div style="display:flex; align-items:flex-start; gap:6px;">
-          <span class="qprefix">Q.</span>
-          <span>關於退換貨的保障？</span>
-        </div>
-        <div class="icon-circle">▼</div>
-      </div>
-      <div class="faq-answer">
-        我們提供<b> 7 天鑑賞期服務</b>。若收到商品發現瑕疵或內容物不符，
-        請立即拍攝包裹照片並聯繫客服，我們將盡快協助處理。
-      </div>
-    </div>
+      <div id="orderList" hidden></div>
+    </section>
   </main>
 
   <script src="./products-data.js"></script>
   <script>
-    // ===== Drawer =====
+    // Drawer / Search（同 member）
     const menuBtn = document.getElementById("menuBtn");
     const closeBtn = document.getElementById("closeBtn");
     const drawer = document.getElementById("drawer");
     const overlay = document.getElementById("overlay");
-
     const productToggle = document.getElementById("productToggle");
     const productSubmenu = document.getElementById("productSubmenu");
 
@@ -517,29 +351,22 @@
       drawer.classList.remove("open");
       drawer.setAttribute("aria-hidden", "true");
       menuBtn.setAttribute("aria-expanded", "false");
-      if(!searchPanel.classList.contains("open")) overlay.hidden = true;
+      overlay.hidden = true;
       document.body.style.overflow = "";
     }
-
     menuBtn.addEventListener("click", openDrawer);
     closeBtn.addEventListener("click", closeDrawer);
 
     (function initProductSubmenu() {
       productToggle.setAttribute("aria-expanded", "false");
       productSubmenu.hidden = true;
-      const chev = productToggle.querySelector(".chev");
-      if (chev) chev.textContent = "▾";
-
       productToggle.addEventListener("click", () => {
         const expanded = productToggle.getAttribute("aria-expanded") === "true";
         productToggle.setAttribute("aria-expanded", String(!expanded));
         productSubmenu.hidden = expanded;
-        const c = productToggle.querySelector(".chev");
-        if (c) c.textContent = expanded ? "▾" : "▴";
       });
     })();
 
-    // ===== Search =====
     const searchBtn = document.getElementById("searchBtn");
     const searchPanel = document.getElementById("searchPanel");
     const searchCloseBtn = document.getElementById("searchCloseBtn");
@@ -561,37 +388,28 @@
       if(!drawer.classList.contains("open")) overlay.hidden = true;
       document.body.style.overflow = "";
     }
-
     searchBtn.addEventListener("click", openSearch);
     searchCloseBtn.addEventListener("click", closeSearch);
 
     overlay.addEventListener("click", () => {
-      if(drawer.classList.contains("open")) closeDrawer();
-      if(searchPanel.classList.contains("open")) closeSearch();
-    });
-
-    document.addEventListener("keydown", (e) => {
-      if(e.key === "Escape"){
-        if(drawer.classList.contains("open")) closeDrawer();
-        if(searchPanel.classList.contains("open")) closeSearch();
-      }
+      if (drawer.classList.contains("open")) closeDrawer();
+      if (searchPanel.classList.contains("open")) closeSearch();
     });
 
     function renderSearchResults(list){
       searchResults.innerHTML = "";
       if(list.length === 0){
-        searchResults.innerHTML = `<div style="color:rgba(0,0,0,.6);font-weight:700;padding:8px 4px;">找不到符合的商品</div>`;
+        searchResults.innerHTML = `<div style="color:rgba(0,0,0,.6);font-weight:800;padding:8px 4px;">找不到符合的商品</div>`;
         return;
       }
       list.slice(0,8).forEach(p => {
         const item = document.createElement("div");
         item.className = "search-item";
         item.innerHTML = `<div class="name">${p.name}</div><div class="meta">$${p.price}｜${p.theme}</div>`;
-        item.addEventListener("click", () => location.href = `product-detail.html?id=${encodeURIComponent(p.id)}`);
+        item.addEventListener("click", () => location.href = `product-detail.html?id=${p.id}`);
         searchResults.appendChild(item);
       });
     }
-
     searchInput.addEventListener("input", () => {
       const q = searchInput.value.trim().toLowerCase();
       if(!q){ searchResults.innerHTML = ""; return; }
@@ -599,16 +417,30 @@
       renderSearchResults(filtered);
     });
 
-    // ===== FAQ accordion =====
-    document.querySelectorAll(".faq-question").forEach((item) => {
-      item.addEventListener("click", () => {
-        const parent = item.parentElement;
-        document.querySelectorAll(".faq-item").forEach((i) => {
-          if (i !== parent) i.classList.remove("active");
-        });
-        parent.classList.toggle("active");
+    // Tabs（先做 UI，資料之後可串）
+    const tabs = document.getElementById("tabs");
+    const params = new URLSearchParams(location.search);
+    const initTab = params.get("tab") || "pending";
+
+    function setActive(tab){
+      document.querySelectorAll(".tab").forEach(b => {
+        b.classList.toggle("active", b.dataset.tab === tab);
       });
+      // 目前沒有資料 → 顯示空狀態
+      document.getElementById("emptyBox").hidden = false;
+      document.getElementById("orderList").hidden = true;
+    }
+
+    tabs.addEventListener("click", (e) => {
+      const btn = e.target.closest(".tab");
+      if(!btn) return;
+      const tab = btn.dataset.tab;
+      history.replaceState(null,"", `?tab=${encodeURIComponent(tab)}`);
+      setActive(tab);
     });
+
+    setActive(initTab);
   </script>
 </body>
 </html>
+

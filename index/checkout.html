@@ -6,6 +6,7 @@
   <title>結帳｜Meow5</title>
   <link rel="stylesheet" href="./checkout.css" />
 </head>
+
 <body>
   <main class="wrap">
     <section class="block">
@@ -13,7 +14,6 @@
 
       <!-- 這裡會用 JS 產生「一條一條」的商品列 -->
       <div class="cart-lines" id="cartLines">
-        <!-- fallback -->
         <div class="empty">尚未載入購物車商品</div>
       </div>
     </section>
@@ -21,24 +21,33 @@
     <section class="block">
       <h2 class="block-title">取貨方式</h2>
 
+      <!-- 只留宅配 -->
       <div class="choice-row" role="radiogroup" aria-label="取貨方式">
         <label class="choice">
           <input type="radio" name="ship" value="home" checked />
           <span>宅配到府</span>
         </label>
-
-        <label class="choice">
-          <input type="radio" name="ship" value="711" />
-          <span>7-11取貨</span>
-        </label>
-
-        <label class="choice">
-          <input type="radio" name="ship" value="family" />
-          <span>全家取貨</span>
-        </label>
       </div>
 
-      <p class="hint" id="shipHint" aria-live="polite"></p>
+      <!-- 地址欄位：你要點宅配時出現（目前只有宅配，所以直接顯示） -->
+      <div class="address-box" id="addressBox" style="margin-top:14px;">
+        <label style="display:block; font-weight:800; margin-bottom:8px;">收件地址</label>
+        <input
+          id="addressInput"
+          type="text"
+          placeholder="請輸入：縣市 / 區 / 路街 / 號 / 樓"
+          style="
+            width:100%;
+            padding:12px 14px;
+            border-radius:12px;
+            border:1px solid rgba(0,0,0,.15);
+            outline:none;
+          "
+        />
+        <p class="hint" id="shipHint" aria-live="polite" style="margin-top:8px;">
+          未滿 $2000 運費 $150，滿 $2000 免運。
+        </p>
+      </div>
     </section>
 
     <section class="block">
@@ -90,8 +99,200 @@
     </section>
   </main>
 
-  <!-- 商品資料（為了之後推薦商品/檢查商品大小規則也可用） -->
+  <!-- 商品資料 -->
   <script src="./products-data.js"></script>
-  <script src="./checkout.js"></script>
+
+  <script>
+    // ====== 全站統一的 Key ======
+    const CART_KEY = "meow5_cart";
+    const CHECKOUT_KEY = "MEOW5_CHECKOUT_ITEMS";
+
+    // ====== 運費規則（跟 cart.html 同步：滿 2000 免運；宅配未滿 2000 → 150）======
+    const FREE_SHIPPING_THRESHOLD = 2000;
+    const HOME_SHIPPING_FEE = 150;
+
+    const cartLinesEl = document.getElementById("cartLines");
+    const subtotalTextEl = document.getElementById("subtotalText");
+    const shippingTextEl = document.getElementById("shippingText");
+    const grandTextEl = document.getElementById("grandText");
+    const buyBtn = document.getElementById("buyBtn");
+    const addressInput = document.getElementById("addressInput");
+
+    function money(n) {
+      return "$ " + Number(n).toLocaleString();
+    }
+
+    function safeJSON(key) {
+      try {
+        const v = JSON.parse(localStorage.getItem(key));
+        return Array.isArray(v) ? v : [];
+      } catch {
+        return [];
+      }
+    }
+
+    // 支援你 cart.html 的 item 格式：{id, qty, variantType, variantValue}
+    function normalizeItem(it) {
+      const qty = Math.max(1, parseInt(it.qty ?? 1, 10));
+
+      let variantType = it.variantType || "";
+      let variantValue = it.variantValue || "";
+
+      if (!variantType && it.variant && typeof it.variant === "object") {
+        variantType = it.variant.type || "";
+        variantValue = it.variant.value || "";
+      }
+      if (!variantType) {
+        if (it.size) { variantType = "size"; variantValue = it.size; }
+        else if (it.color) { variantType = "color"; variantValue = it.color; }
+      }
+
+      return { id: it.id, qty, variantType, variantValue };
+    }
+
+    function getProductById(id) {
+      return (window.PRODUCTS || []).find(p => p.id === id);
+    }
+
+    function getProductImage(p) {
+      const first = p?.images?.[0];
+      if (!first) return "https://placehold.co/100x100?text=Meow5";
+      return first.startsWith("http") ? first : `images/${first}`;
+    }
+
+    function variantText(p, it) {
+      if (!it.variantType || !it.variantValue) return "";
+      if (it.variantType === "size") return `尺寸：${it.variantValue}`;
+      if (it.variantType === "color") {
+        const label = p?.colors?.find(c => c.code === it.variantValue)?.label;
+        return `顏色：${label ? label : it.variantValue}`;
+      }
+      return "";
+    }
+
+    function loadCheckoutItems() {
+      // 先讀 checkout key；若沒有就 fallback 讀 cart key（避免你忘了同步也能看到）
+      const a = safeJSON(CHECKOUT_KEY);
+      if (a.length) return a.map(normalizeItem);
+
+      const b = safeJSON(CART_KEY);
+      return b.map(normalizeItem);
+    }
+
+    function calcTotals(items) {
+      let subtotal = 0;
+
+      for (const it of items) {
+        const p = getProductById(it.id);
+        const price = Number(p?.price ?? 0);
+        subtotal += price * it.qty;
+      }
+
+      const shipping = (subtotal === 0 || subtotal >= FREE_SHIPPING_THRESHOLD) ? 0 : HOME_SHIPPING_FEE;
+      const grand = subtotal + shipping;
+
+      return { subtotal, shipping, grand };
+    }
+
+    function renderLines(items) {
+      if (!items.length) {
+        cartLinesEl.innerHTML = `
+          <div class="empty">
+            目前沒有要結帳的商品（請從購物車頁面點「前往結帳」進來）
+          </div>
+        `;
+        buyBtn.disabled = true;
+        buyBtn.style.opacity = "0.5";
+        return;
+      }
+
+      buyBtn.disabled = false;
+      buyBtn.style.opacity = "1";
+
+      cartLinesEl.innerHTML = "";
+
+      items.forEach((it) => {
+        const p = getProductById(it.id);
+        const name = p ? p.name : it.id;
+        const price = Number(p?.price ?? 0);
+        const img = p ? getProductImage(p) : "https://placehold.co/100x100?text=Meow5";
+        const vText = variantText(p, it);
+        const lineTotal = price * it.qty;
+
+        // 這裡用比較「不依賴 checkout.css 的 class」寫法：就算你 css 不全也會正常
+        const row = document.createElement("div");
+        row.className = "cart-line";
+        row.style.cssText = `
+          display:flex; align-items:center; gap:14px;
+          padding:14px 6px; border-bottom:1px solid rgba(0,0,0,.08);
+        `;
+
+        row.innerHTML = `
+          <div style="
+            width:56px; height:56px; border-radius:12px;
+            background:#f3f3f3 url('${img}') center/cover no-repeat;
+            flex:0 0 auto;
+          "></div>
+
+          <div style="flex:1; min-width:0; text-align:left;">
+            <div style="font-weight:900; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">
+              ${name}
+            </div>
+            ${vText ? `<div style="font-size:.85rem; color:#777; margin-top:4px;">${vText}</div>` : ""}
+            <div style="font-size:.9rem; color:#b0714d; font-weight:900; margin-top:6px;">
+              ${money(price)} × ${it.qty}
+            </div>
+          </div>
+
+          <div style="font-weight:900; white-space:nowrap;">
+            ${money(lineTotal)}
+          </div>
+        `;
+
+        cartLinesEl.appendChild(row);
+      });
+    }
+
+    function renderTotals(items) {
+      const { subtotal, shipping, grand } = calcTotals(items);
+
+      subtotalTextEl.textContent = money(subtotal);
+      shippingTextEl.textContent = shipping === 0 ? "免運" : money(shipping);
+      grandTextEl.textContent = money(grand);
+    }
+
+    function renderAll() {
+      const items = loadCheckoutItems();
+      renderLines(items);
+      renderTotals(items);
+    }
+
+    // 購買：簡單檢查地址 + 跳成功頁
+    buyBtn.addEventListener("click", () => {
+      const items = loadCheckoutItems();
+      if (!items.length) return;
+
+      const addr = (addressInput.value || "").trim();
+      if (!addr) {
+        alert("請先填寫收件地址喵～");
+        addressInput.focus();
+        return;
+      }
+
+      // 你若想把地址也帶到成功頁，可以存到 localStorage
+      localStorage.setItem("MEOW5_LAST_ADDRESS", addr);
+
+      // 可選：結帳成功後清空購物車
+      // localStorage.removeItem(CART_KEY);
+      // localStorage.removeItem(CHECKOUT_KEY);
+
+      location.href = "./checkout-success.html";
+    });
+
+    // 初次載入
+    renderAll();
+  </script>
 </body>
 </html>
+
+

@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>會員中心｜Meow5</title>
+
+  <!-- 字體：跟首頁一致（可留可不留） -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Luckiest+Guy&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg:#efeee9;
+      --bar:#d9cec3;
+      --drawer:#e7ded5;
+      --ink:#111;
+      --muted:rgba(0,0,0,.7);
+      --line:rgba(0,0,0,.14);
+      --shadow:0 12px 40px rgba(0,0,0,.18);
+      --headerH:64px;
+      --footerH:64px;
+
+      --r:18px;
+      --accent:#b0714d;
+      --btn:#cb997e;      /* 你們常用色 */
+      --panel:#eee6df;    /* 卡片底 */
+      --card:#ffffff;
+    }
+
+    *{box-sizing:border-box;}
+    body{
+      margin:0;
+      font-family: system-ui, "Noto Sans TC";
+      background: var(--bg);
+      color: var(--ink);
+      padding-top: var(--headerH);
+      padding-bottom: var(--footerH);
+    }
+    a{ color:inherit; }
+
+    /* ===== Fixed Header（跟首頁一樣） ===== */
+    .topbar{
+      position:fixed; top:0; left:0; right:0;
+      height: var(--headerH);
+      background: var(--bar);
+      display:grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items:center;
+      padding: 0 14px;
+      z-index: 100;
+    }
+    .topbar-left,.topbar-right{display:flex; align-items:center; gap:10px;}
+    .topbar-right{justify-content:flex-end;}
+    .brand{
+      font-family: "Luckiest Guy", cursive;
+      font-weight: 400;
+      font-style: normal;
+      color: var(--btn);
+      font-size: 34px;
+      letter-spacing: 2px;
+    }
+
+    .icon-btn{
+      width:44px;height:44px;border:none;background:transparent;
+      font-size:22px;cursor:pointer;line-height:1;
+      display:flex; align-items:center; justify-content:center;
+    }
+    .icon-link{
+      width:44px;height:44px;
+      display:flex; align-items:center; justify-content:center;
+      text-decoration:none;
+    }
+    .logo{
+      width: 80px;
+      height: 50px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      text-decoration:none;
+      margin-left: -20px;
+    }
+    .logo img{
+      width:100%;
+      height:100%;
+      object-fit:contain;
+      display:block;
+    }
+    .icon-img{
+      width: 50px;
+      height: 26px;
+      object-fit: contain;
+      display:block;
+    }
+    .icon-btn.icon-btn-img{ padding:0; }
+
+    /* ===== Fixed Footer（跟首頁一樣） ===== */
+    .footer-fixed{
+      position:fixed; bottom:0; left:0; right:0;
+      height: var(--footerH);
+      background: var(--bar);
+      display:flex; align-items:center; justify-content:space-between;
+      padding: 0 18px;
+      z-index: 100;
+      color: rgba(0,0,0,.75);
+      font-weight: 700;
+    }
+
+    /* ===== Overlay ===== */
+    .overlay{
+      position:fixed; inset:0;
+      background: rgba(0,0,0,.35);
+      z-index: 90;
+    }
+
+    /* ===== Drawer（跟首頁一樣） ===== */
+    .drawer{
+      position:fixed; top:0; left:0;
+      width:280px; height:100vh;
+      background: var(--drawer);
+      z-index: 95;
+      box-shadow: var(--shadow);
+      transform: translateX(-105%);
+      transition: transform .25s ease;
+      display:flex; flex-direction:column;
+    }
+    .drawer.open{ transform: translateX(0); }
+
+    .drawer-header{
+      height: var(--headerH);
+      display:flex; align-items:center; justify-content:space-between;
+      padding:0 14px;
+      border-bottom:1px solid var(--line);
+    }
+    .drawer-title{ font-weight:900; letter-spacing:2px; }
+
+    .drawer-nav{
+      padding:10px;
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+    }
+    .nav-item{
+      width:100%;
+      text-decoration:none;
+      color: var(--ink);
+      background: rgba(255,255,255,.35);
+      border:1px solid rgba(0,0,0,.06);
+      border-radius:10px;
+      padding:12px;
+      font-weight:800;
+      letter-spacing:1px;
+    }
+    button.nav-item{
+      -webkit-appearance: none;
+      appearance: none;
+      font: inherit;
+      color: inherit;
+      background: rgba(255,255,255,.35);
+      border: 1px solid rgba(0,0,0,.06);
+      border-radius: 10px;
+      padding: 12px;
+      width: 100%;
+      text-align: left;
+      font-weight: 800;
+      letter-spacing: 1px;
+      cursor: pointer;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+    }
+    .chev{
+      display:inline-block;
+      font-size:14px;
+      opacity:.8;
+      transform: rotate(-90deg);
+      transition: transform .2s ease;
+    }
+    #productToggle[aria-expanded="true"] .chev{ transform: rotate(0deg); }
+
+    .submenu{
+      padding-left:8px;
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+      margin:2px 0 6px;
+    }
+    .submenu[hidden]{ display:none; }
+
+    .nav-subitem{
+      text-decoration:none;
+      color: var(--muted);
+      background: rgba(255,255,255,.28);
+      border:1px solid rgba(0,0,0,.06);
+      border-radius:10px;
+      padding:10px 12px;
+      font-weight:700;
+    }
+
+    /* ===== Search（跟首頁一樣） ===== */
+    .search-panel{
+      position:fixed; inset:0; z-index:95;
+      display:none;
+      align-items:flex-start; justify-content:center;
+      padding-top: calc(var(--headerH) + 14px);
+    }
+    .search-panel.open{ display:flex; }
+    .search-box{
+      width: min(720px, calc(100% - 28px));
+      background:#f5f1ee;
+      border:1px solid rgba(0,0,0,.10);
+      border-radius:14px;
+      box-shadow: var(--shadow);
+      padding:14px;
+    }
+    .search-head{ display:flex; align-items:center; justify-content:space-between; margin-bottom:10px; }
+    .search-title{ font-weight:900; letter-spacing:2px; }
+    .search-input{
+      width:100%; height:44px;
+      border-radius:10px;
+      border:1px solid rgba(0,0,0,.18);
+      padding: 0 12px;
+      font-size:16px;
+      outline:none;
+    }
+    .search-results{ margin-top:12px; display:flex; flex-direction:column; gap:8px; max-height:320px; overflow:auto; }
+    .search-item{
+      display:flex; align-items:center; justify-content:space-between;
+      gap:10px;
+      padding:10px 12px;
+      border-radius:12px;
+      background: rgba(0,0,0,.05);
+      cursor:pointer;
+    }
+    .search-item:hover{ filter: brightness(.98); }
+    .search-item .name{ font-weight:900; }
+    .search-item .meta{ color: rgba(0,0,0,.6); font-weight:700; }
+
+    /* ===== 會員頁內容（保留你原本的樣子） ===== */
+    .page{
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 18px 18px 60px;
+    }
+
+    .container{
+      display:grid;
+      grid-template-columns: 320px 1fr;
+      gap: 22px;
+      align-items:start;
+    }
+
+    .asideCard{
+      background: var(--panel);
+      border-radius: var(--r);
+      padding: 16px;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:12px;
+    }
+    .member-card{
+      width: 100%;
+      border-radius: var(--r);
+      overflow:hidden;
+      background: #fff;
+      display:block;
+      object-fit: cover;
+    }
+    .asideCard p{
+      margin:0;
+      font-weight: 900;
+      letter-spacing: 1px;
+      color: rgba(0,0,0,.75);
+    }
+
+    .section-round{
+      background: var(--panel);
+      border-radius: var(--r);
+      padding: 14px;
+      margin-bottom: 14px;
+    }
+
+    .user-header{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      min-height: 70px;
+    }
+    .avatar-circle{
+      width:46px; height:46px;
+      border-radius:999px;
+      background: rgba(0,0,0,.08);
+      flex: 0 0 auto;
+    }
+    .user-email{
+      font-weight: 900;
+      letter-spacing: .5px;
+      color: rgba(0,0,0,.8);
+      overflow:hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .order-status, .record-links{
+      display:grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap:10px;
+      text-align:center;
+    }
+    .order-status a, .record-links a{
+      text-decoration:none;
+      background: rgba(255,255,255,.55);
+      border-radius: 14px;
+      padding: 10px 8px;
+      font-weight: 900;
+      letter-spacing: .5px;
+      color: rgba(0,0,0,.8);
+    }
+    .order-status a span, .record-links a span{
+      display:block;
+      font-size: 18px;
+      color: var(--accent);
+      margin-bottom: 2px;
+    }
+
+    .group-title{
+      margin: 18px 6px 10px;
+      font-size: 18px;
+      font-weight: 1000;
+      letter-spacing: 2px;
+    }
+
+    .list-links{
+      padding: 10px;
+    }
+    .list-links a{
+      display:block;
+      text-decoration:none;
+      padding: 12px 12px;
+      border-radius: 14px;
+      background: rgba(255,255,255,.55);
+      font-weight: 900;
+      margin: 8px 0;
+    }
+
+    .service-section{
+      display:grid;
+      grid-template-columns: 160px 1fr;
+      gap: 14px;
+      align-items:start;
+    }
+    .support-link{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      text-decoration:none;
+      background: rgba(255,255,255,.55);
+      border-radius: 16px;
+      font-weight: 1000;
+      padding: 14px 10px;
+      min-height: 120px;
+    }
+
+    .feedback-container{
+      background: rgba(255,255,255,.55);
+      border-radius: 16px;
+      padding: 14px;
+    }
+    .feedback-label{
+      margin: 0 0 8px;
+      font-weight: 1000;
+      letter-spacing: 1px;
+    }
+    textarea{
+      width:100%;
+      min-height: 110px;
+      resize: vertical;
+      border-radius: 14px;
+      border: none;
+      outline:none;
+      padding: 12px;
+      background: #fff;
+      font-size: 14px;
+    }
+    .button-wrapper{
+      display:flex;
+      justify-content:flex-end;
+      margin-top: 10px;
+    }
+
+    /* ✅ 送出評論按鈕：更貼你們風格（純色、圓角、乾淨） */
+    .send-btn{
+      border:none;
+      border-radius: 999px;
+      padding: 10px 18px;
+      background: var(--btn);
+      color: #fff;
+      font-weight: 1000;
+      letter-spacing: 2px;
+      cursor:pointer;
+    }
+    .send-btn:hover{ filter: brightness(.98); }
+
+    .logout-area{
+      display:flex;
+      justify-content:flex-end;
+      margin-top: 16px;
+    }
+    .logout-btn{
+      border:none;
+      border-radius: 999px;
+      padding: 10px 18px;
+      background: rgba(255,255,255,.75);
+      color: rgba(0,0,0,.85);
+      font-weight: 1000;
+      cursor:pointer;
+    }
+
+    /* ===== 登入區（若未登入才顯示） ===== */
+    .auth{
+      background: var(--panel);
+      border-radius: var(--r);
+      padding: 16px;
+      margin-bottom: 14px;
+    }
+    .auth h2{
+      margin: 0 0 10px;
+      font-size: 18px;
+      font-weight: 1000;
+      letter-spacing: 2px;
+    }
+    .auth .row{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    .auth input{
+      width:100%;
+      height: 44px;
+      border-radius: 14px;
+      border: none;
+      padding: 0 12px;
+      outline:none;
+      background:#fff;
+      font-size:14px;
+    }
+    .auth .actions{
+      display:flex;
+      gap:10px;
+      justify-content:flex-end;
+      margin-top: 10px;
+      flex-wrap:wrap;
+    }
+    .btn{
+      border:none;
+      border-radius: 999px;
+      padding: 10px 16px;
+      font-weight: 1000;
+      cursor:pointer;
+    }
+    .btn.primary{ background: var(--btn); color:#fff; }
+    .btn.ghost{ background: rgba(255,255,255,.75); }
+
+    @media (max-width: 980px){
+      .container{ grid-template-columns: 1fr; }
+      .service-section{ grid-template-columns: 1fr; }
+      .support-link{ min-height: 64px; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ===== Fixed Header ===== -->
+  <header class="topbar">
+    <div class="topbar-left">
+      <button class="icon-btn" id="menuBtn" aria-label="開啟導覽" aria-controls="drawer" aria-expanded="false">☰</button>
+      <a class="logo" href="./index.html" aria-label="回到首頁">
+        <img src="image/logo.png" alt="Meow5 Logo">
+      </a>
+    </div>
+
+    <div class="brand">Meow5</div>
+
+    <div class="topbar-right">
+      <button class="icon-btn icon-btn-img" id="searchBtn" aria-label="搜尋">
+        <img class="icon-img" src="image/search.png" alt="">
+      </button>
+
+      <a class="icon-link" href="./member.html" aria-label="會員中心">
+        <img class="icon-img" src="image/member.png" alt="">
+      </a>
+
+      <a class="icon-link" href="./cart.html" aria-label="購物車">
+        <img class="icon-img" src="image/cart.png" alt="">
+      </a>
+    </div>
+  </header>
+
+  <!-- ===== Fixed Footer ===== -->
+  <footer class="footer-fixed">
+    <div>© 2025 Meow5</div>
+    <div>service@meow5.tw｜版權資訊</div>
+  </footer>
+
+  <!-- ===== Overlay（drawer/search 共用） ===== -->
+  <div class="overlay" id="overlay" hidden></div>
+
+  <!-- ===== Drawer ===== -->
+  <aside class="drawer" id="drawer" aria-hidden="true">
+    <div class="drawer-header">
+      <div class="drawer-title">導覽</div>
+      <button class="icon-btn" id="closeBtn" aria-label="關閉導覽">✕</button>
+    </div>
+
+    <nav class="drawer-nav">
+      <button class="nav-item" id="productToggle" aria-expanded="false">
+        <span>商品</span><span class="chev">▾</span>
+      </button>
+
+      <div class="submenu" id="productSubmenu" hidden>
+        <a class="nav-subitem" href="./products.html">全部商品</a>
+        <a class="nav-subitem" href="./products.html?theme=生活用品">生活用品</a>
+        <a class="nav-subitem" href="./products.html?theme=玩具">玩具</a>
+        <a class="nav-subitem" href="./products.html?theme=服飾">服飾</a>
+      </div>
+
+      <a class="nav-item" href="./member.html">會員中心</a>
+      <a class="nav-item" href="./favorites.html">收藏清單</a>
+      <a class="nav-item" href="./faq.html">FAQ</a>
+      <a class="nav-item" href="./about.html">關於我們</a>
+      <a class="nav-item" href="./contact.html">聯絡我們</a>
+    </nav>
+  </aside>
+
+  <!-- ===== Search Panel ===== -->
+  <section class="search-panel" id="searchPanel" aria-hidden="true">
+    <div class="search-box">
+      <div class="search-head">
+        <div class="search-title">搜尋商品</div>
+        <button class="icon-btn" id="searchCloseBtn" aria-label="關閉搜尋">✕</button>
+      </div>
+
+      <input id="searchInput" class="search-input" type="text" placeholder="輸入商品名稱…">
+      <div class="search-results" id="searchResults"></div>
+    </div>
+  </section>
+
+  <!-- ===== Main ===== -->
+  <main class="page">
+    <div class="container">
+
+      <!-- 左側會員卡 -->
+      <aside>
+        <div class="asideCard">
+          <img src="image/Card.png" alt="MEOW⁵ Membership Card" class="member-card" onerror="this.style.display='none'">
+          <p>會員卡</p>
+        </div>
+      </aside>
+
+      <!-- 右側內容 -->
+      <main>
+
+        <!-- 未登入：顯示登入區 -->
+        <section class="auth" id="authBox" hidden>
+          <h2>登入會員</h2>
+          <div class="row">
+            <input id="emailInput" type="email" placeholder="Email">
+            <input id="pwdInput" type="password" placeholder="Password">
+          </div>
+          <div class="actions">
+            <button class="btn ghost" type="button" id="demoBtn">快速示範登入</button>
+            <button class="btn primary" type="button" id="loginBtn">登入</button>
+          </div>
+          <div style="margin-top:10px;color:rgba(0,0,0,.65);font-weight:800;font-size:13px;">
+          </div>
+        </section>
+
+        <!-- 已登入：顯示會員中心 -->
+        <section id="memberBox">
+
+          <section class="section-round user-header">
+            <div class="avatar-circle"></div>
+            <span class="user-email" id="userEmail">未登入</span>
+          </section>
+
+          <section class="section-round order-status">
+            <a href="./orders.html"><span id="c1">0</span>待出貨</a>
+            <a href="./orders.html"><span id="c2">0</span>已出貨</a>
+            <a href="./orders.html"><span id="c3">0</span>待取件</a>
+            <a href="./orders.html"><span id="c4">0</span>待評價</a>
+          </section>
+
+          <section class="section-round record-links">
+            <a href="./coupons.html"><span>0</span>優惠券</a>
+            <a href="./history.html"><span>0</span>紀錄</a>
+            <a href="./notifications.html"><span>0</span>通知</a>
+            <a href="./favorites.html"><span>0</span>收藏</a>
+          </section>
+
+          <h2 class="group-title">設定</h2>
+          <section class="section-round list-links">
+            <a href="./profile.html">基本資料</a>
+            <a href="./membership.html">會員制度</a>
+            <a href="./address.html">收件地址</a>
+            <a href="./privacy.html">隱私權說明</a>
+          </section>
+
+          <h2 class="group-title">服務</h2>
+          <section class="section-round service-section">
+            <a href="./support.html" class="support-link">客服</a>
+
+            <div class="feedback-container">
+              <p class="feedback-label">意見回覆</p>
+              <textarea id="feedbackText" placeholder="請輸入您的意見..."></textarea>
+              <div class="button-wrapper">
+                <button type="button" class="send-btn" id="sendBtn">送出</button>
+              </div>
+            </div>
+          </section>
+
+          <div class="logout-area">
+            <button class="logout-btn" id="logoutBtn">登出</button>
+          </div>
+
+        </section>
+      </main>
+    </div>
+  </main>
+
+  <!-- 你首頁本來就有 products-data.js（搜尋用），這裡也沿用 -->
+  <script src="./products-data.js"></script>
+
+  <script>
+    // ===== Drawer =====
+    const menuBtn = document.getElementById("menuBtn");
+    const closeBtn = document.getElementById("closeBtn");
+    const drawer = document.getElementById("drawer");
+    const overlay = document.getElementById("overlay");
+
+    const productToggle = document.getElementById("productToggle");
+    const productSubmenu = document.getElementById("productSubmenu");
+
+    function openDrawer() {
+      drawer.classList.add("open");
+      drawer.setAttribute("aria-hidden", "false");
+      overlay.hidden = false;
+      menuBtn.setAttribute("aria-expanded", "true");
+      document.body.style.overflow = "hidden";
+    }
+    function closeDrawer() {
+      drawer.classList.remove("open");
+      drawer.setAttribute("aria-hidden", "true");
+      menuBtn.setAttribute("aria-expanded", "false");
+      overlay.hidden = true;
+      document.body.style.overflow = "";
+    }
+    menuBtn.addEventListener("click", openDrawer);
+    closeBtn.addEventListener("click", closeDrawer);
+
+    (function initProductSubmenu() {
+      productToggle.setAttribute("aria-expanded", "false");
+      productSubmenu.hidden = true;
+      productToggle.addEventListener("click", () => {
+        const expanded = productToggle.getAttribute("aria-expanded") === "true";
+        productToggle.setAttribute("aria-expanded", String(!expanded));
+        productSubmenu.hidden = expanded;
+      });
+    })();
+
+    overlay.addEventListener("click", () => {
+      if (drawer.classList.contains("open")) closeDrawer();
+      if (searchPanel.classList.contains("open")) closeSearch();
+    });
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") {
+        if (drawer.classList.contains("open")) closeDrawer();
+        if (searchPanel.classList.contains("open")) closeSearch();
+      }
+    });
+
+    // ===== Search =====
+    const searchBtn = document.getElementById("searchBtn");
+    const searchPanel = document.getElementById("searchPanel");
+    const searchCloseBtn = document.getElementById("searchCloseBtn");
+    const searchInput = document.getElementById("searchInput");
+    const searchResults = document.getElementById("searchResults");
+
+    function openSearch(){
+      searchPanel.classList.add("open");
+      searchPanel.setAttribute("aria-hidden","false");
+      overlay.hidden = false;
+      document.body.style.overflow = "hidden";
+      searchInput.value = "";
+      searchResults.innerHTML = "";
+      setTimeout(()=>searchInput.focus(), 0);
+    }
+    function closeSearch(){
+      searchPanel.classList.remove("open");
+      searchPanel.setAttribute("aria-hidden","true");
+      if(!drawer.classList.contains("open")) overlay.hidden = true;
+      document.body.style.overflow = "";
+    }
+
+    searchBtn.addEventListener("click", openSearch);
+    searchCloseBtn.addEventListener("click", closeSearch);
+
+    function renderSearchResults(list){
+      searchResults.innerHTML = "";
+      if(list.length === 0){
+        searchResults.innerHTML = `<div style="color:rgba(0,0,0,.6);font-weight:800;padding:8px 4px;">找不到符合的商品</div>`;
+        return;
+      }
+      list.slice(0,8).forEach(p => {
+        const item = document.createElement("div");
+        item.className = "search-item";
+        item.innerHTML = `<div class="name">${p.name}</div><div class="meta">$${p.price}｜${p.theme}</div>`;
+        item.addEventListener("click", () => location.href = `product-detail.html?id=${p.id}`);
+        searchResults.appendChild(item);
+      });
+    }
+
+    searchInput.addEventListener("input", () => {
+      const q = searchInput.value.trim().toLowerCase();
+      if(!q){ searchResults.innerHTML = ""; return; }
+      const filtered = (window.PRODUCTS || []).filter(p => (p.name || "").toLowerCase().includes(q));
+      renderSearchResults(filtered);
+    });
+
+    // ===== 會員登入（localStorage 模擬） =====
+    const authBox = document.getElementById("authBox");
+    const memberBox = document.getElementById("memberBox");
+    const userEmailEl = document.getElementById("userEmail");
+
+    function isLoggedIn(){
+      return localStorage.getItem("isLoggedIn") === "true";
+    }
+    function refreshMemberUI(){
+      if(isLoggedIn()){
+        authBox.hidden = true;
+        memberBox.hidden = false;
+        userEmailEl.textContent = localStorage.getItem("userEmail") || "會員";
+      }else{
+        authBox.hidden = false;
+        memberBox.hidden = true;
+      }
+    }
+
+    document.getElementById("demoBtn").addEventListener("click", () => {
+      localStorage.setItem("isLoggedIn","true");
+      localStorage.setItem("userEmail","demo@meow5.tw");
+      refreshMemberUI();
+    });
+
+    document.getElementById("loginBtn").addEventListener("click", () => {
+      const email = document.getElementById("emailInput").value.trim();
+      const pwd = document.getElementById("pwdInput").value.trim();
+      if(!email || !pwd){
+        alert("請輸入 Email 與密碼");
+        return;
+      }
+      localStorage.setItem("isLoggedIn","true");
+      localStorage.setItem("userEmail", email);
+      refreshMemberUI();
+    });
+
+    document.getElementById("logoutBtn").addEventListener("click", () => {
+      localStorage.removeItem("isLoggedIn");
+      localStorage.removeItem("userEmail");
+      refreshMemberUI();
+    });
+
+    // ===== 意見回覆 =====
+    document.getElementById("sendBtn").addEventListener("click", () => {
+      const t = document.getElementById("feedbackText").value.trim();
+      if(!t){ alert("請先輸入內容再送出"); return; }
+      // 你之後要接後端，可以把 t 傳出去
+      alert("收到你的意見了，謝謝你！");
+      document.getElementById("feedbackText").value = "";
+    });
+
+    refreshMemberUI();
+  </script>
+</body>
+</html>

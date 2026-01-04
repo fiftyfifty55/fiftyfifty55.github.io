@@ -3,16 +3,206 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>商品頁</title>
+  <title>商品頁｜Meow5</title>
+
+  <!-- 如果你首頁有用 Luckiest Guy，這裡也一起引入 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Luckiest+Guy&display=swap" rel="stylesheet">
+
   <link rel="stylesheet" href="./products.css">
 </head>
-<body>
-  
-  <div class="wrap">
-    <div id="themesContainer"></div>
-  </div>
 
+<body>
+  <!-- ===== Fixed Header（同首頁） ===== -->
+  <header class="topbar">
+    <div class="topbar-left">
+      <button class="icon-btn" id="menuBtn" aria-label="開啟導覽" aria-controls="drawer" aria-expanded="false">☰</button>
+
+      <!-- Logo -->
+      <a class="logo" href="./index.html" aria-label="回到首頁">
+        <img src="image/logo.png" alt="Meow5 Logo">
+      </a>
+    </div>
+
+    <div class="brand">Meow5</div>
+
+    <div class="topbar-right">
+      <button class="icon-btn icon-btn-img" id="searchBtn" aria-label="搜尋">
+        <img class="icon-img" src="image/search.png" alt="">
+      </button>
+
+      <a class="icon-link" href="./member.html" aria-label="會員中心">
+        <img class="icon-img" src="image/member.png" alt="">
+      </a>
+
+      <a class="icon-link" href="./cart.html" aria-label="購物車">
+        <img class="icon-img" src="image/cart.png" alt="">
+      </a>
+    </div>
+  </header>
+
+  <!-- ===== Overlay ===== -->
+  <div class="overlay" id="overlay" hidden></div>
+
+  <!-- ===== Drawer ===== -->
+  <aside class="drawer" id="drawer" aria-hidden="true">
+    <div class="drawer-header">
+      <div class="drawer-title">導覽</div>
+      <button class="icon-btn" id="closeBtn" aria-label="關閉導覽">✕</button>
+    </div>
+
+    <nav class="drawer-nav">
+      <button class="nav-item nav-accordion" id="productToggle" aria-expanded="false">
+        <span>商品</span><span class="chev">▾</span>
+      </button>
+
+      <div class="submenu" id="productSubmenu" hidden>
+        <a class="nav-subitem" href="./products.html">全部商品</a>
+        <a class="nav-subitem" href="./products.html?theme=生活用品">生活用品</a>
+        <a class="nav-subitem" href="./products.html?theme=玩具">玩具</a>
+        <a class="nav-subitem" href="./products.html?theme=服飾">服飾</a>
+      </div>
+
+      <a class="nav-item" href="./member.html">會員中心</a>
+      <a class="nav-item" href="./favorites.html">收藏清單</a>
+      <a class="nav-item" href="./faq.html">FAQ</a>
+      <a class="nav-item" href="./about.html">關於我們</a>
+      <a class="nav-item" href="./contact.html">聯絡我們</a>
+    </nav>
+  </aside>
+
+  <!-- ===== Search Panel ===== -->
+  <section class="search-panel" id="searchPanel" aria-hidden="true">
+    <div class="search-box">
+      <div class="search-head">
+        <div class="search-title">搜尋商品</div>
+        <button class="icon-btn" id="searchCloseBtn" aria-label="關閉搜尋">✕</button>
+      </div>
+
+      <input id="searchInput" class="search-input" type="text" placeholder="輸入商品名稱…">
+      <div class="search-results" id="searchResults"></div>
+    </div>
+  </section>
+
+  <!-- ===== Page Content ===== -->
+  <main class="wrap">
+    <div id="themesContainer"></div>
+  </main>
+
+  <!-- Data + Page JS -->
   <script src="./products-data.js"></script>
   <script src="./products-page.js"></script>
+
+  <!-- ===== 導覽列 + 搜尋（同首頁） ===== -->
+  <script>
+    // ===== Drawer =====
+    const menuBtn = document.getElementById("menuBtn");
+    const closeBtn = document.getElementById("closeBtn");
+    const drawer = document.getElementById("drawer");
+    const overlay = document.getElementById("overlay");
+
+    const productToggle = document.getElementById("productToggle");
+    const productSubmenu = document.getElementById("productSubmenu");
+
+    function openDrawer() {
+      drawer.classList.add("open");
+      drawer.setAttribute("aria-hidden", "false");
+      overlay.hidden = false;
+      menuBtn.setAttribute("aria-expanded", "true");
+      document.body.style.overflow = "hidden";
+    }
+
+    function closeDrawer() {
+      drawer.classList.remove("open");
+      drawer.setAttribute("aria-hidden", "true");
+      menuBtn.setAttribute("aria-expanded", "false");
+      if (!document.getElementById("searchPanel").classList.contains("open")) overlay.hidden = true;
+      document.body.style.overflow = "";
+    }
+
+    menuBtn.addEventListener("click", openDrawer);
+    closeBtn.addEventListener("click", closeDrawer);
+
+    (function initProductSubmenu() {
+      productToggle.setAttribute("aria-expanded", "false");
+      productSubmenu.hidden = true;
+
+      productToggle.addEventListener("click", () => {
+        const expanded = productToggle.getAttribute("aria-expanded") === "true";
+        productToggle.setAttribute("aria-expanded", String(!expanded));
+        productSubmenu.hidden = expanded;
+
+        const chev = productToggle.querySelector(".chev");
+        if (chev) chev.textContent = expanded ? "▾" : "▴";
+      });
+    })();
+
+    // overlay click
+    overlay.addEventListener("click", () => {
+      if (drawer.classList.contains("open")) closeDrawer();
+      const sp = document.getElementById("searchPanel");
+      if (sp.classList.contains("open")) closeSearch();
+    });
+
+    // ESC
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") {
+        if (drawer.classList.contains("open")) closeDrawer();
+        const sp = document.getElementById("searchPanel");
+        if (sp.classList.contains("open")) closeSearch();
+      }
+    });
+
+    // ===== Search =====
+    const searchBtn = document.getElementById("searchBtn");
+    const searchPanel = document.getElementById("searchPanel");
+    const searchCloseBtn = document.getElementById("searchCloseBtn");
+    const searchInput = document.getElementById("searchInput");
+    const searchResults = document.getElementById("searchResults");
+
+    function openSearch() {
+      searchPanel.classList.add("open");
+      searchPanel.setAttribute("aria-hidden", "false");
+      overlay.hidden = false;
+      document.body.style.overflow = "hidden";
+      searchInput.value = "";
+      searchResults.innerHTML = "";
+      setTimeout(() => searchInput.focus(), 0);
+    }
+
+    function closeSearch() {
+      searchPanel.classList.remove("open");
+      searchPanel.setAttribute("aria-hidden", "true");
+      if (!drawer.classList.contains("open")) overlay.hidden = true;
+      document.body.style.overflow = "";
+    }
+
+    searchBtn.addEventListener("click", openSearch);
+    searchCloseBtn.addEventListener("click", closeSearch);
+
+    function renderSearchResults(list) {
+      searchResults.innerHTML = "";
+      if (list.length === 0) {
+        searchResults.innerHTML = `<div style="color:rgba(0,0,0,.6);font-weight:700;padding:8px 4px;">找不到符合的商品</div>`;
+        return;
+      }
+      list.slice(0, 8).forEach(p => {
+        const item = document.createElement("div");
+        item.className = "search-item";
+        item.innerHTML = `<div class="name">${p.name}</div><div class="meta">$${p.price}｜${p.theme}</div>`;
+        item.addEventListener("click", () => location.href = `product-detail.html?id=${encodeURIComponent(p.id)}`);
+        searchResults.appendChild(item);
+      });
+    }
+
+    searchInput.addEventListener("input", () => {
+      const q = searchInput.value.trim().toLowerCase();
+      if (!q) { searchResults.innerHTML = ""; return; }
+      const filtered = (window.PRODUCTS || []).filter(p => (p.name || "").toLowerCase().includes(q));
+      renderSearchResults(filtered);
+    });
+  </script>
 </body>
 </html>
+

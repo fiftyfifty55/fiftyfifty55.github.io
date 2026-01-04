@@ -8,6 +8,12 @@
   --shadow:0 12px 40px rgba(0,0,0,.18);
   --headerH:64px;
   --footerH:64px;
+
+  /* ✅ 新增：卡片圓角 */
+  --r:18px;
+
+  /* ✅ 你商品詳情常用的重點色 */
+  --accent:#b0714d;
 }
 
 *{box-sizing:border-box;}
@@ -56,14 +62,12 @@ body{
   text-decoration:none;
   margin-left: -20px;
 }
-
 .logo img{
   width:100%;
   height:100%;
   object-fit:contain;
   display:block;
 }
-
 
 .brand{
   font-family: "Luckiest Guy", cursive;
@@ -73,7 +77,7 @@ body{
   font-size: 34px;
   letter-spacing: 2px;
 }
-/* 原本 .icon-btn / .icon-link 留著 */
+
 .icon-btn,
 .icon-link{
   width:44px;
@@ -82,23 +86,15 @@ body{
   align-items:center;
   justify-content:center;
 }
-
-/* 新增：圖片 icon 統一尺寸 */
 .icon-img{
-  width: 50px;     /* 想大一點就改 28~32 */
+  width: 50px;
   height: 26px;
   object-fit: contain;
   display:block;
 }
-
-/* 讓 button 裡面放 img 時不要有預設 padding 影響 */
 .icon-btn.icon-btn-img{
   padding:0;
 }
-
-
-
-
 
 /* ===== fixed footer ===== */
 .footer-fixed{
@@ -147,7 +143,6 @@ body{
   gap:6px;
 }
 
-/* 商品 / 會員中心 / FAQ... 這些主要按鈕 */
 .nav-item{
   width:100%;
   text-decoration:none;
@@ -160,27 +155,22 @@ body{
   letter-spacing:1px;
 }
 
-/* 讓「商品」這個按鈕（button）看起來跟 a.nav-item 一樣 */
 button.nav-item{
   -webkit-appearance: none;
   appearance: none;
-  font: inherit;              /* ✅ 字型/大小跟父層一致 */
+  font: inherit;
   color: inherit;
-
   background: rgba(255,255,255,.35);
   border: 1px solid rgba(0,0,0,.06);
   border-radius: 10px;
   padding: 12px;
   width: 100%;
   text-align: left;
-
   font-weight: 800;
   letter-spacing: 1px;
-
   cursor: pointer;
 }
 
-/* 商品那列：文字＋箭頭在同一排 */
 .nav-accordion{
   display:flex;
   align-items:center;
@@ -188,7 +178,6 @@ button.nav-item{
   cursor:pointer;
 }
 
-/* 箭頭：預設收起時指向右（或你要的方向） */
 .chev{
   display:inline-block;
   font-size:14px;
@@ -196,13 +185,10 @@ button.nav-item{
   transform: rotate(-90deg);
   transition: transform .2s ease;
 }
-
-/* 當 aria-expanded=true 時，箭頭轉回來（展開） */
 #productToggle[aria-expanded="true"] .chev{
   transform: rotate(0deg);
 }
 
-/* 子選單容器 */
 .submenu{
   padding-left:8px;
   display:flex;
@@ -210,11 +196,8 @@ button.nav-item{
   gap:6px;
   margin:2px 0 6px;
 }
-
-/* ✅ 這行很重要：hidden 才會真的隱藏 */
 .submenu[hidden]{ display:none; }
 
-/* 子選單項目 */
 .nav-subitem{
   text-decoration:none;
   color: var(--muted);
@@ -225,7 +208,6 @@ button.nav-item{
   font-weight:700;
 }
 
-/* 展開時的小動畫（可要可不要） */
 .submenu:not([hidden]){
   animation: submenuFadeIn .25s ease both;
 }
@@ -277,8 +259,11 @@ button.nav-item{
 .hero{ position:relative; }
 .hero-stage{
   height: 280px;
-  border-radius: 0;
+
+  /* ✅ 圓角 + 真的能放照片 */
+  border-radius: var(--r);
   overflow:hidden;
+
   background: #e6ded6;
   display:flex;
   align-items:center;
@@ -292,6 +277,7 @@ button.nav-item{
   object-fit: cover;
   display:block;
 }
+
 .hotspot{
   position:absolute;
   width:16px; height:16px;
@@ -300,13 +286,14 @@ button.nav-item{
   cursor:pointer;
   transform: translate(-50%, -50%);
 }
+
 .product-pop{
   position:absolute;
   min-width: 160px;
   background: #bda394;
   color: #141414;
   padding: 10px 10px;
-  border-radius: 10px;
+  border-radius: 12px;
   font-size: 13px;
   font-weight: 800;
   box-shadow: var(--shadow);
@@ -314,17 +301,6 @@ button.nav-item{
 }
 .product-pop .small{ font-weight:700; opacity:.9; margin-top:6px; }
 
-.bubble{
-  position:absolute;
-  right: 20px;
-  top: 16px;
-  background:#bda394;
-  padding: 10px 12px;
-  border-radius: 10px;
-  font-size: 12px;
-  font-weight: 800;
-  color:#1a1a1a;
-}
 .hero-dots{
   margin-top: 10px;
   display:flex;
@@ -338,12 +314,15 @@ button.nav-item{
 }
 .hero-dot.active{ background: rgba(0,0,0,.55); }
 
+
+
 /* ===== marquee ===== */
 .marquee{
   margin-top: 14px;
   background: #eee6df;
   padding: 12px 0;
   overflow:hidden;
+  border-radius: var(--r);
 }
 .marquee-track{
   display:flex;
@@ -376,6 +355,9 @@ button.nav-item{
   background: #d8d0c8;
   display:flex; align-items:center; justify-content:center;
   overflow:hidden;
+
+  /* ✅ 圓角 */
+  border-radius: var(--r);
 }
 .cat-img{
   width:100%;
@@ -390,7 +372,7 @@ button.nav-item{
   letter-spacing:1px;
 }
 
-/* ===== section title (推薦商品) ===== */
+/* ===== section title ===== */
 .rec{ margin-top: 26px; }
 .section-title{
   display:flex;
@@ -420,28 +402,47 @@ button.nav-item{
 .hscroll::-webkit-scrollbar{ height: 8px; }
 .hscroll::-webkit-scrollbar-thumb{ background: rgba(0,0,0,.18); border-radius: 999px; }
 
-.pcard{
+/* ✅ 商品卡（接近商品詳情頁的卡片感） */
+.p-card{
   width: 220px;
   flex: 0 0 auto;
   scroll-snap-align: start;
-  cursor:pointer;
-}
-.pcard .img{
-  width: 220px;
-  height: 180px;
-  background: #d8d0c8;
+
+  display:block;
+  text-decoration:none;
+  color: inherit;
+
+  border-radius: var(--r);
   overflow:hidden;
+  background: rgba(255,255,255,.65);
+  border: 1px solid rgba(0,0,0,.08);
+  cursor: pointer;
 }
-.pcard img{ width:100%; height:100%; object-fit:cover; display:block; }
-.pcard .name{
-  margin-top: 10px;
+
+.p-img{
+  width:100%;
+  height: 170px;
+  background: #d8d0c8;
+  background-size: cover;
+  background-position: center;
+}
+
+.p-body{
+  padding: 12px 12px 14px;
+}
+.p-name{
   font-weight: 900;
-  letter-spacing:1px;
+  letter-spacing: .5px;
+  font-size: 13px;
+  white-space: nowrap;
+  overflow:hidden;
+  text-overflow: ellipsis;
 }
-.pcard .price{
+.p-price{
   margin-top: 6px;
-  font-weight: 800;
-  color: rgba(0,0,0,.65);
+  font-weight: 900;
+  color: var(--accent);
+  font-size: 13px;
 }
 
 /* ===== latest mosaic ===== */
@@ -452,6 +453,8 @@ button.nav-item{
   gap: 18px;
   align-items: stretch;
 }
+
+/* 左上大塊 */
 .latest-left{
   position: relative;
   min-height: 220px;
@@ -459,8 +462,20 @@ button.nav-item{
   display:flex;
   align-items:center;
   justify-content:center;
+
+  /* ✅ 圓角 */
+  border-radius: var(--r);
+  overflow:hidden;
 }
-.latest-photo{ font-weight:900; color: rgba(0,0,0,.55); }
+
+/* ✅ 最新區照片（共用） */
+.latest-img{
+  width:100%;
+  height:100%;
+  object-fit: cover;
+  display:block;
+}
+
 .latest-label{
   position:absolute;
   left: 20px;
@@ -468,33 +483,31 @@ button.nav-item{
   font-size: 34px;
   font-weight: 900;
   line-height: 1.1;
+
+  
+  padding: 10px 12px;
+  border-radius: 14px;
 }
+
 .latest-card-slot{
-  background: #d8d0c8;
   display:flex;
-  align-items:center;
+  align-items:stretch;
   justify-content:center;
   min-height: 220px;
 }
+
+/* 中間寬照片 */
 .latest-wide-photo{
   grid-column: 1 / 2;
-  background: #d8d0c8;
   min-height: 180px;
+  background:#d8d0c8;
   display:flex;
   align-items:center;
   justify-content:center;
-  font-weight:900;
-  color: rgba(0,0,0,.55);
-}
-.latest-small-photo{
-  grid-column: 2 / 3;
-  background: #d8d0c8;
-  min-height: 120px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-weight:900;
-  color: rgba(0,0,0,.55);
+
+  /* ✅ 圓角 */
+  border-radius: var(--r);
+  overflow:hidden;
 }
 
 /* ===== top button ===== */

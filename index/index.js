@@ -1,3 +1,37 @@
+/* =========================
+   Meow5 index.js（完善版）
+   - 統一圖片路徑：image/ 資料夾
+   - 商品卡/最新區/推薦區全部能顯示圖
+========================= */
+
+/** ✅ 圖片路徑修正：允許 http、允許已經帶 image/ 的字串 */
+function resolveImg(src){
+  if(!src) return "image/no-image.png";
+  const s = String(src);
+
+  if(s.startsWith("http")) return s;
+  if(s.startsWith("image/")) return s;     // 已經是 image/xxx 就不要再補
+  return "image/" + s;                     // 否則補上 image/
+}
+
+/** ✅ 取商品縮圖：支援 p.images[] 或舊的 p.image */
+function getProductThumb(p){
+  if(!p) return "image/no-image.png";
+
+  // 新版資料：images: ["1.png","2.png"...]
+  if(Array.isArray(p.images) && p.images.length > 0){
+    return resolveImg(p.images[0]);
+  }
+
+  // 舊版資料：image: "xxx.png"
+  if(p.image){
+    return resolveImg(p.image);
+  }
+
+  return "image/no-image.png";
+}
+
+
 // ===== Drawer =====
 const menuBtn = document.getElementById("menuBtn");
 const closeBtn = document.getElementById("closeBtn");
@@ -24,7 +58,6 @@ function closeDrawer() {
   document.body.style.overflow = "";
 }
 
-// Drawer 開關
 menuBtn.addEventListener("click", openDrawer);
 closeBtn.addEventListener("click", closeDrawer);
 
@@ -46,14 +79,18 @@ closeBtn.addEventListener("click", closeDrawer);
   });
 })();
 
-// 點 overlay 關閉 drawer
+// 點 overlay 關閉 drawer/search
 overlay.addEventListener("click", () => {
   if (drawer.classList.contains("open")) closeDrawer();
+  if (searchPanel.classList.contains("open")) closeSearch();
 });
 
-// Esc 關閉 drawer
+// Esc 關閉 drawer/search
 document.addEventListener("keydown", (e) => {
-  if (e.key === "Escape" && drawer.classList.contains("open")) closeDrawer();
+  if(e.key === "Escape"){
+    if(drawer.classList.contains("open")) closeDrawer();
+    if(searchPanel.classList.contains("open")) closeSearch();
+  }
 });
 
 
@@ -83,18 +120,6 @@ function closeSearch(){
 searchBtn.addEventListener("click", openSearch);
 searchCloseBtn.addEventListener("click", closeSearch);
 
-overlay.addEventListener("click", () => {
-  if(drawer.classList.contains("open")) closeDrawer();
-  if(searchPanel.classList.contains("open")) closeSearch();
-});
-
-document.addEventListener("keydown", (e) => {
-  if(e.key === "Escape"){
-    if(drawer.classList.contains("open")) closeDrawer();
-    if(searchPanel.classList.contains("open")) closeSearch();
-  }
-});
-
 // 即時搜尋 → 點結果跳詳情
 function renderSearchResults(list){
   searchResults.innerHTML = "";
@@ -118,40 +143,32 @@ searchInput.addEventListener("input", () => {
   renderSearchResults(filtered);
 });
 
-//會員
-function handleMemberClick() {
-  const isLoggedIn = localStorage.getItem('isLoggedIn');
-
-  if (isLoggedIn === 'true') {
-      window.location.href = "member/index.html";
-  } else {
-      window.location.href = "member/sign_in/index.html";
-  }
-}
 
 // ===== Hero Slider + Hotspots =====
-// 先用 placeholder 圖片路徑，之後換成你們做好的 hero 圖
 const HERO_SLIDES = [
   {
-    image: "images/hero1.jpg",
+    image: "image/top1.png",
     hotspots: [
-      { productId: "L001", x: 75, y: 58 },
-      { productId: "T001", x: 20, y: 72 }
+      // ✅ 綠色衣服（貓身上）
+      { productId: "C001", x: 20, y: 56 },
+
+      // ✅ 碗（請把 LXXX 換成你的「貓碗」商品 ID）
+      { productId: "C002", x: 18, y: 82 },
+
+      // ✅ 貓爬架（請把 TXXX 換成你的「貓爬架」商品 ID）
+      { productId: "C003", x: 60, y: 58 },
+
+      // ✅ 貓砂盆（請把 LYYY 換成你的「貓砂盆」商品 ID）
+      { productId: "C004", x: 83, y: 44 },
+
+      // ✅ 藍色外出包（請把 LZZZ 換成你的「外出包/外出籠」商品 ID）
+      { productId: "C005", x: 90, y: 74 }
     ]
   },
-  {
-    image: "images/hero2.jpg",
-    hotspots: [
-      { productId: "C001", x: 68, y: 62 }
-    ]
-  },
-  {
-    image: "images/hero3.jpg",
-    hotspots: [
-      { productId: "T002", x: 26, y: 66 }
-    ]
-  }
+  { image: "image/hero2.jpg", hotspots: [] },
+  { image: "image/hero3.jpg", hotspots: [] }
 ];
+
 
 const heroStage = document.getElementById("heroStage");
 const heroDots = document.getElementById("heroDots");
@@ -168,9 +185,9 @@ function renderHero(idx){
 
   const img = document.createElement("img");
   img.className = "hero-img";
-  img.src = slide.image;
+  img.src = resolveImg(slide.image);
   img.alt = "Hero Banner";
-  img.onerror = () => { // 圖片還沒準備好時用 fallback
+  img.onerror = () => {
     img.remove();
     const ph = document.createElement("div");
     ph.className = "hero-placeholder";
@@ -188,7 +205,7 @@ function renderHero(idx){
 
     dot.addEventListener("click", (e) => {
       e.stopPropagation();
-      showProductPop(h, dot);
+      showProductPop(h);
     });
 
     heroStage.appendChild(dot);
@@ -198,8 +215,7 @@ function renderHero(idx){
   [...heroDots.children].forEach((d, i) => d.classList.toggle("active", i === idx));
 }
 
-function showProductPop(hotspot, anchorEl){
-  // 先移除舊的 pop
+function showProductPop(hotspot){
   const old = heroStage.querySelector(".product-pop");
   if(old) old.remove();
 
@@ -215,7 +231,6 @@ function showProductPop(hotspot, anchorEl){
     <div class="small">$${p.price}</div>
   `;
 
-  // 點 pop → 進商品詳情
   pop.addEventListener("click", () => {
     location.href = `product-detail.html?id=${p.id}`;
   });
@@ -230,7 +245,6 @@ heroStage.addEventListener("click", () => {
 });
 
 function initHero(){
-  // dots
   heroDots.innerHTML = "";
   HERO_SLIDES.forEach((_, i) => {
     const d = document.createElement("div");
@@ -260,9 +274,9 @@ initHero();
 
 // ===== Category Frames: 每60秒換圖 =====
 const CATEGORY_IMAGES = {
-  "生活用品": ["images/cat1.jpg","images/cat2.jpg","images/cat3.jpg"],
-  "玩具": ["images/toy1.jpg","images/toy2.jpg","images/toy3.jpg"],
-  "服飾": ["images/clo1.jpg","images/clo2.jpg","images/clo3.jpg"]
+  "生活用品": ["1-010.png","1-011.png","cat3.jpg"].map(resolveImg),
+  "玩具": ["toy1.jpg","toy2.jpg","toy3.jpg"].map(resolveImg),
+  "服飾": ["clo1.jpg","clo2.jpg","clo3.jpg"].map(resolveImg)
 };
 
 function initCategoryRotator(){
@@ -274,36 +288,31 @@ function initCategoryRotator(){
     function setImg(){
       if(list.length === 0) return;
       imgEl.src = list[idx % list.length];
-      imgEl.onerror = () => { imgEl.removeAttribute("src"); };
+      imgEl.onerror = () => { imgEl.src = "image/no-image.png"; };
     }
 
     setImg();
     setInterval(() => {
       idx++;
       setImg();
-    }, 60000); // 1分鐘
+    }, 60000);
   });
 }
-
 initCategoryRotator();
 
 
-// ===== 推薦商品：6張橫滑（建議：每類各2張 = 6張） =====
+// ===== 推薦商品：6張橫滑 =====
 const recommendRow = document.getElementById("recommendRow");
 
 function pickRecommend6(){
-  // 每類各取2個（不足就補其他）
   const byTheme = {
     "生活用品": PRODUCTS.filter(p => p.theme==="生活用品"),
     "玩具": PRODUCTS.filter(p => p.theme==="玩具"),
     "服飾": PRODUCTS.filter(p => p.theme==="服飾")
   };
   const picked = [];
-  ["生活用品","玩具","服飾"].forEach(t => {
-    picked.push(...byTheme[t].slice(0,2));
-  });
+  ["生活用品","玩具","服飾"].forEach(t => picked.push(...byTheme[t].slice(0,2)));
 
-  // 若不足6就補前面的
   const need = 6 - picked.length;
   if(need > 0){
     const rest = PRODUCTS.filter(p => !picked.includes(p));
@@ -315,45 +324,59 @@ function pickRecommend6(){
 function renderRecommend(){
   const list = pickRecommend6();
   recommendRow.innerHTML = "";
+
   list.forEach(p => {
-    const card = document.createElement("article");
-    card.className = "pcard";
-    card.innerHTML = `
-      <div class="img"><img src="${p.image}" alt="${p.name}"></div>
-      <div class="name">${p.name}</div>
-      <div class="price">$${p.price}</div>
+    const a = document.createElement("a");
+    a.className = "p-card";
+    a.href = `product-detail.html?id=${p.id}`;
+
+    a.innerHTML = `
+      <div class="p-img" style="background-image:url('${getProductThumb(p)}')"></div>
+      <div class="p-body">
+        <div class="p-name">${p.name}</div>
+        <div class="p-price">$${p.price}</div>
+      </div>
     `;
-    card.addEventListener("click", ()=> location.href = `product-detail.html?id=${p.id}`);
-    recommendRow.appendChild(card);
+    recommendRow.appendChild(a);
   });
 }
 renderRecommend();
 
 
-// ===== 最新商品區：放2張商品卡進 slot =====
+// ===== 最新商品區：2張商品卡 + 2個照片區 =====
 function renderLatest(){
-  // 先簡單：取最後兩筆（你也可以改成 newest 欄位）
   const list = [...PRODUCTS].slice(-2);
 
   const slot1 = document.getElementById("latestCard1");
   const slot2 = document.getElementById("latestCard2");
 
-  function cardHTML(p){
+  const latestHeroImg = document.getElementById("latestHeroImg");
+  const latestWideImg = document.getElementById("latestWideImg");
+
+  if(latestHeroImg){
+    latestHeroImg.src = list[0] ? getProductThumb(list[0]) : "image/no-image.png";
+    latestHeroImg.onerror = () => latestHeroImg.src = "image/no-image.png";
+  }
+  if(latestWideImg){
+    latestWideImg.src = list[1] ? getProductThumb(list[1]) : "image/no-image.png";
+    latestWideImg.onerror = () => latestWideImg.src = "image/no-image.png";
+  }
+
+  function makeCard(p){
+    if(!p) return `<div style="padding:18px;color:rgba(0,0,0,.55);font-weight:900;">商品</div>`;
     return `
-      <article class="pcard" style="width:220px;">
-        <div class="img" style="width:220px;height:180px;"><img src="${p.image}" alt="${p.name}"></div>
-        <div class="name">${p.name}</div>
-        <div class="price">$${p.price}</div>
-      </article>
+      <a class="p-card" href="product-detail.html?id=${p.id}" style="width:100%;">
+        <div class="p-img" style="height:190px;background-image:url('${getProductThumb(p)}')"></div>
+        <div class="p-body">
+          <div class="p-name">${p.name}</div>
+          <div class="p-price">$${p.price}</div>
+        </div>
+      </a>
     `;
   }
 
-  slot1.innerHTML = list[0] ? cardHTML(list[0]) : "商品";
-  slot2.innerHTML = list[1] ? cardHTML(list[1]) : "商品";
-
-  // 點擊跳詳情
-  slot1.querySelector(".pcard")?.addEventListener("click", ()=> location.href = `product-detail.html?id=${list[0].id}`);
-  slot2.querySelector(".pcard")?.addEventListener("click", ()=> location.href = `product-detail.html?id=${list[1].id}`);
+  slot1.innerHTML = makeCard(list[0]);
+  slot2.innerHTML = makeCard(list[1]);
 }
 renderLatest();
 

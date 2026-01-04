@@ -1,3 +1,14 @@
+// products-page.js（完善版：商品卡可正常顯示 image/ 圖片）
+
+function resolveImg(src){
+  if(!src) return "image/no-image.png";
+  const s = String(src);
+
+  if(s.startsWith("http")) return s;
+  if(s.startsWith("image/")) return s;   // 已經有 image/ 就不要再加
+  return "image/" + s;                   // 沒有才補
+}
+
 function groupByTheme(list){
   return list.reduce((acc,p) => {
     if(!acc[p.theme]) acc[p.theme] = [];
@@ -6,21 +17,34 @@ function groupByTheme(list){
   }, {});
 }
 
+// ✅ 統一拿縮圖：images[0] -> image -> fallback
+function getProductThumb(p){
+  if(!p) return "image/no-image.png";
+  if(Array.isArray(p.images) && p.images.length > 0) return resolveImg(p.images[0]);
+  if(p.image) return resolveImg(p.image);
+  return "image/no-image.png";
+}
+
 function createCard(p){
   const card = document.createElement("article");
   card.className = "card";
 
-  // 你的資料是 images: ["l001-1.jpg", ...]
-  const firstImg = (p.images && p.images.length > 0) ? p.images[0] : null;
-  const imgHTML = firstImg
-    ? `<img src="images/${firstImg}" alt="${p.name}" onerror="this.remove()">`
-    : `商品照片`;
+  const imgSrc = getProductThumb(p);
 
+  // ✅ 不要用 onerror="this.remove()"，會把圖拿掉看起來像沒顯示
   card.innerHTML = `
-    <div class="thumb">${imgHTML}</div>
+    <div class="thumb">
+      <img src="${imgSrc}" alt="${p.name}">
+    </div>
     <div class="name">${p.name}</div>
     <div class="price">$${p.price}</div>
   `;
+
+  // ✅ 圖片載入失敗 → 換預設圖
+  const imgEl = card.querySelector("img");
+  imgEl.addEventListener("error", () => {
+    imgEl.src = "image/no-image.png";
+  });
 
   card.addEventListener("click", () => {
     location.href = `product-detail.html?id=${p.id}`;

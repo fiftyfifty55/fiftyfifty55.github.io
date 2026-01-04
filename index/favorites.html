@@ -1,16 +1,117 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-Hant">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="./style.css">
-    
-    <title>Document</title>
-</head>
-<body>
-    
-    <div id="favlist"></div>
-    <script src="./favorites.js"></script>
-</body>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>收藏清單｜Meow5</title>
 
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Luckiest+Guy&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="./favorites.css">
+</head>
+
+<body>
+  <!-- ===== Fixed Header（同首頁） ===== -->
+  <header class="topbar">
+    <div class="topbar-left">
+      <button class="icon-btn" id="menuBtn" aria-label="開啟導覽" aria-controls="drawer" aria-expanded="false">☰</button>
+
+      <a class="logo" href="./index.html" aria-label="回到首頁">
+        <img src="image/logo.png" alt="Meow5 Logo">
+      </a>
+    </div>
+
+    <div class="brand">Meow5</div>
+
+    <div class="topbar-right">
+      <button class="icon-btn icon-btn-img" id="searchBtn" aria-label="搜尋">
+        <img class="icon-img" src="image/search.png" alt="">
+      </button>
+
+      <a class="icon-link" href="./member.html" aria-label="會員中心">
+        <img class="icon-img" src="image/member.png" alt="">
+      </a>
+
+      <a class="icon-link" href="./cart.html" aria-label="購物車">
+        <img class="icon-img" src="image/cart.png" alt="">
+      </a>
+    </div>
+  </header>
+
+  <!-- ===== Overlay ===== -->
+  <div class="overlay" id="overlay" hidden></div>
+
+  <!-- ===== Drawer ===== -->
+  <aside class="drawer" id="drawer" aria-hidden="true">
+    <div class="drawer-header">
+      <div class="drawer-title">導覽</div>
+      <button class="icon-btn" id="closeBtn" aria-label="關閉導覽">✕</button>
+    </div>
+
+    <nav class="drawer-nav">
+      <button class="nav-item nav-accordion" id="productToggle" aria-expanded="false">
+        <span>商品</span><span class="chev">▾</span>
+      </button>
+
+      <div class="submenu" id="productSubmenu" hidden>
+        <a class="nav-subitem" href="./products.html">全部商品</a>
+        <a class="nav-subitem" href="./products.html?theme=生活用品">生活用品</a>
+        <a class="nav-subitem" href="./products.html?theme=玩具">玩具</a>
+        <a class="nav-subitem" href="./products.html?theme=服飾">服飾</a>
+      </div>
+
+      <a class="nav-item" href="./member.html">會員中心</a>
+      <a class="nav-item" href="./favorites.html">收藏清單</a>
+      <a class="nav-item" href="./faq.html">FAQ</a>
+      <a class="nav-item" href="./about.html">關於我們</a>
+      <a class="nav-item" href="./contact.html">聯絡我們</a>
+    </nav>
+  </aside>
+
+  <!-- ===== Search Panel ===== -->
+  <section class="search-panel" id="searchPanel" aria-hidden="true">
+    <div class="search-box">
+      <div class="search-head">
+        <div class="search-title">搜尋商品</div>
+        <button class="icon-btn" id="searchCloseBtn" aria-label="關閉搜尋">✕</button>
+      </div>
+
+      <input id="searchInput" class="search-input" type="text" placeholder="輸入商品名稱…">
+      <div class="search-results" id="searchResults"></div>
+    </div>
+  </section>
+
+  <!-- ===== Page Content ===== -->
+  <main class="wrap">
+    <div class="page-head">
+      <div class="title-row">
+        <div class="line"></div>
+        <h1 class="page-title">收藏清單</h1>
+        <div class="line"></div>
+      </div>
+      <p class="sub">喜歡的東西先收起來，下次才更快找到</p>
+    </div>
+
+    <section class="panel">
+      <div class="panel-head">
+        <div class="count" id="favCount">共 0 件收藏</div>
+        <div class="actions">
+          <a class="btn secondary" href="./products.html">去逛全部商品</a>
+          <a class="btn" href="./index.html">回首頁購物</a>
+        </div>
+      </div>
+
+      <div class="grid" id="favGrid"></div>
+
+      <div class="empty" id="emptyState" hidden>
+        <a class="btn" href="./products.html">快來把喜歡的東西放進來</a>
+      </div>
+    </section>
+  </main>
+
+  <script src="./products-data.js"></script>
+  <script src="./favorites.js"></script>
+</body>
 </html>

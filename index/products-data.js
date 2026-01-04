@@ -1,5 +1,14 @@
 // products-data.js
 // 三個主題名稱順序固定：生活用品 / 玩具 / 服飾
+
+function resolveImg(src){
+  if(!src) return "image/no-image.png";
+  if(String(src).startsWith("http")) return src;
+  if(String(src).startsWith("image/")) return src;   // ✅ 已經有 image/ 就不要再加
+  return "image/" + src;                             // ✅ 沒有才補
+}
+
+
 const THEMES = ["生活用品", "玩具", "服飾"];
 
 const PRODUCTS = [
@@ -12,7 +21,7 @@ const PRODUCTS = [
     boughtCount: 120,
     rating: 5.0,
     reviewCount: 18,
-    images: ["l001-1.jpg", "l001-2.jpg"],
+    images: ["image/1-010.png", "image/1-011.png"],
     variantType: "size",
     sizes: ["S","M","L"],
     stockBySize: { S: 10, M: 6, L: 0 },
@@ -22,7 +31,7 @@ const PRODUCTS = [
   },
   {
     id: "L002", theme: "生活用品", name: "防滑寵物餐墊", price: 269,
-    boughtCount: 73, rating: 4.8, reviewCount: 12, images: ["l002-1.jpg"],
+    boughtCount: 73, rating: 4.8, reviewCount: 12, images: ["l002-1.jpg","l002-2.jpg"],
     variantType: "size", sizes: ["S","M","L"], stockBySize: { S: 8, M: 5, L: 2 },
     description: "商品介紹…", specs: "詳細規格…", howToUse: "使用方式…"
   },
@@ -254,3 +263,22 @@ const PRODUCTS = [
     description: "商品介紹…", specs: "詳細規格…", howToUse: "穿戴方式…"
   }
 ];
+
+// ===== 統一處理圖片路徑 & 至少兩張圖 =====
+// ===== 保證至少兩張圖 + 相容舊的 p.image =====
+PRODUCTS.forEach(p => {
+  if (!Array.isArray(p.images)) p.images = [];
+  if (p.images.length === 0) p.images = ["no-image.png"];
+  while (p.images.length < 2) p.images.push(p.images[0]);
+
+  // 相容舊程式：讓 p.image 可用（等於第一張）
+  p.image = p.images[0];
+});
+
+window.THEMES = THEMES;
+window.PRODUCTS = PRODUCTS;
+
+
+window.THEMES = THEMES;
+window.PRODUCTS = PRODUCTS;
+
