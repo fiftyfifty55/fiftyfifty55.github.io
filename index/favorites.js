@@ -145,7 +145,7 @@
       const img = getImgSrc(imgName);
 
       card.innerHTML = `
-        <div class="p-img"><img src="${img}" alt="${p.name}"></div>
+        <div class="p-img"><img src="${p.img}" alt="${p.name}"></div>
         <div class="p-name">${p.name}</div>
         <div class="p-meta">
           <div class="p-price">$${Number(p.price || 0).toLocaleString()}</div>
@@ -175,3 +175,4 @@
 
   render();
 })();
+
