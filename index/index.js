@@ -152,16 +152,16 @@ const HERO_SLIDES = [
       // ✅ 綠色衣服（貓身上）
       { productId: "C001", x: 20, y: 56 },
 
-      // ✅ 碗（請把 LXXX 換成你的「貓碗」商品 ID）
+      // ✅ 碗
       { productId: "C002", x: 18, y: 82 },
 
-      // ✅ 貓爬架（請把 TXXX 換成你的「貓爬架」商品 ID）
+      // ✅ 貓爬架
       { productId: "C003", x: 60, y: 58 },
 
-      // ✅ 貓砂盆（請把 LYYY 換成你的「貓砂盆」商品 ID）
+      // ✅ 貓砂盆
       { productId: "C004", x: 83, y: 44 },
 
-      // ✅ 藍色外出包（請把 LZZZ 換成你的「外出包/外出籠」商品 ID）
+      // ✅ 藍色外出包
       { productId: "C005", x: 90, y: 74 }
     ]
   },
@@ -275,8 +275,8 @@ initHero();
 // ===== Category Frames: 每60秒換圖 =====
 const CATEGORY_IMAGES = {
   "生活用品": ["1-010.png","1-011.png","cat3.jpg"].map(resolveImg),
-  "玩具": ["toy1.jpg","toy2.jpg","toy3.jpg"].map(resolveImg),
-  "服飾": ["clo1.jpg","clo2.jpg","clo3.jpg"].map(resolveImg)
+  "玩具": ["2-010.jpg","toy2.jpg","toy3.jpg"].map(resolveImg),
+  "服飾": ["3-011.png","clo2.jpg","clo3.jpg"].map(resolveImg)
 };
 
 function initCategoryRotator(){
