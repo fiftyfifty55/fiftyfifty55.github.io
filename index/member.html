@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>會員中心｜Meow5</title>
 
-  <!-- 字體：跟首頁一致（可留可不留） -->
+  <!-- 字體：跟首頁一致 -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Luckiest+Guy&display=swap" rel="stylesheet">
@@ -24,8 +24,8 @@
 
       --r:18px;
       --accent:#b0714d;
-      --btn:#cb997e;      /* 你們常用色 */
-      --panel:#eee6df;    /* 卡片底 */
+      --btn:#cb997e;
+      --panel:#eee6df;
       --card:#ffffff;
     }
 
@@ -40,7 +40,7 @@
     }
     a{ color:inherit; }
 
-    /* ===== Fixed Header（跟首頁一樣） ===== */
+    /* ===== Fixed Header（同首頁） ===== */
     .topbar{
       position:fixed; top:0; left:0; right:0;
       height: var(--headerH);
@@ -95,7 +95,7 @@
     }
     .icon-btn.icon-btn-img{ padding:0; }
 
-    /* ===== Fixed Footer（跟首頁一樣） ===== */
+    /* ===== Fixed Footer（同首頁） ===== */
     .footer-fixed{
       position:fixed; bottom:0; left:0; right:0;
       height: var(--footerH);
@@ -114,7 +114,7 @@
       z-index: 90;
     }
 
-    /* ===== Drawer（跟首頁一樣） ===== */
+    /* ===== Drawer（同首頁） ===== */
     .drawer{
       position:fixed; top:0; left:0;
       width:280px; height:100vh;
@@ -199,7 +199,7 @@
       font-weight:700;
     }
 
-    /* ===== Search（跟首頁一樣） ===== */
+    /* ===== Search（同首頁） ===== */
     .search-panel{
       position:fixed; inset:0; z-index:95;
       display:none;
@@ -238,7 +238,7 @@
     .search-item .name{ font-weight:900; }
     .search-item .meta{ color: rgba(0,0,0,.6); font-weight:700; }
 
-    /* ===== 會員頁內容（保留你原本的樣子） ===== */
+    /* ===== 會員頁內容 ===== */
     .page{
       max-width: 1080px;
       margin: 0 auto;
@@ -294,6 +294,17 @@
       border-radius:999px;
       background: rgba(0,0,0,.08);
       flex: 0 0 auto;
+      overflow:hidden;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      border:1px solid rgba(0,0,0,.08);
+    }
+    .avatar-circle img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      display:block;
     }
     .user-email{
       font-weight: 900;
@@ -391,7 +402,6 @@
       margin-top: 10px;
     }
 
-    /* ✅ 送出評論按鈕：更貼你們風格（純色、圓角、乾淨） */
     .send-btn{
       border:none;
       border-radius: 999px;
@@ -408,6 +418,8 @@
       display:flex;
       justify-content:flex-end;
       margin-top: 16px;
+      gap:10px;
+      flex-wrap:wrap;
     }
     .logout-btn{
       border:none;
@@ -419,7 +431,7 @@
       cursor:pointer;
     }
 
-    /* ===== 登入區（若未登入才顯示） ===== */
+    /* ===== 登入/註冊區 ===== */
     .auth{
       background: var(--panel);
       border-radius: var(--r);
@@ -464,10 +476,76 @@
     .btn.primary{ background: var(--btn); color:#fff; }
     .btn.ghost{ background: rgba(255,255,255,.75); }
 
+    /* ===== 三大紀錄卡 ===== */
+    .record-card{
+      background: rgba(255,255,255,.65);
+      border-radius:14px;
+      padding:12px;
+      display:flex;
+      gap:12px;
+      align-items:center;
+    }
+    .thumb{
+      width:56px; height:56px;
+      border-radius:12px;
+      background:#fff;
+      flex:0 0 auto;
+      background-position:center;
+      background-size:cover;
+      background-repeat:no-repeat;
+    }
+    .rc-main{ flex:1; min-width:0; }
+    .rc-title{
+      font-weight:1000;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+    .rc-sub{
+      margin-top:4px;
+      font-size:13px;
+      color:rgba(0,0,0,.6);
+      font-weight:800;
+      line-height:1.4;
+    }
+    .rc-right{
+      font-weight:1000;
+      color: var(--accent);
+      white-space:nowrap;
+      text-align:right;
+    }
+
+    /* Avatar upload */
+    .avatar-tools{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
+      margin-top:8px;
+    }
+    .file-btn{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:8px 12px;
+      border-radius:999px;
+      background: rgba(255,255,255,.75);
+      font-weight:900;
+      cursor:pointer;
+      user-select:none;
+    }
+    .file-btn input{ display:none; }
+    .mini-note{
+      color:rgba(0,0,0,.55);
+      font-weight:800;
+      font-size:12px;
+    }
+
     @media (max-width: 980px){
       .container{ grid-template-columns: 1fr; }
       .service-section{ grid-template-columns: 1fr; }
       .support-link{ min-height: 64px; }
+      .auth .row{ grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -506,7 +584,7 @@
     <div>service@meow5.tw｜版權資訊</div>
   </footer>
 
-  <!-- ===== Overlay（drawer/search 共用） ===== -->
+  <!-- ===== Overlay ===== -->
   <div class="overlay" id="overlay" hidden></div>
 
   <!-- ===== Drawer ===== -->
@@ -564,54 +642,100 @@
       <!-- 右側內容 -->
       <main>
 
-        <!-- 未登入：顯示登入區 -->
+        <!-- 未登入：顯示登入/註冊區 -->
         <section class="auth" id="authBox" hidden>
-          <h2>登入會員</h2>
+          <h2>登入 / 註冊會員</h2>
+
           <div class="row">
             <input id="emailInput" type="email" placeholder="Email">
             <input id="pwdInput" type="password" placeholder="Password">
           </div>
+
           <div class="actions">
             <button class="btn ghost" type="button" id="demoBtn">快速示範登入</button>
+            <button class="btn ghost" type="button" id="registerBtn">註冊</button>
             <button class="btn primary" type="button" id="loginBtn">登入</button>
           </div>
+
           <div style="margin-top:10px;color:rgba(0,0,0,.65);font-weight:800;font-size:13px;">
           </div>
         </section>
 
         <!-- 已登入：顯示會員中心 -->
-        <section id="memberBox">
+        <section id="memberBox" hidden>
 
           <section class="section-round user-header">
-            <div class="avatar-circle"></div>
-            <span class="user-email" id="userEmail">未登入</span>
+            <div class="avatar-circle" id="avatarCircle"><span style="font-weight:1000;color:rgba(0,0,0,.35);">🙂</span></div>
+            <span class="user-email" id="userEmail">會員</span>
           </section>
 
+          <section class="section-round">
+            <div style="font-weight:1000; letter-spacing:2px;">頭像</div>
+            <div class="avatar-tools">
+              <label class="file-btn">
+                上傳頭像
+                <input type="file" id="avatarInput" accept="image/*">
+              </label>
+              <button class="btn ghost" type="button" id="removeAvatarBtn">移除頭像</button>
+            </div>
+          </section>
+
+          <!-- 狀態 -->
           <section class="section-round order-status">
-            <a href="./orders.html"><span id="c1">0</span>待出貨</a>
-            <a href="./orders.html"><span id="c2">0</span>已出貨</a>
-            <a href="./orders.html"><span id="c3">0</span>待取件</a>
-            <a href="./orders.html"><span id="c4">0</span>待評價</a>
+            <a href="javascript:void(0)"><span id="c1">0</span>待出貨</a>
+            <a href="javascript:void(0)"><span id="c2">0</span>已出貨</a>
+            <a href="javascript:void(0)"><span id="c3">0</span>待取件</a>
+            <a href="javascript:void(0)"><span id="c4">0</span>待評價</a>
           </section>
 
           <section class="section-round record-links">
-            <a href="./coupons.html"><span>0</span>優惠券</a>
-            <a href="./history.html"><span>0</span>紀錄</a>
-            <a href="./notifications.html"><span>0</span>通知</a>
-            <a href="./favorites.html"><span>0</span>收藏</a>
+            <a href="javascript:void(0)"><span id="couponCount">0</span>優惠券</a>
+            <a href="javascript:void(0)"><span id="purchaseCount">0</span>消費</a>
+            <a href="javascript:void(0)"><span id="reviewCount">0</span>評論</a>
+            <a href="./favorites.html"><span id="favCount">0</span>收藏</a>
+          </section>
+
+          <!-- 個人基本資料 -->
+          <section class="section-round" id="profilePanel">
+            <div style="display:flex; justify-content:space-between; align-items:center; gap:10px;">
+              <div style="font-weight:1000; letter-spacing:2px;">個人基本資料</div>
+              <button class="btn ghost" type="button" id="editProfileBtn">編輯</button>
+            </div>
+
+            <div style="margin-top:10px; display:grid; gap:8px; font-weight:800; color:rgba(0,0,0,.75);">
+              <div>姓名：<span id="pfName">-</span></div>
+              <div>Email：<span id="pfEmail">-</span></div>
+              <div>電話：<span id="pfPhone">-</span></div>
+              <div>地址：<span id="pfAddress">-</span></div>
+            </div>
+          </section>
+
+          <!-- 歷史消費紀錄 -->
+          <section class="section-round" id="purchasePanel">
+            <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;">
+              <div style="font-weight:1000; letter-spacing:2px;">歷史消費紀錄</div>
+              <button class="btn ghost" type="button" id="seedOrderBtn">產生示範訂單</button>
+            </div>
+            <div id="purchaseList" style="margin-top:10px; display:grid; gap:10px;"></div>
+          </section>
+
+          <!-- 評論與評分紀錄 -->
+          <section class="section-round" id="reviewPanel">
+            <div style="font-weight:1000; letter-spacing:2px;">評論與評分紀錄</div>
+            <div id="myReviewList" style="margin-top:10px; display:grid; gap:10px;"></div>
           </section>
 
           <h2 class="group-title">設定</h2>
           <section class="section-round list-links">
-            <a href="./profile.html">基本資料</a>
-            <a href="./membership.html">會員制度</a>
-            <a href="./address.html">收件地址</a>
-            <a href="./privacy.html">隱私權說明</a>
+            <a href="javascript:void(0)">基本資料</a>
+            <a href="javascript:void(0)">會員制度</a>
+            <a href="javascript:void(0)">收件地址</a>
+            <a href="javascript:void(0)">隱私權說明</a>
           </section>
 
           <h2 class="group-title">服務</h2>
           <section class="section-round service-section">
-            <a href="./support.html" class="support-link">客服</a>
+            <a href="javascript:void(0)" class="support-link">客服</a>
 
             <div class="feedback-container">
               <p class="feedback-label">意見回覆</p>
@@ -624,6 +748,7 @@
 
           <div class="logout-area">
             <button class="logout-btn" id="logoutBtn">登出</button>
+            <button class="logout-btn" id="resetDemoBtn" style="background:rgba(255,255,255,.9);">清除示範資料</button>
           </div>
 
         </section>
@@ -631,11 +756,23 @@
     </div>
   </main>
 
-  <!-- 你首頁本來就有 products-data.js（搜尋用），這裡也沿用 -->
+  <!-- 商品資料（搜尋+顯示紀錄會用到） -->
   <script src="./products-data.js"></script>
 
   <script>
-    // ===== Drawer =====
+    // ============================================================
+    // 0) Keys
+    // ============================================================
+    const AUTH_USER_KEY = "MEOW5_AUTH_USER";
+    const USERS_KEY = "MEOW5_USERS";
+    const PURCHASE_KEY = "MEOW5_PURCHASED_PRODUCTS";
+    const REVIEWS_KEY = "MEOW5_REVIEWS";
+    const FAV_KEY = "MEOW5_FAVORITES";
+    const ORDERS_KEY = "MEOW5_ORDERS";
+
+    // ============================================================
+    // 1) Drawer / Search（同首頁）
+    // ============================================================
     const menuBtn = document.getElementById("menuBtn");
     const closeBtn = document.getElementById("closeBtn");
     const drawer = document.getElementById("drawer");
@@ -643,6 +780,12 @@
 
     const productToggle = document.getElementById("productToggle");
     const productSubmenu = document.getElementById("productSubmenu");
+
+    const searchBtn = document.getElementById("searchBtn");
+    const searchPanel = document.getElementById("searchPanel");
+    const searchCloseBtn = document.getElementById("searchCloseBtn");
+    const searchInput = document.getElementById("searchInput");
+    const searchResults = document.getElementById("searchResults");
 
     function openDrawer() {
       drawer.classList.add("open");
@@ -655,40 +798,19 @@
       drawer.classList.remove("open");
       drawer.setAttribute("aria-hidden", "true");
       menuBtn.setAttribute("aria-expanded", "false");
-      overlay.hidden = true;
+      if(!searchPanel.classList.contains("open")) overlay.hidden = true;
       document.body.style.overflow = "";
     }
     menuBtn.addEventListener("click", openDrawer);
     closeBtn.addEventListener("click", closeDrawer);
 
-    (function initProductSubmenu() {
-      productToggle.setAttribute("aria-expanded", "false");
-      productSubmenu.hidden = true;
-      productToggle.addEventListener("click", () => {
-        const expanded = productToggle.getAttribute("aria-expanded") === "true";
-        productToggle.setAttribute("aria-expanded", String(!expanded));
-        productSubmenu.hidden = expanded;
-      });
-    })();
-
-    overlay.addEventListener("click", () => {
-      if (drawer.classList.contains("open")) closeDrawer();
-      if (searchPanel.classList.contains("open")) closeSearch();
+    productToggle.setAttribute("aria-expanded","false");
+    productSubmenu.hidden = true;
+    productToggle.addEventListener("click", () => {
+      const expanded = productToggle.getAttribute("aria-expanded") === "true";
+      productToggle.setAttribute("aria-expanded", String(!expanded));
+      productSubmenu.hidden = expanded;
     });
-
-    document.addEventListener("keydown", (e) => {
-      if (e.key === "Escape") {
-        if (drawer.classList.contains("open")) closeDrawer();
-        if (searchPanel.classList.contains("open")) closeSearch();
-      }
-    });
-
-    // ===== Search =====
-    const searchBtn = document.getElementById("searchBtn");
-    const searchPanel = document.getElementById("searchPanel");
-    const searchCloseBtn = document.getElementById("searchCloseBtn");
-    const searchInput = document.getElementById("searchInput");
-    const searchResults = document.getElementById("searchResults");
 
     function openSearch(){
       searchPanel.classList.add("open");
@@ -705,9 +827,19 @@
       if(!drawer.classList.contains("open")) overlay.hidden = true;
       document.body.style.overflow = "";
     }
-
     searchBtn.addEventListener("click", openSearch);
     searchCloseBtn.addEventListener("click", closeSearch);
+
+    overlay.addEventListener("click", () => {
+      if (drawer.classList.contains("open")) closeDrawer();
+      if (searchPanel.classList.contains("open")) closeSearch();
+    });
+    document.addEventListener("keydown", (e) => {
+      if(e.key === "Escape"){
+        if (drawer.classList.contains("open")) closeDrawer();
+        if (searchPanel.classList.contains("open")) closeSearch();
+      }
+    });
 
     function renderSearchResults(list){
       searchResults.innerHTML = "";
@@ -719,11 +851,10 @@
         const item = document.createElement("div");
         item.className = "search-item";
         item.innerHTML = `<div class="name">${p.name}</div><div class="meta">$${p.price}｜${p.theme}</div>`;
-        item.addEventListener("click", () => location.href = `product-detail.html?id=${p.id}`);
+        item.addEventListener("click", () => location.href = `product-detail.html?id=${encodeURIComponent(p.id)}`);
         searchResults.appendChild(item);
       });
     }
-
     searchInput.addEventListener("input", () => {
       const q = searchInput.value.trim().toLowerCase();
       if(!q){ searchResults.innerHTML = ""; return; }
@@ -731,59 +862,636 @@
       renderSearchResults(filtered);
     });
 
-    // ===== 會員登入（localStorage 模擬） =====
+    // ============================================================
+    // 2) localStorage helpers
+    // ============================================================
+    function readJSON(key, fallback) {
+      try {
+        const v = JSON.parse(localStorage.getItem(key));
+        return (v === null || v === undefined) ? fallback : v;
+      } catch {
+        return fallback;
+      }
+    }
+    function writeJSON(key, value) {
+      localStorage.setItem(key, JSON.stringify(value));
+    }
+    function uid() {
+      return "u_" + Math.random().toString(16).slice(2) + Date.now().toString(16);
+    }
+
+    function getUsers(){
+      const u = readJSON(USERS_KEY, []);
+      return Array.isArray(u) ? u : [];
+    }
+    function saveUsers(list){
+      writeJSON(USERS_KEY, list);
+    }
+
+    function getAuthUser(){
+      return readJSON(AUTH_USER_KEY, null);
+    }
+    function setAuthUser(obj){
+      writeJSON(AUTH_USER_KEY, obj);
+    }
+    function clearAuthUser(){
+      localStorage.removeItem(AUTH_USER_KEY);
+    }
+    function isLoggedIn(){
+      return !!getAuthUser();
+    }
+
+    // ============================================================
+    // 3) Product helpers
+    // ============================================================
+    function getProductById(pid){
+      return (window.PRODUCTS || []).find(p => p.id === pid);
+    }
+    function money(n){
+      return "$" + Number(n || 0).toLocaleString("zh-Hant");
+    }
+    function resolveImg(src){
+      if(!src) return "https://placehold.co/120x120?text=Meow5";
+      if(String(src).startsWith("http")) return src;
+      if(String(src).startsWith("image/")) return src;
+      return "image/" + src;
+    }
+
+    // ============================================================
+    // 4) DOM refs
+    // ============================================================
     const authBox = document.getElementById("authBox");
     const memberBox = document.getElementById("memberBox");
     const userEmailEl = document.getElementById("userEmail");
+    const avatarCircle = document.getElementById("avatarCircle");
 
-    function isLoggedIn(){
-      return localStorage.getItem("isLoggedIn") === "true";
+    const pfName = document.getElementById("pfName");
+    const pfEmail = document.getElementById("pfEmail");
+    const pfPhone = document.getElementById("pfPhone");
+    const pfAddress = document.getElementById("pfAddress");
+
+    const purchaseList = document.getElementById("purchaseList");
+    const myReviewList = document.getElementById("myReviewList");
+
+    const c1 = document.getElementById("c1");
+    const c2 = document.getElementById("c2");
+    const c3 = document.getElementById("c3");
+    const c4 = document.getElementById("c4");
+
+    const purchaseCountEl = document.getElementById("purchaseCount");
+    const reviewCountEl = document.getElementById("reviewCount");
+    const favCountEl = document.getElementById("favCount");
+
+    // buttons
+    const editProfileBtn = document.getElementById("editProfileBtn");
+    const avatarInput = document.getElementById("avatarInput");
+    const removeAvatarBtn = document.getElementById("removeAvatarBtn");
+    const seedOrderBtn = document.getElementById("seedOrderBtn");
+    const resetDemoBtn = document.getElementById("resetDemoBtn");
+
+    // ============================================================
+    // 5) Render
+    // ============================================================
+    function getFullUser(){
+      const auth = getAuthUser();
+      if(!auth) return null;
+      const users = getUsers();
+      return users.find(u => u.id === auth.id) || null;
     }
+
+    function renderAvatarAndHeader(){
+      const auth = getAuthUser();
+      if(!auth) return;
+      const full = getFullUser();
+
+      const displayName = (auth.name || full?.name || auth.email || "會員");
+      userEmailEl.textContent = displayName;
+
+      const avatar = auth.avatar || full?.avatar || null;
+      avatarCircle.innerHTML = "";
+      if(avatar){
+        const img = document.createElement("img");
+        img.src = avatar;
+        img.alt = "avatar";
+        avatarCircle.appendChild(img);
+      }else{
+        avatarCircle.innerHTML = `<span style="font-weight:1000;color:rgba(0,0,0,.35);">🙂</span>`;
+      }
+    }
+
+    function renderProfile(){
+      const auth = getAuthUser();
+      if(!auth) return;
+
+      const full = getFullUser();
+      pfName.textContent = full?.name || auth.name || "-";
+      pfEmail.textContent = full?.email || auth.email || "-";
+      pfPhone.textContent = full?.phone || "-";
+      pfAddress.textContent = full?.address || "-";
+    }
+
+    function renderFavoritesCount(){
+      const ids = readJSON(FAV_KEY, []);
+      favCountEl.textContent = String(Array.isArray(ids) ? ids.length : 0);
+    }
+
+    // ✅ 待評價：買過但沒評（用 productId 去比對）
+    function renderPendingReview(){
+      const auth = getAuthUser();
+      if(!auth) return;
+
+      const purchased = readJSON(PURCHASE_KEY, []);
+      const mineBuy = (Array.isArray(purchased) ? purchased : [])
+        .filter(x => x.userId === auth.id)
+        .map(x => x.productId);
+
+      const reviews = readJSON(REVIEWS_KEY, []);
+      const mineRev = (Array.isArray(reviews) ? reviews : [])
+        .filter(r => r.userId === auth.id || r.userName === auth.email || r.user === auth.email)
+        .map(r => r.productId);
+
+      const buySet = new Set(mineBuy);
+      const revSet = new Set(mineRev);
+
+      let pending = 0;
+      buySet.forEach(pid => { if(!revSet.has(pid)) pending++; });
+      c4.textContent = String(pending);
+    }
+
+    // ✅ 訂單狀態統計：待出貨/已出貨/待取件
+    function renderShipStatusCounts(){
+      const auth = getAuthUser();
+      if(!auth) return;
+
+      const orders = readJSON(ORDERS_KEY, []);
+      const mine = (Array.isArray(orders) ? orders : []).filter(o => o.userId === auth.id);
+
+      const map = { "待出貨":0, "已出貨":0, "待取件":0 };
+      mine.forEach(o => {
+        const s = o.status;
+        if(map[s] !== undefined) map[s] += 1;
+      });
+
+      c1.textContent = String(map["待出貨"]);
+      c2.textContent = String(map["已出貨"]);
+      c3.textContent = String(map["待取件"]);
+    }
+
+    // ✅ 歷史消費紀錄：優先 ORDERS（訂單編號/數量/小計/狀態）
+    function renderPurchases(){
+      const auth = getAuthUser();
+      if(!auth || !purchaseList) return;
+
+      const orders = readJSON(ORDERS_KEY, []);
+      const mineOrders = (Array.isArray(orders) ? orders : []).filter(o => o.userId === auth.id);
+
+      purchaseList.innerHTML = "";
+
+      if(mineOrders.length > 0){
+        // 用訂單顯示
+        mineOrders.sort((a,b) => (b.createdAt||0) - (a.createdAt||0));
+        purchaseCountEl.textContent = String(mineOrders.length);
+
+        mineOrders.slice(0, 20).forEach(o => {
+          const qty = (Array.isArray(o.items) ? o.items : []).reduce((sum,it)=>sum + Number(it.qty||0), 0);
+          const subtotal = Number(o.subtotal || 0);
+          const t = new Date(o.createdAt || Date.now()).toLocaleString("zh-Hant");
+          const status = o.status || "-";
+          const orderNo = o.orderNo || "-";
+
+          // 取訂單第一個商品當縮圖
+          const firstPid = (o.items && o.items[0]) ? (o.items[0].productId || o.items[0].id) : null;
+          const p = firstPid ? getProductById(firstPid) : null;
+          const img = p ? resolveImg((p.images||[])[0]) : "https://placehold.co/120x120?text=Meow5";
+
+          const div = document.createElement("div");
+          div.className = "record-card";
+          div.innerHTML = `
+            <div class="thumb" style="background-image:url('${img}')"></div>
+            <div class="rc-main">
+              <div class="rc-title">訂單 ${orderNo}</div>
+              <div class="rc-sub">
+                狀態：${status}<br>
+                數量：${qty}｜小計：${money(subtotal)}<br>
+                ${t}
+              </div>
+            </div>
+            <div class="rc-right">${money(subtotal)}</div>
+          `;
+          purchaseList.appendChild(div);
+        });
+
+        return;
+      }
+
+      // 沒有 ORDERS 的情況：退而求其次，用舊 PURCHASE 顯示（簡化）
+      const purchased = readJSON(PURCHASE_KEY, []);
+      const rows = Array.isArray(purchased) ? purchased.filter(x => x.userId === auth.id) : [];
+      purchaseCountEl.textContent = String(rows.length);
+
+      if(rows.length === 0){
+        purchaseList.innerHTML = `<div style="color:rgba(0,0,0,.6);font-weight:800;">尚無消費紀錄</div>`;
+        return;
+      }
+
+      rows.sort((a,b) => (b.time||0) - (a.time||0));
+      rows.slice(0, 20).forEach(r => {
+        const p = getProductById(r.productId);
+        const name = p ? p.name : r.productId;
+        const img = p ? resolveImg((p.images||[])[0]) : "https://placehold.co/120x120?text=Meow5";
+        const price = p ? money(p.price) : "-";
+        const t = new Date(r.time || Date.now()).toLocaleString("zh-Hant");
+        const orderNo = r.orderNo ? `訂單：${r.orderNo}` : "（尚未建立訂單編號）";
+
+        const div = document.createElement("div");
+        div.className = "record-card";
+        div.innerHTML = `
+          <div class="thumb" style="background-image:url('${img}')"></div>
+          <div class="rc-main">
+            <div class="rc-title">${name}</div>
+            <div class="rc-sub">${orderNo}<br>${t}</div>
+          </div>
+          <div class="rc-right">${price}</div>
+        `;
+        purchaseList.appendChild(div);
+      });
+    }
+
+    // ✅ 評論與評分紀錄：兼容 userId/userName/user
+    function renderMyReviews(){
+      const auth = getAuthUser();
+      if(!auth || !myReviewList) return;
+
+      const all = readJSON(REVIEWS_KEY, []);
+      const arr = Array.isArray(all) ? all : [];
+
+      const list = arr.filter(r =>
+        r.userId === auth.id ||
+        r.userName === auth.email ||
+        r.user === auth.email
+      );
+
+      reviewCountEl.textContent = String(list.length);
+
+      if(list.length === 0){
+        myReviewList.innerHTML = `<div style="color:rgba(0,0,0,.6);font-weight:800;">尚無評論紀錄</div>`;
+        return;
+      }
+
+      list.sort((a,b) => (b.createdAt||0) - (a.createdAt||0));
+      myReviewList.innerHTML = "";
+
+      list.slice(0, 30).forEach(r => {
+        const p = getProductById(r.productId);
+        const name = r.productName || (p ? p.name : r.productId);
+        const t = new Date(r.createdAt || Date.now()).toLocaleString("zh-Hant");
+        const safeText = String(r.text||"").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+
+        const div = document.createElement("div");
+        div.className = "record-card";
+        div.style.alignItems = "flex-start";
+        div.innerHTML = `
+          <div class="rc-main">
+            <div style="display:flex;justify-content:space-between;gap:10px;align-items:center;">
+              <div class="rc-title">${name}</div>
+              <div class="rc-sub" style="margin-top:0;">${t}</div>
+            </div>
+            <div style="margin-top:6px;font-weight:1000;color:var(--accent);">評分：${r.stars || 0} / 5</div>
+            <div style="margin-top:6px;color:rgba(0,0,0,.78);white-space:pre-wrap;line-height:1.6;">${safeText}</div>
+          </div>
+        `;
+        myReviewList.appendChild(div);
+      });
+    }
+
     function refreshMemberUI(){
       if(isLoggedIn()){
         authBox.hidden = true;
         memberBox.hidden = false;
-        userEmailEl.textContent = localStorage.getItem("userEmail") || "會員";
+
+        renderAvatarAndHeader();
+        renderProfile();
+        renderFavoritesCount();
+        renderShipStatusCounts();
+        renderPurchases();
+        renderMyReviews();
+        renderPendingReview();
       }else{
         authBox.hidden = false;
         memberBox.hidden = true;
       }
     }
 
+    // ============================================================
+    // 6) Migration：補 userId / userName（避免舊資料抓不到）
+    // ============================================================
+    function migratePurchaseUserId(){
+      const auth = getAuthUser();
+      if(!auth) return;
+
+      const purchased = readJSON(PURCHASE_KEY, []);
+      if(!Array.isArray(purchased) || purchased.length === 0) return;
+
+      let changed = false;
+      purchased.forEach(item => {
+        if(!item.userId){
+          item.userId = auth.id;
+          changed = true;
+        }
+      });
+      if(changed) writeJSON(PURCHASE_KEY, purchased);
+    }
+
+    function migrateReviewUserId(){
+      const auth = getAuthUser();
+      if(!auth) return;
+
+      const all = readJSON(REVIEWS_KEY, []);
+      if(!Array.isArray(all) || all.length === 0) return;
+
+      let changed = false;
+      all.forEach(r => {
+        if(!r.userId){
+          r.userId = auth.id;
+          changed = true;
+        }
+        if(!r.userName){
+          r.userName = auth.email || "會員";
+          changed = true;
+        }
+      });
+
+      if(changed) writeJSON(REVIEWS_KEY, all);
+    }
+
+    // ============================================================
+    // 7) Auth（註冊 / 登入 / demo / 登出）
+    // ============================================================
+    function ensureDemoUser(){
+      const users = getUsers();
+      let demo = users.find(u => u.email === "demo@meow5.tw");
+      if(!demo){
+        demo = {
+          id: uid(),
+          email:"demo@meow5.tw",
+          password:"1234",
+          name:"Demo貓奴",
+          phone:"0912-345-678",
+          address:"桃園市 中壢區 Meow 路 5 號",
+          avatar:null
+        };
+        users.push(demo);
+        saveUsers(users);
+      }
+      return demo;
+    }
+
     document.getElementById("demoBtn").addEventListener("click", () => {
-      localStorage.setItem("isLoggedIn","true");
-      localStorage.setItem("userEmail","demo@meow5.tw");
+      const demo = ensureDemoUser();
+      setAuthUser({ id: demo.id, email: demo.email, name: demo.name || "", avatar: demo.avatar || null });
+
+      migratePurchaseUserId();
+      migrateReviewUserId();
+      refreshMemberUI();
+    });
+
+    document.getElementById("registerBtn").addEventListener("click", () => {
+      const email = document.getElementById("emailInput").value.trim();
+      const pwd = document.getElementById("pwdInput").value.trim();
+
+      if(!email || !pwd){
+        alert("請輸入 Email 與密碼後再註冊");
+        return;
+      }
+
+      const users = getUsers();
+      if(users.some(u => u.email === email)){
+        alert("此 Email 已註冊，請直接登入");
+        return;
+      }
+
+      const name = prompt("請輸入姓名（可留空）") || "";
+      const phone = prompt("請輸入電話（可留空）") || "";
+      const address = prompt("請輸入地址（可留空）") || "";
+
+      const user = { id: uid(), email, password: pwd, name, phone, address, avatar:null };
+      users.push(user);
+      saveUsers(users);
+
+      setAuthUser({ id: user.id, email: user.email, name: user.name || "", avatar:null });
+      alert("註冊成功 ✅ 已自動登入");
+
       refreshMemberUI();
     });
 
     document.getElementById("loginBtn").addEventListener("click", () => {
       const email = document.getElementById("emailInput").value.trim();
       const pwd = document.getElementById("pwdInput").value.trim();
+
       if(!email || !pwd){
         alert("請輸入 Email 與密碼");
         return;
       }
-      localStorage.setItem("isLoggedIn","true");
-      localStorage.setItem("userEmail", email);
+
+      const users = getUsers();
+      const user = users.find(u => u.email === email && u.password === pwd);
+      if(!user){
+        alert("帳號或密碼錯誤（或尚未註冊）");
+        return;
+      }
+
+      setAuthUser({ id: user.id, email: user.email, name: user.name || "", avatar: user.avatar || null });
+
+      migratePurchaseUserId();
+      migrateReviewUserId();
       refreshMemberUI();
     });
 
     document.getElementById("logoutBtn").addEventListener("click", () => {
-      localStorage.removeItem("isLoggedIn");
-      localStorage.removeItem("userEmail");
+      clearAuthUser();
       refreshMemberUI();
     });
 
-    // ===== 意見回覆 =====
+    // ============================================================
+    // 8) Profile edit + avatar upload
+    // ============================================================
+    editProfileBtn.addEventListener("click", () => {
+      const auth = getAuthUser();
+      if(!auth) return;
+
+      const users = getUsers();
+      const full = users.find(u => u.id === auth.id);
+      if(!full){
+        alert("找不到會員資料，請重新登入或註冊");
+        return;
+      }
+
+      const name = prompt("姓名", full.name || "") ?? full.name;
+      const phone = prompt("電話", full.phone || "") ?? full.phone;
+      const address = prompt("地址", full.address || "") ?? full.address;
+
+      full.name = String(name || "");
+      full.phone = String(phone || "");
+      full.address = String(address || "");
+
+      saveUsers(users);
+
+      // 同步 auth
+      setAuthUser({ ...auth, name: full.name, avatar: full.avatar || auth.avatar || null });
+
+      alert("已更新基本資料 ✅");
+      renderAvatarAndHeader();
+      renderProfile();
+    });
+
+    avatarInput.addEventListener("change", async (e) => {
+      const file = e.target.files && e.target.files[0];
+      if(!file) return;
+
+      // 檔案太大會塞爆 localStorage，這邊做簡單限制
+      if(file.size > 700 * 1024){
+        alert("圖片檔案太大（建議小於 700KB），請換一張較小的圖片");
+        avatarInput.value = "";
+        return;
+      }
+
+      const auth = getAuthUser();
+      if(!auth) return;
+
+      const base64 = await fileToBase64(file);
+
+      // 更新 users + auth
+      const users = getUsers();
+      const full = users.find(u => u.id === auth.id);
+      if(full){
+        full.avatar = base64;
+        saveUsers(users);
+      }
+      setAuthUser({ ...auth, avatar: base64 });
+
+      avatarInput.value = "";
+      renderAvatarAndHeader();
+      alert("頭像已更新 ✅");
+    });
+
+    removeAvatarBtn.addEventListener("click", () => {
+      const auth = getAuthUser();
+      if(!auth) return;
+
+      const users = getUsers();
+      const full = users.find(u => u.id === auth.id);
+      if(full){
+        full.avatar = null;
+        saveUsers(users);
+      }
+      setAuthUser({ ...auth, avatar: null });
+
+      renderAvatarAndHeader();
+      alert("已移除頭像 ✅");
+    });
+
+    function fileToBase64(file){
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(String(reader.result));
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+      });
+    }
+
+    seedOrderBtn.addEventListener("click", () => {
+      const auth = getAuthUser();
+      if(!auth){
+        alert("請先登入");
+        return;
+      }
+
+      const products = (window.PRODUCTS || []);
+      if(products.length === 0){
+        alert("找不到商品資料（products-data.js）");
+        return;
+      }
+
+      const pick = () => products[Math.floor(Math.random()*products.length)];
+      const p1 = pick();
+      const p2 = pick();
+      const items = [
+        { productId: p1.id, qty: 1, price: Number(p1.price||0) },
+        { productId: p2.id, qty: 2, price: Number(p2.price||0) },
+      ];
+      const subtotal = items.reduce((sum,it)=>sum + it.qty*it.price, 0);
+
+      const statusFlow = ["待出貨","已出貨","待取件"];
+      const status = statusFlow[Math.floor(Math.random()*statusFlow.length)];
+
+      const orderNo = makeOrderNo();
+      const order = {
+        orderNo,
+        userId: auth.id,
+        createdAt: Date.now(),
+        status,
+        items: items.map(it => ({...it, lineTotal: it.qty*it.price})),
+        subtotal
+      };
+
+      const orders = readJSON(ORDERS_KEY, []);
+      const arr = Array.isArray(orders) ? orders : [];
+      arr.push(order);
+      writeJSON(ORDERS_KEY, arr);
+
+      alert("已建立示範訂單 ✅");
+      refreshMemberUI();
+    });
+
+    function makeOrderNo(){
+      const d = new Date();
+      const y = d.getFullYear();
+      const m = String(d.getMonth()+1).padStart(2,"0");
+      const day = String(d.getDate()).padStart(2,"0");
+      const rand = Math.random().toString(16).slice(2,6).toUpperCase();
+      return `M${y}${m}${day}-${rand}`;
+    }
+
+    // ============================================================
+    // 10) 清除示範資料（可選）
+    // ============================================================
+    resetDemoBtn.addEventListener("click", () => {
+      const ok = confirm("確定要清除示範資料嗎？（會刪掉訂單/評論/購買/會員）");
+      if(!ok) return;
+
+      localStorage.removeItem(AUTH_USER_KEY);
+      localStorage.removeItem(USERS_KEY);
+      localStorage.removeItem(ORDERS_KEY);
+      localStorage.removeItem(PURCHASE_KEY);
+      localStorage.removeItem(REVIEWS_KEY);
+      localStorage.removeItem(FAV_KEY);
+
+      alert("已清除 ✅");
+      refreshMemberUI();
+    });
+
+    // ============================================================
+    // 11) 意見回覆
+    // ============================================================
     document.getElementById("sendBtn").addEventListener("click", () => {
       const t = document.getElementById("feedbackText").value.trim();
       if(!t){ alert("請先輸入內容再送出"); return; }
-      // 你之後要接後端，可以把 t 傳出去
-      alert("收到你的意見了，謝謝你！");
+      alert("收到你的意見了，謝謝你！✅");
       document.getElementById("feedbackText").value = "";
     });
 
-    refreshMemberUI();
+    // ============================================================
+    // 12) 初次載入
+    // ============================================================
+    // 若已登入，補舊資料 userId/userName，避免會員頁抓不到
+    (function boot(){
+      const auth = getAuthUser();
+      if(auth){
+        migratePurchaseUserId();
+        migrateReviewUserId();
+      }
+      refreshMemberUI();
+    })();
   </script>
 </body>
 </html>

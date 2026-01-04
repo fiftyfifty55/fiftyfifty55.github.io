@@ -31,7 +31,6 @@
 
     .top{ display:grid; grid-template-columns: 1.05fr 1fr; gap:40px; align-items:start; }
 
-    /* gallery */
     .gallery{ position:relative; }
     .imgBox{
       width:100%;
@@ -51,7 +50,6 @@
     .dot{ width:8px; height:8px; border-radius:50%; background:rgba(0,0,0,.18); cursor:pointer; }
     .dot.active{ background:rgba(0,0,0,.55); }
 
-    /* info */
     .info h1{ margin:0; font-size:36px; font-weight:900; letter-spacing:1px; }
     .price{ margin-top:6px; font-size:28px; font-weight:900; color:var(--accent); }
 
@@ -71,7 +69,6 @@
 
     .rule{ margin:16px 0; height:1px; background:var(--line); }
 
-    /* ✅ 單一規格：數量 */
     .qtyRow{
       display:flex;
       align-items:center;
@@ -111,12 +108,8 @@
       outline:none;
       background:white;
     }
-    .stockHint{
-      color:#777;
-      font-size:12px;
-    }
+    .stockHint{ color:#777; font-size:12px; }
 
-    /* CTA row */
     .ctaRow{ margin-top:16px; display:flex; gap:10px; align-items:center; }
     .addBtn{
       flex:1; height:40px; border:none; border-radius:10px;
@@ -130,7 +123,6 @@
       display:flex; align-items:center; justify-content:center;
     }
 
-    /* sections below */
     .section{ margin-top:28px; }
     .section h2{ margin:0 0 10px; font-size:14px; letter-spacing:1px; font-weight:900; }
     .block{
@@ -142,7 +134,6 @@
       line-height:1.8;
     }
 
-    /* reviews */
     .reviewHead{ display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:10px; }
     .reviewScore{ display:flex; align-items:center; gap:8px; color:var(--muted); font-size:12px; }
 
@@ -159,12 +150,7 @@
       pointer-events:none;
     }
 
-    .starsPick{
-      display:flex;
-      gap:6px;
-      align-items:center;
-      user-select:none;
-    }
+    .starsPick{ display:flex; gap:6px; align-items:center; user-select:none; }
     .pickStar{
       width:22px;
       height:22px;
@@ -189,37 +175,22 @@
       justify-content:space-between;
       gap:10px;
       align-items:center;
+      flex-wrap:wrap;
     }
+    .hintText{ color:#777; font-size:12px; line-height:1.5; }
 
-    .hintText{
-      color:#777;
-      font-size:12px;
-      line-height:1.5;
-    }
-
-    .reviewsList{
-      margin-top:12px;
-      display:grid;
-      gap:10px;
-    }
+    .reviewsList{ margin-top:12px; display:grid; gap:10px; }
     .reviewItem{
       background:var(--card);
       border:1px solid rgba(0,0,0,.08);
       border-radius:14px;
       padding:12px 14px;
     }
-    .reviewTop{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:12px;
-      margin-bottom:6px;
-    }
+    .reviewTop{ display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:6px; }
     .reviewUser{ font-weight:900; }
     .reviewTime{ font-size:12px; color:#888; }
     .reviewText{ color:#444; line-height:1.7; white-space:pre-wrap; }
 
-    /* also bought */
     .alsoTitle{
       margin-top:36px;
       display:flex;
@@ -274,7 +245,6 @@
       .cards{ grid-template-columns:repeat(2,1fr); }
     }
 
-    /* 評論送出按鈕（Meow5 風格） */
     #submitReviewBtn{
       appearance: none;
       border: none;
@@ -304,123 +274,104 @@
       transform: none;
     }
 
+    .site-header{
+      position: sticky;
+      top: 0;
+      z-index: 999;
+      background: rgba(246,241,238,.85);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(0,0,0,.08);
+    }
+    .nav{
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 14px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .brand{
+      text-decoration: none;
+      color: var(--ink);
+      display:flex;
+      align-items:center;
+    }
+    .brand-logo{ font-weight: 1000; letter-spacing: 1px; font-size: 18px; }
 
-    /* ===== Meow5 導引欄（可直接套用） ===== */
-.site-header{
-  position: sticky;
-  top: 0;
-  z-index: 999;
-  background: rgba(246,241,238,.85);
-  backdrop-filter: blur(10px);
-  border-bottom: 1px solid rgba(0,0,0,.08);
-}
+    .nav-links{
+      display:flex;
+      align-items:center;
+      gap: 14px;
+    }
+    .nav-links a{
+      text-decoration:none;
+      color: rgba(0,0,0,.72);
+      font-weight: 800;
+      padding: 8px 10px;
+      border-radius: 999px;
+      transition: background .15s ease, color .15s ease;
+    }
+    .nav-links a:hover{
+      background: rgba(0,0,0,.06);
+      color: rgba(0,0,0,.9);
+    }
 
-.nav{
-  max-width: 1080px;
-  margin: 0 auto;
-  padding: 14px 18px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-}
+    .nav-toggle{
+      display:none;
+      border:none;
+      background: var(--btn);
+      color: var(--btnText);
+      font-weight: 900;
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      cursor:pointer;
+    }
 
-.brand{
-  text-decoration: none;
-  color: var(--ink);
-  display:flex;
-  align-items:center;
-}
-.brand-logo{
-  font-weight: 1000;
-  letter-spacing: 1px;
-  font-size: 18px;
-}
-
-.nav-links{
-  display:flex;
-  align-items:center;
-  gap: 14px;
-}
-
-.nav-links a{
-  text-decoration:none;
-  color: rgba(0,0,0,.72);
-  font-weight: 800;
-  padding: 8px 10px;
-  border-radius: 999px;
-  transition: background .15s ease, color .15s ease;
-}
-.nav-links a:hover{
-  background: rgba(0,0,0,.06);
-  color: rgba(0,0,0,.9);
-}
-
-.nav-toggle{
-  display:none;
-  border:none;
-  background: var(--btn);
-  color: var(--btnText);
-  font-weight: 900;
-  width: 40px;
-  height: 40px;
-  border-radius: 12px;
-  cursor:pointer;
-}
-
-/* 讓原本內容不要貼到導引欄下面 */
-.wrap{
-  padding-top: 18px; /* 你原本 wrap padding 有 28px 也OK；這行只是更穩 */
-}
-
-@media (max-width: 860px){
-  .nav-toggle{ display:flex; align-items:center; justify-content:center; }
-  .nav-links{
-    position: fixed;
-    left: 0;
-    right: 0;
-    top: 62px;
-    margin: 0 12px;
-    background: rgba(255,255,255,.92);
-    border: 1px solid rgba(0,0,0,.10);
-    border-radius: 16px;
-    padding: 12px;
-    display: none;
-    flex-direction: column;
-    gap: 8px;
-    box-shadow: 0 18px 40px rgba(0,0,0,.10);
-  }
-  .nav-links.open{ display:flex; }
-  .nav-links a{ width:100%; text-align:center; }
-}
-
+    @media (max-width: 860px){
+      .nav-toggle{ display:flex; align-items:center; justify-content:center; }
+      .nav-links{
+        position: fixed;
+        left: 0;
+        right: 0;
+        top: 62px;
+        margin: 0 12px;
+        background: rgba(255,255,255,.92);
+        border: 1px solid rgba(0,0,0,.10);
+        border-radius: 16px;
+        padding: 12px;
+        display: none;
+        flex-direction: column;
+        gap: 8px;
+        box-shadow: 0 18px 40px rgba(0,0,0,.10);
+      }
+      .nav-links.open{ display:flex; }
+      .nav-links a{ width:100%; text-align:center; }
+    }
   </style>
 </head>
 
 <body>
-
   <header class="site-header">
-  <nav class="nav">
-    <a class="brand" href="index.html" aria-label="回到首頁">
-      <span class="brand-logo">Meow5</span>
-    </a>
+    <nav class="nav">
+      <a class="brand" href="index.html" aria-label="回到首頁">
+        <span class="brand-logo">Meow5</span>
+      </a>
 
-    <button class="nav-toggle" id="navToggle" aria-label="開啟選單">☰</button>
+      <button class="nav-toggle" id="navToggle" aria-label="開啟選單">☰</button>
 
-    <div class="nav-links" id="navLinks">
-      <a href="index.html">首頁</a>
-      <a href="products.html">商品</a>
-      <a href="cart.html">購物車</a>
-      <a href="member.html">會員</a>
-    </div>
-  </nav>
-</header>
-
+      <div class="nav-links" id="navLinks">
+        <a href="index.html">首頁</a>
+        <a href="products.html">商品</a>
+        <a href="cart.html">購物車</a>
+        <a href="member.html">會員</a>
+      </div>
+    </nav>
+  </header>
 
   <div class="wrap">
     <section class="top">
-
-      <!-- left: gallery -->
       <div class="gallery">
         <div class="imgBox">
           <img id="mainImg" src="" alt="商品圖片" />
@@ -428,7 +379,6 @@
         <div class="dots" id="dotsArea"></div>
       </div>
 
-      <!-- right: info -->
       <div class="info">
         <h1 id="prodName">商品名</h1>
         <div class="price" id="prodPrice">$XXX</div>
@@ -437,7 +387,6 @@
 
         <div class="rule"></div>
 
-        <!-- ✅ 單一規格：只保留數量（可選） -->
         <div class="qtyRow">
           <div class="qtyLabel">數量</div>
           <div class="qtyCtrl">
@@ -455,7 +404,6 @@
       </div>
     </section>
 
-    <!-- 下方區塊 -->
     <section class="section">
       <h2>商品介紹</h2>
       <div class="block" id="descBlock">暫無介紹</div>
@@ -471,7 +419,6 @@
       <div class="block" id="howBlock">暫無說明</div>
     </section>
 
-    <!-- 評論 -->
     <section class="section" id="reviewSection">
       <div class="reviewHead">
         <h2 style="margin:0;">評論</h2>
@@ -481,15 +428,10 @@
       <div class="reviewForm" id="reviewForm">
         <div class="starsPick" id="starsPick"></div>
 
-        <textarea
-          id="reviewText"
-          placeholder="寫下你的使用心得..."
-        ></textarea>
+        <textarea id="reviewText" placeholder="寫下你的使用心得..."></textarea>
 
         <div class="submitRow">
-          <span id="reviewHint" style="font-size:12px;color:#777;">
-            快來留下你的想法!!
-          </span>
+          <span id="reviewHint" style="font-size:12px;color:#777;">快來留下你的想法!!</span>
           <button id="submitReviewBtn">送出評論</button>
         </div>
       </div>
@@ -497,7 +439,6 @@
       <div class="reviewsList" id="reviewsList"></div>
     </section>
 
-    <!-- 其他人也買了 -->
     <div class="alsoTitle">
       <div class="line"></div>
       <div>其他人也買了</div>
@@ -510,37 +451,41 @@
   <script src="./products-data.js"></script>
   <script>
     // =========================
-    // 全站統一 key
+    // 全站 key（只宣告一次！）
     // =========================
     const CART_KEY = "meow5_cart";
     const REVIEWS_KEY = "MEOW5_REVIEWS";
     const FAV_KEY = "MEOW5_FAVORITES";
-
-    // =========================
-    // 取 URL 參數 ?id=...
-    // =========================
-    const params = new URLSearchParams(location.search);
-    const id = params.get("id");
-    const product = (window.PRODUCTS || []).find(p => p.id === id);
-
-    if(!product){
-      alert("找不到此商品");
-      location.href = "products.html";
-    }
+    const AUTH_USER_KEY = "MEOW5_AUTH_USER";
 
     // =========================
     // 小工具
     // =========================
+    function readJSON(key, fallback){
+      try{
+        const raw = localStorage.getItem(key);
+        if(!raw) return fallback;
+        const data = JSON.parse(raw);
+        return (data === null || data === undefined) ? fallback : data;
+      }catch{ return fallback; }
+    }
+    function writeJSON(key, data){
+      localStorage.setItem(key, JSON.stringify(data));
+    }
+    function getAuthUser(){
+      const u = readJSON(AUTH_USER_KEY, null);
+      if(!u || typeof u !== "object") return null;
+      if(!u.email && !u.id) return null;
+      return u;
+    }
     function money(n){ return "$" + Number(n || 0).toLocaleString("zh-Hant"); }
-
-    // ✅ 不要再硬加 image/，避免你資料已經是 image/xxx.png 時變成 image/image/xxx.png
     function resolveImg(src){
       if(!src) return "image/no-image.png";
-      if(String(src).startsWith("http")) return src;
-      if(String(src).startsWith("image/")) return src;
-      return "image/" + src;
+      const s = String(src);
+      if(s.startsWith("http")) return s;
+      if(s.startsWith("image/") || s.startsWith("images/")) return s;
+      return "image/" + s;
     }
-
     function generateStarsHTML(rating){
       const full = Math.round(Number(rating || 0));
       let html = "";
@@ -557,28 +502,34 @@
       return html;
     }
 
-    function readJSON(key, fallback){
-      try{
-        const raw = localStorage.getItem(key);
-        if(!raw) return fallback;
-        const data = JSON.parse(raw);
-        return data ?? fallback;
-      }catch{
-        return fallback;
-      }
-    }
+    // =========================
+    // 取 URL 參數 ?id=...
+    // =========================
+    const params = new URLSearchParams(location.search);
+    const id = params.get("id");
+    const product = (window.PRODUCTS || []).find(p => p.id === id);
 
-    function writeJSON(key, data){
-      localStorage.setItem(key, JSON.stringify(data));
+    if(!product){
+      alert("找不到此商品");
+      location.href = "products.html";
     }
 
     // =========================
     // 1) 商品基本資訊
     // =========================
+    const metaArea = document.getElementById("metaArea");
     document.getElementById("prodName").textContent = product.name;
     document.getElementById("prodPrice").textContent = money(product.price);
 
-    const metaArea = document.getElementById("metaArea");
+    document.getElementById("descBlock").textContent = product.description || "暫無介紹";
+    document.getElementById("specBlock").textContent = product.specs || "暫無規格";
+    document.getElementById("howBlock").textContent = product.howToUse || "暫無說明";
+
+    const stockHint = document.getElementById("stockHint");
+    const stock = (typeof product.stock === "number") ? product.stock : null;
+    stockHint.textContent = (stock === null) ? "庫存充足" : `庫存：${stock}`;
+
+    // 先用靜態值渲染一次（後面會被評論即時統計覆蓋）
     metaArea.innerHTML = `
       <span>${product.boughtCount ?? 0} 人已購買此產品</span>
       <span class="divider"></span>
@@ -588,32 +539,18 @@
       </span>
     `;
 
-    document.getElementById("descBlock").textContent = product.description || "暫無介紹";
-    document.getElementById("specBlock").textContent = product.specs || "暫無規格";
-    document.getElementById("howBlock").textContent = product.howToUse || "暫無說明";
-
-    // ✅ 庫存提示（可有可無；products-data.js 若沒給 stock 會顯示「庫存充足」）
-    const stockHint = document.getElementById("stockHint");
-    const stock = (typeof product.stock === "number") ? product.stock : null;
-    stockHint.textContent = (stock === null) ? "庫存充足" : `庫存：${stock}`;
-
     // =========================
     // 2) 圖片輪播
     // =========================
     const mainImg = document.getElementById("mainImg");
     const dotsArea = document.getElementById("dotsArea");
 
-    let currentIndex = 0;
-
     function showImage(idx){
       const imgName = (product.images || [])[idx];
       const src = imgName ? resolveImg(imgName) : "https://placehold.co/800x800?text=Meow5";
       mainImg.src = src;
       mainImg.alt = product.name + " 圖片 " + (idx+1);
-
-      dotsArea.querySelectorAll(".dot").forEach((d,i) => {
-        d.classList.toggle("active", i === idx);
-      });
+      dotsArea.querySelectorAll(".dot").forEach((d,i) => d.classList.toggle("active", i === idx));
     }
 
     dotsArea.innerHTML = "";
@@ -625,17 +562,14 @@
       imgs.forEach((_, i) => {
         const d = document.createElement("div");
         d.className = "dot" + (i===0 ? " active" : "");
-        d.addEventListener("click", () => {
-          currentIndex = i;
-          showImage(i);
-        });
+        d.addEventListener("click", () => showImage(i));
         dotsArea.appendChild(d);
       });
       showImage(0);
     }
 
     // =========================
-    // 3) 數量控制（單一規格）
+    // 3) 數量控制
     // =========================
     const qtyInput = document.getElementById("qtyInput");
     const qtyMinus = document.getElementById("qtyMinus");
@@ -646,68 +580,42 @@
       if(isNaN(n) || n < 1) n = 1;
       if(typeof product.stock === "number" && product.stock >= 0){
         n = Math.min(n, Math.max(0, product.stock));
-        if(n < 1) n = 1; // 若你允許缺貨不能買，可在此改成 0 並禁用按鈕
+        if(n < 1) n = 1;
       }
       return n;
     }
 
-    qtyMinus.addEventListener("click", () => {
-      qtyInput.value = clampQty((parseInt(qtyInput.value,10)||1) - 1);
-    });
-
-    qtyPlus.addEventListener("click", () => {
-      qtyInput.value = clampQty((parseInt(qtyInput.value,10)||1) + 1);
-    });
-
-    qtyInput.addEventListener("input", () => {
-      qtyInput.value = clampQty(qtyInput.value);
-    });
+    qtyMinus.addEventListener("click", () => qtyInput.value = clampQty((parseInt(qtyInput.value,10)||1) - 1));
+    qtyPlus.addEventListener("click", () => qtyInput.value = clampQty((parseInt(qtyInput.value,10)||1) + 1));
+    qtyInput.addEventListener("input", () => qtyInput.value = clampQty(qtyInput.value));
 
     // =========================
-    // 4) 加入購物車（單一規格：只存 {id, qty}）
+    // 4) 加入購物車
     // =========================
     document.getElementById("addToCartBtn").addEventListener("click", () => {
       const qty = clampQty(qtyInput.value);
-
-      // 若你要限制缺貨不能加，可啟用這段：
-      // if(typeof product.stock === "number" && product.stock <= 0){
-      //   alert("此商品目前缺貨");
-      //   return;
-      // }
-
       const cart = readJSON(CART_KEY, []);
-      const exist = cart.find(i => i.id === product.id);
+      const list = Array.isArray(cart) ? cart : [];
 
-      if(exist){
-        exist.qty = clampQty((parseInt(exist.qty,10)||1) + qty);
-      }else{
-        cart.push({ id: product.id, qty });
-      }
+      const exist = list.find(i => i.id === product.id);
+      if(exist) exist.qty = clampQty((parseInt(exist.qty,10)||1) + qty);
+      else list.push({ id: product.id, qty });
 
-      writeJSON(CART_KEY, cart);
+      writeJSON(CART_KEY, list);
       alert("已加入購物車 🛒");
     });
 
     // =========================
-    // 5) 收藏（維持你原本功能）
+    // 5) 收藏
     // =========================
     function readFavIds(){
-      try{
-        const v = JSON.parse(localStorage.getItem(FAV_KEY));
-        return Array.isArray(v) ? v : [];
-      }catch{
-        return [];
-      }
+      const v = readJSON(FAV_KEY, []);
+      return Array.isArray(v) ? v : [];
     }
-    function writeFavIds(ids){
-      localStorage.setItem(FAV_KEY, JSON.stringify(ids));
-    }
-    function isFav(pid){
-      return readFavIds().includes(pid);
-    }
+    function writeFavIds(ids){ writeJSON(FAV_KEY, ids); }
+    function isFav(pid){ return readFavIds().includes(pid); }
     function updateFavBtn(){
       const pawBtn = document.getElementById("pawBtn");
-      if(!pawBtn) return;
       pawBtn.textContent = isFav(product.id) ? "❤︎" : "🐾";
       pawBtn.title = isFav(product.id) ? "已收藏" : "加入收藏";
     }
@@ -715,23 +623,14 @@
     document.getElementById("pawBtn").addEventListener("click", () => {
       const ids = readFavIds();
       const idx = ids.indexOf(product.id);
-
-      if(idx >= 0){
-        ids.splice(idx, 1);
-        writeFavIds(ids);
-        alert("已從收藏移除");
-      }else{
-        ids.push(product.id);
-        writeFavIds(ids);
-        alert("已加入收藏清單❤️");
-      }
+      if(idx >= 0){ ids.splice(idx, 1); writeFavIds(ids); alert("已從收藏移除"); }
+      else { ids.push(product.id); writeFavIds(ids); alert("已加入收藏清單❤️"); }
       updateFavBtn();
     });
-
     updateFavBtn();
 
     // =========================
-    // 6) 評論
+    // 6) 評論（完善版：會員同步 + 即時星等 + 一人一則）
     // =========================
     const reviewScoreArea = document.getElementById("reviewScoreArea");
     const reviewForm = document.getElementById("reviewForm");
@@ -741,12 +640,8 @@
     const reviewText = document.getElementById("reviewText");
     const submitReviewBtn = document.getElementById("submitReviewBtn");
 
-    reviewScoreArea.innerHTML = `
-      <span class="stars">${generateStarsHTML(product.rating)}</span>
-      <span>${Number(product.rating || 0).toFixed(1)}</span>
-    `;
-
     let picked = 5;
+
     function renderStarPicker(){
       starsPick.innerHTML = "";
       for(let i=1;i<=5;i++){
@@ -755,74 +650,136 @@
         s.classList.add("pickStar");
         if(i <= picked) s.classList.add("on");
         s.innerHTML = `<path d="M12 17.27 18.18 21 16.54 13.97 22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>`;
-        s.addEventListener("click", () => {
-          picked = i;
-          renderStarPicker();
-        });
+        s.addEventListener("click", () => { picked = i; renderStarPicker(); });
         starsPick.appendChild(s);
       }
     }
     renderStarPicker();
 
-    function getReviews(){
+    function getAllReviews(){
       const all = readJSON(REVIEWS_KEY, []);
-      return all.filter(r => r.productId === product.id)
-                .sort((a,b) => (b.createdAt||0) - (a.createdAt||0));
+      return Array.isArray(all) ? all : [];
+    }
+    function getReviewsOfThisProduct(){
+      return getAllReviews()
+        .filter(r => r.productId === product.id)
+        .sort((a,b) => (b.createdAt||0) - (a.createdAt||0));
+    }
+
+    function updateReviewSummary(){
+      const list = getReviewsOfThisProduct();
+      const count = list.length;
+      const avg = count
+        ? (list.reduce((s,r)=>s + Number(r.stars||0),0) / count)
+        : Number(product.rating || 0);
+
+      reviewScoreArea.innerHTML = `
+        <span class="stars">${generateStarsHTML(avg)}</span>
+        <span>${Number(avg || 0).toFixed(1)}</span>
+        <span style="margin-left:6px;">（${count}）</span>
+      `;
+
+      metaArea.innerHTML = `
+        <span>${product.boughtCount ?? 0} 人已購買此產品</span>
+        <span class="divider"></span>
+        <span class="rating">
+          <span class="stars" aria-label="星等">${generateStarsHTML(avg)}</span>
+          <span>（${count}）</span>
+        </span>
+      `;
     }
 
     function renderReviews(){
-      const list = getReviews();
+      const list = getReviewsOfThisProduct();
       reviewsList.innerHTML = "";
 
       if(list.length === 0){
         reviewsList.innerHTML = `<div class="hintText">目前還沒有評論，來當第一個分享的人吧 🐾</div>`;
+        updateReviewSummary();
         return;
       }
 
       list.forEach(r => {
         const div = document.createElement("div");
         div.className = "reviewItem";
+        const safe = String(r.text || "").replace(/</g,"&lt;").replace(/>/g,"&gt;");
         div.innerHTML = `
           <div class="reviewTop">
             <div>
-              <span class="reviewUser">${r.user || "您"}</span>
+              <span class="reviewUser">${r.userName || r.user || "訪客"}</span>
               <span style="margin-left:10px" class="stars">${generateStarsHTML(r.stars || 0)}</span>
             </div>
             <div class="reviewTime">${new Date(r.createdAt || Date.now()).toLocaleString("zh-Hant")}</div>
           </div>
-          <div class="reviewText">${(r.text || "").replace(/</g,"&lt;").replace(/>/g,"&gt;")}</div>
+          <div class="reviewText">${safe}</div>
         `;
         reviewsList.appendChild(div);
       });
+
+      updateReviewSummary();
     }
 
     function updateReviewPermission(){
+      const user = getAuthUser();
+      if(!user){
+        reviewForm.classList.add("disabled");
+        reviewHint.innerHTML =
+          `請先到 <a href="member.html" style="color:var(--accent);font-weight:900;text-decoration:none;">會員中心登入/註冊</a> 才能發表評論`;
+        reviewText.placeholder = "登入後才能留言喔～";
+        submitReviewBtn.disabled = true;
+        return;
+      }
+
       reviewForm.classList.remove("disabled");
-      reviewHint.textContent = "快來留下你的想法!!";
+      const displayName = user.name || user.email || "會員";
+      reviewHint.textContent = `以「${displayName}」身份留言`;
       reviewText.placeholder = "這裡還是光禿禿的草地";
+      submitReviewBtn.disabled = false;
+    }
+
+    // 一人一則：同商品同 userId → 更新
+    function upsertReviewForUser(newReview){
+      const all = getAllReviews();
+      const idx = all.findIndex(r => r.productId === newReview.productId && r.userId === newReview.userId);
+      if(idx >= 0){
+        all[idx] = { ...all[idx], ...newReview, createdAt: Date.now() };
+      }else{
+        all.push(newReview);
+      }
+      writeJSON(REVIEWS_KEY, all);
     }
 
     submitReviewBtn.addEventListener("click", () => {
+      const user = getAuthUser();
+      if(!user){
+        alert("請先登入會員才可評論");
+        location.href = "member.html";
+        return;
+      }
+
       const text = (reviewText.value || "").trim();
       if(!text){
         alert("評論內容不能為空");
         return;
       }
 
-      const all = readJSON(REVIEWS_KEY, []);
-      all.push({
+      const review = {
         productId: product.id,
-        user: "小明",
+        productName: product.name,
+        userId: user.id || ("guest_" + (user.email || "unknown")),
+        userName: user.name || user.email || "會員",
         stars: picked,
         text,
         createdAt: Date.now()
-      });
-      writeJSON(REVIEWS_KEY, all);
+      };
+
+      upsertReviewForUser(review);
 
       reviewText.value = "";
       picked = 5;
       renderStarPicker();
       renderReviews();
+
       alert("評論已送出 ✅");
     });
 
@@ -869,32 +826,20 @@
         alsoArea.appendChild(a);
       });
     }
-
     renderAlso();
 
-
-    // ===== 導引欄：手機漢堡選單 =====
-const navToggle = document.getElementById("navToggle");
-const navLinks = document.getElementById("navLinks");
-
-if(navToggle && navLinks){
-  navToggle.addEventListener("click", () => {
-    navLinks.classList.toggle("open");
-  });
-
-  // 點連結後自動收起
-  navLinks.addEventListener("click", (e) => {
-    if(e.target.tagName === "A") navLinks.classList.remove("open");
-  });
-
-  // 點空白處收起
-  document.addEventListener("click", (e) => {
-    if(!navLinks.contains(e.target) && !navToggle.contains(e.target)){
-      navLinks.classList.remove("open");
+    // 導引欄：手機漢堡
+    const navToggle = document.getElementById("navToggle");
+    const navLinks = document.getElementById("navLinks");
+    if(navToggle && navLinks){
+      navToggle.addEventListener("click", () => navLinks.classList.toggle("open"));
+      navLinks.addEventListener("click", (e) => { if(e.target.tagName === "A") navLinks.classList.remove("open"); });
+      document.addEventListener("click", (e) => {
+        if(!navLinks.contains(e.target) && !navToggle.contains(e.target)){
+          navLinks.classList.remove("open");
+        }
+      });
     }
-  });
-}
-
   </script>
 </body>
 </html>
