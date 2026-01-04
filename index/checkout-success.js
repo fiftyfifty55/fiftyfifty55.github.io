@@ -31,7 +31,7 @@
     return (window.PRODUCTS || []).find(p => p.id === id);
   }
 
-  // ✅ 超穩：自動吃 image/ images/ 已帶資料夾 外連結
+  // 自動吃 image/ images/ 已帶資料夾 外連結
   function resolveImgPath(file) {
     if (!file) return "https://placehold.co/300x300?text=Meow5";
     const s = String(file);
@@ -46,7 +46,7 @@
     return `image/${s}`;
   }
 
-  // ✅ 背景圖載入失敗 → fallback
+  // 背景圖載入失敗 → fallback
   function setBgWithFallback(el, file) {
     const tryList = [];
     const s = String(file || "");
