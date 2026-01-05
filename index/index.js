@@ -165,8 +165,16 @@ const HERO_SLIDES = [
       { productId: "L010", x: 90, y: 74 }
     ]
   },
-  { image: "image/hero2.jpg", hotspots: [] },
-  { image: "image/hero3.jpg", hotspots: [] }
+  { 
+    image: "image/hero2.jpg", 
+    link: "cart.html", // 點擊跳轉至購物車
+    hotspots: [] 
+  },
+  { 
+    image: "image/hero3.jpg", 
+    link: "faq.html",  // 點擊跳轉至 FAQ
+    hotspots: [] 
+  }
 ];
 
 
@@ -187,6 +195,12 @@ function renderHero(idx){
   img.className = "hero-img";
   img.src = resolveImg(slide.image);
   img.alt = "Hero Banner";
+   if (slide.link) {
+    img.style.cursor = "pointer"; // 鼠標移上去變手指
+    img.addEventListener("click", () => {
+      window.location.href = slide.link;
+    });
+  }
   img.onerror = () => {
     img.remove();
     const ph = document.createElement("div");
@@ -392,3 +406,4 @@ window.addEventListener("scroll", () => {
 topBtn.addEventListener("click", () => {
   window.scrollTo({ top: 0, behavior: "smooth" });
 });
+
