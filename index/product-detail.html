@@ -46,6 +46,50 @@
       object-fit:cover;
       display:block;
     }
+    .detail-image {
+  position: relative; 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fff;
+  overflow: hidden;
+}
+
+#mainImg {
+  width: 100%;
+  display: block;
+  object-fit: contain;
+}
+
+/* 箭頭樣式 */
+.slide-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0, 0, 0, 0.3);
+  color: white;
+  border: none;
+  width: 40px;
+  height: 40px;
+  font-size: 24px;
+  cursor: pointer;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.3s;
+  z-index: 10;
+}
+
+.slide-btn:hover {
+  background: rgba(0, 0, 0, 0.6);
+}
+
+.slide-btn.prev { left: 10px; }
+.slide-btn.next { right: 10px; }
+.slide-btn.hidden {
+  display: none;
+}
     .dots{ display:flex; gap:10px; justify-content:center; padding:14px 0 0; }
     .dot{ width:8px; height:8px; border-radius:50%; background:rgba(0,0,0,.18); cursor:pointer; }
     .dot.active{ background:rgba(0,0,0,.55); }
@@ -373,9 +417,11 @@
   <div class="wrap">
     <section class="top">
       <div class="gallery">
-        <div class="imgBox">
-          <img id="mainImg" src="" alt="商品圖片" />
-        </div>
+      <div class="detail-image" id="detailImage">
+        <button class="slide-btn prev" id="prevBtn" aria-label="上一張">❮</button>
+        <img id="mainImg" src="" alt="商品圖片">
+        <button class="slide-btn next" id="nextBtn" aria-label="下一張">❯</button>
+      </div>
         <div class="dots" id="dotsArea"></div>
       </div>
 
@@ -843,3 +889,4 @@
   </script>
 </body>
 </html>
+
