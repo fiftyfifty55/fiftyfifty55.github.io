@@ -496,6 +496,51 @@
 
   <script src="./products-data.js"></script>
   <script>
+    <script>
+  let currentImgIndex = 0;
+  let images = []; 
+
+  function loadProductDetail() {
+    const params = new URLSearchParams(window.location.search);
+    const pid = params.get('id');
+    
+    const p = allProducts.find(item => item.id === pid);
+    
+    if (p) {
+      // 判斷是否有 images 陣列，否則使用單張 image
+      images = Array.isArray(p.images) ? p.images : [p.image];
+      
+      const mainImg = document.getElementById('mainImg');
+      const prevBtn = document.getElementById('prevBtn');
+      const nextBtn = document.getElementById('nextBtn');
+
+      const updateImage = () => {
+        mainImg.src = images[currentImgIndex].startsWith('http') 
+                      ? images[currentImgIndex] 
+                      : `image/${images[currentImgIndex]}`;
+      };
+
+      if (images.length <= 1) {
+        prevBtn.style.display = 'none';
+        nextBtn.style.display = 'none';
+      }
+
+
+      nextBtn.onclick = () => {
+        currentImgIndex = (currentImgIndex + 1) % images.length;
+        updateImage();
+      };
+
+      prevBtn.onclick = () => {
+        currentImgIndex = (currentImgIndex - 1 + images.length) % images.length;
+        updateImage();
+      };
+
+      updateImage(); // 
+    }
+  }
+
+  window.onload = loadProductDetail;
     // =========================
     // 全站 key（只宣告一次！）
     // =========================
@@ -889,4 +934,5 @@
   </script>
 </body>
 </html>
+
 
