@@ -527,3 +527,47 @@ button.nav-item{
   display:none;
 }
 .top-btn.show{ display:block; }
+
+/* ===== RWD 響應式設定 ===== */
+
+@media (max-width: 768px) {
+  /* 1. Header 調整：縮小品牌字體 */
+  .brand {
+    font-size: 1.5rem;
+  }
+
+  /* 2. Categories 調整：從三欄變一欄或兩欄 */
+  .cat-grid {
+    grid-template-columns: repeat(2, 1fr); /* 手機端改為兩列 */
+    gap: 10px;
+    padding: 10px;
+  }
+
+  /* 3. Latest Mosaic 調整：將複雜的網格簡化 */
+  .latest-grid {
+    display: flex;
+    flex-direction: column; /* 垂直堆疊 */
+    gap: 15px;
+  }
+
+  .latest-left, .latest-wide-photo, .latest-card-slot {
+    width: 100%;
+    height: auto;
+  }
+
+  .latest-img {
+    height: 250px; /* 固定高度避免過長 */
+    object-fit: cover;
+  }
+
+  /* 4. Hero Banner 高度調整 */
+  .hero {
+    height: 300px; /* 手機端縮短高度 */
+  }
+
+  /* 5. 隱藏部分不重要的裝飾（視需求） */
+  .line {
+    display: none; 
+  }
+  
+}
