@@ -97,6 +97,11 @@
       <div class="hero-stage" id="heroStage">
         <div class="hero-placeholder">Hero Banner（之後換成圖片）</div>
       </div>
+
+      <!-- 左右切換按鈕 -->
+      <button class="hero-arrow hero-prev" id="heroPrev" type="button" aria-label="上一張廣告">‹</button>
+      <button class="hero-arrow hero-next" id="heroNext" type="button" aria-label="下一張廣告">›</button>
+
       <div class="hero-dots" id="heroDots"></div>
     </section>
 
@@ -114,21 +119,24 @@
       <div class="cat-grid">
         <a class="cat-card" href="./products.html?theme=生活用品" data-theme="生活用品">
           <div class="cat-frame">
-            <img class="cat-img" alt="生活用品" data-rotator="生活用品">
+            <!-- ✅ 改動：補上預設 src，避免空白 -->
+            <img class="cat-img" alt="生活用品" data-rotator="生活用品" src="image/no-image.png" loading="lazy">
           </div>
           <div class="cat-name">生活用品</div>
         </a>
 
         <a class="cat-card" href="./products.html?theme=玩具" data-theme="玩具">
           <div class="cat-frame">
-            <img class="cat-img" alt="玩具" data-rotator="玩具">
+            <!-- ✅ 改動：補上預設 src，避免空白 -->
+            <img class="cat-img" alt="玩具" data-rotator="玩具" src="image/no-image.png" loading="lazy">
           </div>
           <div class="cat-name">玩具</div>
         </a>
 
         <a class="cat-card" href="./products.html?theme=服飾" data-theme="服飾">
           <div class="cat-frame">
-            <img class="cat-img" alt="服飾" data-rotator="服飾">
+            <!-- ✅ 改動：補上預設 src，避免空白 -->
+            <img class="cat-img" alt="服飾" data-rotator="服飾" src="image/no-image.png" loading="lazy">
           </div>
           <div class="cat-name">服飾</div>
         </a>
@@ -179,4 +187,3 @@
   <script src="./index.js"></script>
 </body>
 </html>
-

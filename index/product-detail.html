@@ -39,6 +39,7 @@
       border-radius:12px;
       overflow:hidden;
       border:1px solid rgba(0,0,0,.06);
+      position: relative; /* ✅（新增）讓左右按鈕定位在圖上 */
     }
     .imgBox img{
       width:100%;
@@ -46,53 +47,40 @@
       object-fit:cover;
       display:block;
     }
-    .detail-image {
-  position: relative; 
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #fff;
-  overflow: hidden;
-}
-
-#mainImg {
-  width: 100%;
-  display: block;
-  object-fit: contain;
-}
-
-/* 箭頭樣式 */
-.slide-btn {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  background: rgba(0, 0, 0, 0.3);
-  color: white;
-  border: none;
-  width: 40px;
-  height: 40px;
-  font-size: 24px;
-  cursor: pointer;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: background 0.3s;
-  z-index: 10;
-}
-
-.slide-btn:hover {
-  background: rgba(0, 0, 0, 0.6);
-}
-
-.slide-btn.prev { left: 10px; }
-.slide-btn.next { right: 10px; }
-.slide-btn.hidden {
-  display: none;
-}
     .dots{ display:flex; gap:10px; justify-content:center; padding:14px 0 0; }
     .dot{ width:8px; height:8px; border-radius:50%; background:rgba(0,0,0,.18); cursor:pointer; }
     .dot.active{ background:rgba(0,0,0,.55); }
+
+    /* ✅（新增）商品圖左右切換按鈕（只影響商品圖） */
+    .imgNav{
+      position:absolute;
+      top:50%;
+      transform: translateY(-50%);
+      width:42px;
+      height:42px;
+      border:none;
+      border-radius:999px;
+      background: rgba(255,255,255,.85);
+      box-shadow: 0 10px 24px rgba(0,0,0,.12);
+      cursor:pointer;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:22px;
+      font-weight:900;
+      color:#111;
+      z-index:2;
+      transition: transform .12s ease, filter .12s ease, opacity .12s ease;
+    }
+    .imgNav:hover{ filter: brightness(.98); transform: translateY(-50%) scale(1.03); }
+    .imgNav:active{ transform: translateY(-50%) scale(.98); }
+    .imgNav.prev{ left:10px; }
+    .imgNav.next{ right:10px; }
+    .imgNav[disabled]{
+      opacity:.35;
+      cursor:not-allowed;
+      box-shadow:none;
+    }
 
     .info h1{ margin:0; font-size:36px; font-weight:900; letter-spacing:1px; }
     .price{ margin-top:6px; font-size:28px; font-weight:900; color:var(--accent); }
@@ -417,11 +405,12 @@
   <div class="wrap">
     <section class="top">
       <div class="gallery">
-      <div class="detail-image" id="detailImage">
-        <button class="slide-btn prev" id="prevBtn" aria-label="上一張">❮</button>
-        <img id="mainImg" src="" alt="商品圖片">
-        <button class="slide-btn next" id="nextBtn" aria-label="下一張">❯</button>
-      </div>
+        <div class="imgBox">
+          <img id="mainImg" src="" alt="商品圖片" />
+          <!-- ✅（新增）左右切換按鈕（只影響商品圖） -->
+          <button class="imgNav prev" id="imgPrev" type="button" aria-label="上一張圖片">‹</button>
+          <button class="imgNav next" id="imgNext" type="button" aria-label="下一張圖片">›</button>
+        </div>
         <div class="dots" id="dotsArea"></div>
       </div>
 
@@ -496,51 +485,6 @@
 
   <script src="./products-data.js"></script>
   <script>
-    <script>
-  let currentImgIndex = 0;
-  let images = []; 
-
-  function loadProductDetail() {
-    const params = new URLSearchParams(window.location.search);
-    const pid = params.get('id');
-    
-    const p = allProducts.find(item => item.id === pid);
-    
-    if (p) {
-      // 判斷是否有 images 陣列，否則使用單張 image
-      images = Array.isArray(p.images) ? p.images : [p.image];
-      
-      const mainImg = document.getElementById('mainImg');
-      const prevBtn = document.getElementById('prevBtn');
-      const nextBtn = document.getElementById('nextBtn');
-
-      const updateImage = () => {
-        mainImg.src = images[currentImgIndex].startsWith('http') 
-                      ? images[currentImgIndex] 
-                      : `image/${images[currentImgIndex]}`;
-      };
-
-      if (images.length <= 1) {
-        prevBtn.style.display = 'none';
-        nextBtn.style.display = 'none';
-      }
-
-
-      nextBtn.onclick = () => {
-        currentImgIndex = (currentImgIndex + 1) % images.length;
-        updateImage();
-      };
-
-      prevBtn.onclick = () => {
-        currentImgIndex = (currentImgIndex - 1 + images.length) % images.length;
-        updateImage();
-      };
-
-      updateImage(); // 
-    }
-  }
-
-  window.onload = loadProductDetail;
     // =========================
     // 全站 key（只宣告一次！）
     // =========================
@@ -631,24 +575,50 @@
     `;
 
     // =========================
-    // 2) 圖片輪播
+    // 2) 圖片輪播（✅新增左右切換，其他不動）
     // =========================
     const mainImg = document.getElementById("mainImg");
     const dotsArea = document.getElementById("dotsArea");
 
-    function showImage(idx){
-      const imgName = (product.images || [])[idx];
-      const src = imgName ? resolveImg(imgName) : "https://placehold.co/800x800?text=Meow5";
-      mainImg.src = src;
-      mainImg.alt = product.name + " 圖片 " + (idx+1);
-      dotsArea.querySelectorAll(".dot").forEach((d,i) => d.classList.toggle("active", i === idx));
+    // ✅（新增）左右按鈕
+    const imgPrev = document.getElementById("imgPrev");
+    const imgNext = document.getElementById("imgNext");
+
+    const imgs = Array.isArray(product.images) ? product.images : [];
+    let currentImgIndex = 0; // ✅（新增）記錄目前是哪一張
+
+    function updateImgNavState(){
+      // 若只有 0/1 張圖，左右按鈕就禁用（不影響其他功能）
+      const canSwitch = imgs.length > 1;
+      if(imgPrev) imgPrev.disabled = !canSwitch;
+      if(imgNext) imgNext.disabled = !canSwitch;
     }
 
+    function showImage(idx){
+      if(imgs.length === 0){
+        mainImg.src = "https://placehold.co/800x800?text=Meow5";
+        mainImg.alt = product.name + " 圖片";
+        dotsArea.innerHTML = "";
+        updateImgNavState();
+        return;
+      }
+
+      // ✅（新增）讓 idx 永遠落在 0..len-1
+      currentImgIndex = (idx + imgs.length) % imgs.length;
+
+      const imgName = imgs[currentImgIndex];
+      const src = imgName ? resolveImg(imgName) : "https://placehold.co/800x800?text=Meow5";
+      mainImg.src = src;
+      mainImg.alt = product.name + " 圖片 " + (currentImgIndex + 1);
+
+      dotsArea.querySelectorAll(".dot").forEach((d,i) => d.classList.toggle("active", i === currentImgIndex));
+      updateImgNavState();
+    }
+
+    // dots 生成與點擊
     dotsArea.innerHTML = "";
-    const imgs = Array.isArray(product.images) ? product.images : [];
     if(imgs.length === 0){
-      mainImg.src = "https://placehold.co/800x800?text=Meow5";
-      dotsArea.innerHTML = "";
+      showImage(0);
     }else{
       imgs.forEach((_, i) => {
         const d = document.createElement("div");
@@ -657,6 +627,14 @@
         dotsArea.appendChild(d);
       });
       showImage(0);
+    }
+
+    // ✅（新增）左右按鈕行為
+    if(imgPrev){
+      imgPrev.addEventListener("click", () => showImage(currentImgIndex - 1));
+    }
+    if(imgNext){
+      imgNext.addEventListener("click", () => showImage(currentImgIndex + 1));
     }
 
     // =========================
@@ -934,5 +912,3 @@
   </script>
 </body>
 </html>
-
-

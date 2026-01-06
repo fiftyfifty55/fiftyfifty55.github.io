@@ -1,36 +1,15 @@
-/* =========================
-   Meow5 index.js（完善版）
-   - 統一圖片路徑：image/ 資料夾
-   - 商品卡/最新區/推薦區全部能顯示圖
-========================= */
-
-/** ✅ 圖片路徑修正：允許 http、允許已經帶 image/ 的字串 */
-function resolveImg(src){
-  if(!src) return "image/no-image.png";
-  const s = String(src);
-
-  if(s.startsWith("http")) return s;
-  if(s.startsWith("image/")) return s;     // 已經是 image/xxx 就不要再補
-  return "image/" + s;                     // 否則補上 image/
+// ===== Utils =====
+function resolveImg(name){
+  if(!name) return "image/no-image.png";
+  if(name.startsWith("http")) return name;
+  if(name.startsWith("image/") || name.startsWith("images/")) return name;
+  return "image/" + name;   // ✅ 關鍵：把檔名補成 image/xxx
 }
 
-/** ✅ 取商品縮圖：支援 p.images[] 或舊的 p.image */
+
 function getProductThumb(p){
-  if(!p) return "image/no-image.png";
-
-  // 新版資料：images: ["1.png","2.png"...]
-  if(Array.isArray(p.images) && p.images.length > 0){
-    return resolveImg(p.images[0]);
-  }
-
-  // 舊版資料：image: "xxx.png"
-  if(p.image){
-    return resolveImg(p.image);
-  }
-
-  return "image/no-image.png";
+  return p?.image ? resolveImg(p.image) : "image/no-image.png";
 }
-
 
 // ===== Drawer =====
 const menuBtn = document.getElementById("menuBtn");
@@ -38,7 +17,6 @@ const closeBtn = document.getElementById("closeBtn");
 const drawer = document.getElementById("drawer");
 const overlay = document.getElementById("overlay");
 
-// 商品子選單
 const productToggle = document.getElementById("productToggle");
 const productSubmenu = document.getElementById("productSubmenu");
 
@@ -49,23 +27,20 @@ function openDrawer() {
   menuBtn.setAttribute("aria-expanded", "true");
   document.body.style.overflow = "hidden";
 }
-
 function closeDrawer() {
   drawer.classList.remove("open");
   drawer.setAttribute("aria-hidden", "true");
   menuBtn.setAttribute("aria-expanded", "false");
-  overlay.hidden = true;
+  if(!searchPanel.classList.contains("open")) overlay.hidden = true;
   document.body.style.overflow = "";
 }
 
 menuBtn.addEventListener("click", openDrawer);
 closeBtn.addEventListener("click", closeDrawer);
 
-// 商品子選單：預設收起 + 展開/收起
 (function initProductSubmenu() {
   productToggle.setAttribute("aria-expanded", "false");
   productSubmenu.hidden = true;
-
   const chev = productToggle.querySelector(".chev");
   if (chev) chev.textContent = "▾";
 
@@ -73,26 +48,10 @@ closeBtn.addEventListener("click", closeDrawer);
     const expanded = productToggle.getAttribute("aria-expanded") === "true";
     productToggle.setAttribute("aria-expanded", String(!expanded));
     productSubmenu.hidden = expanded;
-
     const c = productToggle.querySelector(".chev");
     if (c) c.textContent = expanded ? "▾" : "▴";
   });
 })();
-
-// 點 overlay 關閉 drawer/search
-overlay.addEventListener("click", () => {
-  if (drawer.classList.contains("open")) closeDrawer();
-  if (searchPanel.classList.contains("open")) closeSearch();
-});
-
-// Esc 關閉 drawer/search
-document.addEventListener("keydown", (e) => {
-  if(e.key === "Escape"){
-    if(drawer.classList.contains("open")) closeDrawer();
-    if(searchPanel.classList.contains("open")) closeSearch();
-  }
-});
-
 
 // ===== Search =====
 const searchBtn = document.getElementById("searchBtn");
@@ -119,6 +78,18 @@ function closeSearch(){
 
 searchBtn.addEventListener("click", openSearch);
 searchCloseBtn.addEventListener("click", closeSearch);
+
+overlay.addEventListener("click", () => {
+  if(drawer.classList.contains("open")) closeDrawer();
+  if(searchPanel.classList.contains("open")) closeSearch();
+});
+
+document.addEventListener("keydown", (e) => {
+  if(e.key === "Escape"){
+    if(drawer.classList.contains("open")) closeDrawer();
+    if(searchPanel.classList.contains("open")) closeSearch();
+  }
+});
 
 // 即時搜尋 → 點結果跳詳情
 function renderSearchResults(list){
@@ -148,59 +119,65 @@ searchInput.addEventListener("input", () => {
 const HERO_SLIDES = [
   {
     image: "image/top1.png",
+    // 第一張不指定跳轉（只做熱點商品）
+    link: "products.html",
     hotspots: [
       // ✅ 綠色衣服（貓身上）
       { productId: "C001", x: 20, y: 56 },
-
       // ✅ 碗
       { productId: "L007", x: 18, y: 82 },
-
       // ✅ 貓爬架
       { productId: "T004", x: 60, y: 58 },
-
       // ✅ 貓砂盆
       { productId: "L004", x: 83, y: 44 },
-
       // ✅ 藍色外出包
       { productId: "L010", x: 90, y: 74 }
     ]
   },
-  { 
-    image: "image/hero2.jpg", 
-    link: "cart.html", // 點擊跳轉至購物車
-    hotspots: [] 
+  {
+    image: "image/hero2.jpg",
+    link: "cart.html",
+    hotspots: []
   },
-  { 
-    image: "image/hero3.jpg", 
-    link: "faq.html",  // 點擊跳轉至 FAQ
-    hotspots: [] 
+  {
+    image: "image/hero3.jpg",
+    link: "about.html",
+    hotspots: []
   }
 ];
 
-
 const heroStage = document.getElementById("heroStage");
 const heroDots = document.getElementById("heroDots");
+const heroPrev = document.getElementById("heroPrev");
+const heroNext = document.getElementById("heroNext");
+
 let heroIndex = 0;
 let heroTimer = null;
+const HERO_INTERVAL = 6000;
 
 function clearNode(node){
   while(node.firstChild) node.removeChild(node.firstChild);
+}
+
+function restartHeroAuto(){
+  if(heroTimer) clearInterval(heroTimer);
+  heroTimer = setInterval(() => {
+    nextHero();
+  }, HERO_INTERVAL);
 }
 
 function renderHero(idx){
   const slide = HERO_SLIDES[idx];
   clearNode(heroStage);
 
+  // 讓整張廣告可以點擊跳轉
+  heroStage.dataset.link = slide.link || "";
+  heroStage.style.cursor = slide.link ? "pointer" : "default";
+
   const img = document.createElement("img");
   img.className = "hero-img";
   img.src = resolveImg(slide.image);
   img.alt = "Hero Banner";
-   if (slide.link) {
-    img.style.cursor = "pointer"; // 鼠標移上去變手指
-    img.addEventListener("click", () => {
-      window.location.href = slide.link;
-    });
-  }
   img.onerror = () => {
     img.remove();
     const ph = document.createElement("div");
@@ -211,7 +188,7 @@ function renderHero(idx){
   heroStage.appendChild(img);
 
   // Hotspots
-  slide.hotspots.forEach(h => {
+  (slide.hotspots || []).forEach(h => {
     const dot = document.createElement("div");
     dot.className = "hotspot";
     dot.style.left = h.x + "%";
@@ -245,25 +222,45 @@ function showProductPop(hotspot){
     <div class="small">$${p.price}</div>
   `;
 
-  pop.addEventListener("click", () => {
+  pop.addEventListener("click", (e) => {
+    e.stopPropagation();
     location.href = `product-detail.html?id=${p.id}`;
   });
 
   heroStage.appendChild(pop);
 }
 
-// 點 hero 空白處關閉 pop
+// 點 hero 空白處：若有熱點彈窗就關閉；否則依照 link 進入指定頁
 heroStage.addEventListener("click", () => {
-  const old = heroStage.querySelector(".product-pop");
-  if(old) old.remove();
+  const pop = heroStage.querySelector(".product-pop");
+  if(pop){
+    pop.remove();
+    return;
+  }
+  const link = heroStage.dataset.link;
+  if(link){
+    location.href = link;
+  }
 });
+
+function prevHero(){
+  heroIndex = (heroIndex - 1 + HERO_SLIDES.length) % HERO_SLIDES.length;
+  renderHero(heroIndex);
+  restartHeroAuto();
+}
+function nextHero(){
+  heroIndex = (heroIndex + 1) % HERO_SLIDES.length;
+  renderHero(heroIndex);
+  restartHeroAuto();
+}
 
 function initHero(){
   heroDots.innerHTML = "";
   HERO_SLIDES.forEach((_, i) => {
     const d = document.createElement("div");
     d.className = "hero-dot" + (i===0 ? " active":"");
-    d.addEventListener("click", () => {
+    d.addEventListener("click", (e) => {
+      e.stopPropagation();
       heroIndex = i;
       renderHero(heroIndex);
       restartHeroAuto();
@@ -271,16 +268,21 @@ function initHero(){
     heroDots.appendChild(d);
   });
 
+  if(heroPrev){
+    heroPrev.addEventListener("click", (e) => {
+      e.stopPropagation();
+      prevHero();
+    });
+  }
+  if(heroNext){
+    heroNext.addEventListener("click", (e) => {
+      e.stopPropagation();
+      nextHero();
+    });
+  }
+
   renderHero(0);
   restartHeroAuto();
-}
-
-function restartHeroAuto(){
-  if(heroTimer) clearInterval(heroTimer);
-  heroTimer = setInterval(() => {
-    heroIndex = (heroIndex + 1) % HERO_SLIDES.length;
-    renderHero(heroIndex);
-  }, 6000);
 }
 
 initHero();
@@ -406,4 +408,3 @@ window.addEventListener("scroll", () => {
 topBtn.addEventListener("click", () => {
   window.scrollTo({ top: 0, behavior: "smooth" });
 });
-
